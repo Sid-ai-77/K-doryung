@@ -9,6 +9,8 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>K-Doryung</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4566861735736673" crossorigin="anonymous"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -45,7 +47,7 @@
   .tabs{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid #eee;-webkit-overflow-scrolling:touch}
   .tabs::-webkit-scrollbar{display:none}
   .tab{padding:7px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border:1.5px solid #eee;background:#fff;color:#888;font-family:inherit;transition:all 0.2s}
-  .tab.active{background:#1B3A5C;color:#fff;border-color:#1B3A5C}
+  .tab.active{background:#1B3A5C;color:#fff;border-color:#1B3A5C;box-shadow:0 2px 8px rgba(27,58,92,0.3);transform:scale(1.05)}
 
   /* Content */
   .content{padding:12px 16px;padding-bottom:80px}
@@ -53,7 +55,8 @@
   .section.active{display:block}
 
   /* Cards */
-  .card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #f0f0f0}
+  .card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #f0f0f0;animation:fadeInUp 0.3s ease}
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
   .badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
   .badge-food{background:#FFF3E0;color:#E65100}
@@ -67,7 +70,8 @@
   .card-dist{color:#1B3A5C;font-weight:600;font-size:12px}
   .card-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
   .btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:inherit}
-  .btn-primary{background:#1B3A5C;color:#fff}
+  .btn-primary{background:#1B3A5C;color:#fff;transition:all 0.2s}
+  .btn-primary:active{transform:scale(0.95);box-shadow:0 1px 4px rgba(27,58,92,0.3)}
   .btn-review{background:#FFD700;color:#333}
   .btn-share{background:#FFD700;color:#333}
   .btn-heart{background:none;border:1px solid #eee;color:#ddd;font-size:14px;padding:4px 8px}
@@ -81,11 +85,12 @@
   @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
   /* Chat */
-  .chat-section{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #f0f0f0}
+  .chat-section{background:linear-gradient(135deg,#f8fafc,#eef2f7);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(27,58,92,0.08);border:1px solid #e4eaf0}
   .chat-title{font-size:14px;font-weight:700;color:#1B3A5C;margin-bottom:10px;display:flex;align-items:center;gap:6px}
   .chat-messages{max-height:200px;overflow-y:auto;margin-bottom:10px}
   .chat-msg{margin-bottom:8px;font-size:12px;line-height:1.5}
-  .chat-msg.bot{color:#1B3A5C;background:#f0f5fa;padding:8px 10px;border-radius:10px;border-top-left-radius:2px}
+  .chat-msg.bot{color:#1B3A5C;background:#f0f5fa;padding:8px 10px;border-radius:10px;border-top-left-radius:2px;animation:fadeInLeft 0.3s ease}
+  @keyframes fadeInLeft{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
   .chat-msg.user{color:#333;background:#f5f5f5;padding:8px 10px;border-radius:10px;border-top-right-radius:2px;text-align:right}
   .chat-input-row{display:flex;gap:6px}
   .chat-input{flex:1;padding:8px 12px;border:1.5px solid #eee;border-radius:10px;font-size:12px;font-family:inherit;outline:none}
@@ -118,7 +123,7 @@
   @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
   /* Story */
-  .story-view{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:95;background:#000}
+  .story-view{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:95;background:linear-gradient(135deg,#1a1a2e,#16213e)}
   .story-view.active{display:flex;flex-direction:column}
   .story-header{position:absolute;top:0;left:0;right:0;z-index:96;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(180deg,rgba(0,0,0,0.6),transparent)}
   .story-header .ep-title{color:#fff;font-size:14px;font-weight:700}
@@ -130,19 +135,23 @@
   .story-slide{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
   .story-img{width:100%;height:65vh;object-fit:contain}
   .story-text{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.6) 70%,transparent 100%);padding:40px 20px 24px;color:#fff;font-size:14px;line-height:1.8;text-align:center}
-  .story-nav-area{position:absolute;top:50px;bottom:80px;z-index:96}
-  .story-nav-left{left:0;width:30%}
-  .story-nav-right{right:0;width:30%}
+  .story-nav-area{position:absolute;top:50px;bottom:80px;z-index:96;display:flex;align-items:center}
+  .story-nav-left{left:0;width:20%;justify-content:flex-start;padding-left:8px}
+  .story-nav-right{right:0;width:20%;justify-content:flex-end;padding-right:8px}
+  .story-arrow{background:rgba(255,255,255,0.3);border:none;color:#fff;font-size:28px;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
   /* Korean Learning */
   .learn-page{display:none;padding:12px 16px 80px}
   .learn-page.active{display:block}
-  .learn-cat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-  .learn-cat-btn{background:#fff;border:2px solid #eee;border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;font-family:inherit;transition:all 0.2s}
-  .learn-cat-btn.active{border-color:#1B3A5C;background:#f0f5fa}
-  .learn-cat-btn .lc-icon{font-size:28px;margin-bottom:4px}
+  .learn-cat{display:flex;gap:12px;overflow-x:auto;padding:0 0 16px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+  .learn-cat::-webkit-scrollbar{display:none}
+  .learn-cat-btn{min-width:140px;max-width:160px;background:#fff;border:2px solid #eee;border-radius:16px;padding:12px;text-align:center;cursor:pointer;font-family:inherit;transition:all 0.2s;scroll-snap-align:center;flex-shrink:0}
+  .learn-cat-btn.active{border-color:#1B3A5C;background:#f0f5fa;box-shadow:0 2px 8px rgba(27,58,92,0.15)}
+  .learn-cat-btn .lc-img{width:100%;height:100px;object-fit:contain;border-radius:10px;margin-bottom:6px;background:#f9f9f9}
+  .learn-cat-btn .lc-icon{font-size:48px;line-height:100px}
   .learn-cat-btn .lc-name{font-size:12px;font-weight:700;color:#333}
-  .learn-card{background:#fff;border-radius:14px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);text-align:center}
+  .learn-cat-btn .lc-count{font-size:10px;color:#999;margin-top:2px}
+  .learn-card{background:linear-gradient(135deg,#fff,#f8fafc);border-radius:16px;padding:24px 20px;margin-bottom:12px;box-shadow:0 4px 16px rgba(27,58,92,0.08);text-align:center;border:1px solid #e8eef4;animation:fadeInUp 0.3s ease}
   .learn-kr{font-size:28px;font-weight:800;color:#1B3A5C;margin-bottom:6px}
   .learn-roman{font-size:14px;color:#888;margin-bottom:4px}
   .learn-en{font-size:16px;font-weight:600;color:#333;margin-bottom:12px}
@@ -172,7 +181,7 @@
 
 <!-- Splash -->
 <div class="splash" id="splash">
-  <video src="loading.mp4" autoplay loop muted playsinline style="width:80vw;max-width:360px;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,0.3)"></video>
+  <video src="loading.mp4" autoplay muted playsinline id="splashVideo" style="width:80vw;max-width:360px;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,0.3)"></video>
   <div style="position:absolute;bottom:40px;width:100%;text-align:center">
     <div class="splash-status" id="splashStatus">Finding your location...</div>
     <div class="splash-bar" style="margin:8px auto"><div class="splash-bar-fill"></div></div>
@@ -222,11 +231,11 @@
 
     <!-- Emergency -->
     <div class="emergency">
-      <b>&#x1F6A8; Emergency Numbers</b><br>
-      Police: <a href="tel:112" style="color:#E65100;font-weight:700">112</a> &nbsp;|&nbsp;
-      Ambulance: <a href="tel:119" style="color:#E65100;font-weight:700">119</a> &nbsp;|&nbsp;
-      Tourism Help: <a href="tel:1330" style="color:#E65100;font-weight:700">1330</a><br>
-      &#x1F4A1; Korea has no tipping culture!
+      <b><i class="fas fa-exclamation-triangle"></i> Emergency Numbers</b><br>
+      <i class="fas fa-shield-alt"></i> Police: <a href="tel:112" style="color:#E65100;font-weight:700">112</a> &nbsp;|&nbsp;
+      <i class="fas fa-ambulance"></i> Ambulance: <a href="tel:119" style="color:#E65100;font-weight:700">119</a> &nbsp;|&nbsp;
+      <i class="fas fa-info-circle"></i> Tourism: <a href="tel:1330" style="color:#E65100;font-weight:700">1330</a><br>
+      <i class="fas fa-lightbulb"></i> Korea has no tipping culture!
     </div>
 
     <div class="ad-banner">Ad Space (AdSense)</div>
@@ -251,27 +260,27 @@
   <!-- Travel Tips -->
   <div class="section" id="sec-tips">
     <div class="card">
-      <div class="card-name">&#x1F4B0; Currency</div>
+      <div class="card-name"><i class="fas fa-won-sign" style="color:#1B3A5C"></i> Currency</div>
       <div class="card-desc">Korean Won (KRW). 1 USD &#x2248; 1,350 KRW. Cards accepted almost everywhere. Cash needed for traditional markets.</div>
     </div>
     <div class="card">
-      <div class="card-name">&#x1F687; Transportation</div>
+      <div class="card-name"><i class="fas fa-subway" style="color:#1B3A5C"></i> Transportation</div>
       <div class="card-desc">Get a T-money card at any convenience store (&#x20A9;2,500). Works on subway, bus, and taxis. Subway is the cheapest way to travel.</div>
     </div>
     <div class="card">
-      <div class="card-name">&#x1F4F6; WiFi & SIM</div>
+      <div class="card-name"><i class="fas fa-wifi" style="color:#1B3A5C"></i> WiFi & SIM</div>
       <div class="card-desc">Free WiFi available at most cafes, subway stations, and public areas. Tourist SIM cards available at Incheon Airport.</div>
     </div>
     <div class="card">
-      <div class="card-name">&#x1F3EF; Free Attractions</div>
+      <div class="card-name"><i class="fas fa-landmark" style="color:#1B3A5C"></i> Free Attractions</div>
       <div class="card-desc">Gyeongbokgung, Changdeokgung (Hanbok = free entry), National Museum, War Memorial, most parks and temples are FREE.</div>
     </div>
     <div class="card">
-      <div class="card-name">&#x1F35C; Eating Cheap</div>
+      <div class="card-name"><i class="fas fa-utensils" style="color:#1B3A5C"></i> Eating Cheap</div>
       <div class="card-desc">Look for "착한가격업소" (Budget-Certified) sticker. Gimbap shops, market food, and convenience store meals are great budget options.</div>
     </div>
     <div class="card">
-      <div class="card-name">&#x1F1F0;&#x1F1F7; Basic Korean</div>
+      <div class="card-name"><i class="fas fa-language" style="color:#1B3A5C"></i> Basic Korean</div>
       <div class="card-desc">Hello: 안녕하세요 (annyeonghaseyo)<br>Thank you: 감사합니다 (gamsahamnida)<br>How much: 얼마예요? (eolmayeyo?)<br>Delicious: 맛있어요! (mashisseoyo!)</div>
     </div>
   </div>
@@ -288,8 +297,8 @@
     <img class="story-img" id="storyImg" src="">
     <div class="story-text" id="storyText"></div>
   </div>
-  <div class="story-nav-area story-nav-left" id="storyPrev"></div>
-  <div class="story-nav-area story-nav-right" id="storyNext"></div>
+  <div class="story-nav-area story-nav-left" id="storyPrev"><button class="story-arrow">&#x25C0;</button></div>
+  <div class="story-nav-area story-nav-right" id="storyNext"><button class="story-arrow">&#x25B6;</button></div>
 </div>
 
 <!-- Map -->
@@ -311,7 +320,7 @@
     </div>
     <div class="map-info" id="mapInfo">
       <div style="position:absolute;top:8px;right:12px;display:flex;gap:6px">
-        <button id="mapShareBtn" style="background:#FFD700;border:none;font-size:11px;color:#333;cursor:pointer;border-radius:4px;padding:2px 6px;font-weight:600">Share</button>
+        <button id="mapShareBtn" style="background:#FFD700;border:none;font-size:11px;color:#333;cursor:pointer;border-radius:4px;padding:2px 6px;font-weight:600"><i class="fas fa-share-alt"></i> Share</button>
         <button id="mapCloseInfo" style="background:none;border:none;font-size:18px;color:#ccc;cursor:pointer">&#x2715;</button>
       </div>
       <div class="badge badge-food" id="mapBadge">Budget</div>
@@ -320,8 +329,8 @@
       <div class="card-desc" id="mapDesc"></div>
       <div class="card-addr" id="mapAddr"></div>
       <div class="card-actions" style="margin-top:10px">
-        <button class="btn btn-primary" id="mapNaviBtn">Google Maps</button>
-        <button class="btn btn-review" id="mapReviewBtn">Reviews</button>
+        <button class="btn btn-primary" id="mapNaviBtn"><i class="fas fa-directions"></i> Google Maps</button>
+        <button class="btn btn-review" id="mapReviewBtn"><i class="fas fa-star"></i> Reviews</button>
       </div>
       <div class="ad-banner" style="margin-top:10px;padding:8px">Ad Space</div>
     </div>
@@ -330,10 +339,10 @@
 
 <!-- Bottom Nav -->
 <div class="bottom-nav">
-  <div class="nav-item active" data-nav="home"><div class="nav-icon">&#x1F3E0;</div>Home</div>
-  <div class="nav-item" data-nav="map"><div class="nav-icon">&#x1F5FA;</div>Map</div>
-  <div class="nav-item" data-nav="story"><div class="nav-icon">&#x1F4D6;</div>Story</div>
-  <div class="nav-item" data-nav="learn"><div class="nav-icon">&#x1F1F0;&#x1F1F7;</div>Korean</div>
+  <div class="nav-item active" data-nav="home"><div class="nav-icon"><i class="fas fa-home"></i></div>Home</div>
+  <div class="nav-item" data-nav="map"><div class="nav-icon"><i class="fas fa-map-marked-alt"></i></div>Map</div>
+  <div class="nav-item" data-nav="story"><div class="nav-icon"><i class="fas fa-book-open"></i></div>Story</div>
+  <div class="nav-item" data-nav="learn"><div class="nav-icon"><i class="fas fa-language"></i></div>Korean</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -367,7 +376,13 @@ function useDefault(){
   onReady();
 }
 
+let splashReady=false,videoEnded=false;
 function hideSplash(){
+  splashReady=true;
+  tryCloseSplash();
+}
+function tryCloseSplash(){
+  if(!splashReady||!videoEnded)return;
   const s=document.getElementById('splash');
   if(s){document.getElementById('splashStatus').textContent='Ready!';setTimeout(()=>s.classList.add('hide'),500);setTimeout(()=>s.remove(),1000)}
 }
@@ -488,7 +503,7 @@ function loadCheap(){
         <div class="card-name">${s.n||''}</div>
         ${m.length?'<div class="card-price">'+m.join(' / ')+'</div>':''}
         <div class="card-addr">${s.a||''}</div>
-        <div class="card-actions"><button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(s.n+' '+s.a)}','_blank')">Google Maps</button><button class="btn btn-review" onclick="window.open('https://map.kakao.com/link/search/${encodeURIComponent(s.n)}','_blank')">Reviews</button><button class="btn btn-share" onclick="sharePlace('${(s.n||'').replace(/'/g,'')}','${(s.a||'').replace(/'/g,'')}','cheap')">Share</button></div>`;
+        <div class="card-actions"><button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(s.n+' '+s.a)}','_blank')"><i class="fas fa-directions"></i> Google Maps</button><button class="btn btn-review" onclick="window.open('https://map.kakao.com/link/search/${encodeURIComponent(s.n)}','_blank')"><i class="fas fa-star"></i> Reviews</button><button class="btn btn-share" onclick="sharePlace('${(s.n||'').replace(/'/g,'')}','${(s.a||'').replace(/'/g,'')}','cheap')"><i class="fas fa-share-alt"></i> Share</button></div>`;
       c.appendChild(div);
       // Ads
       if(i===2||i===7||i===13){const ad=document.createElement('div');ad.className='ad-banner';ad.textContent='Ad Space (AdSense)';c.appendChild(ad)}
@@ -521,7 +536,7 @@ function loadEvents(){
           const title=(item.title||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
           const link=item.link||'#';
           return `<div class="card"><a href="${link}" target="_blank" style="text-decoration:none;color:inherit">
-            <div class="card-top"><span class="badge badge-event">Event</span><button class="btn btn-share" onclick="event.preventDefault();event.stopPropagation();sharePlace('${title.replace(/'/g,'')}','','event')" style="font-size:10px">Share</button></div>
+            <div class="card-top"><span class="badge badge-event">Event</span><button class="btn btn-share" onclick="event.preventDefault();event.stopPropagation();sharePlace('${title.replace(/'/g,'')}','','event')" style="font-size:10px"><i class="fas fa-share-alt"></i> Share</button></div>
             <div class="card-name">${title}</div>
             <div class="card-addr">${date}</div>
           </a></div>`;
@@ -548,9 +563,9 @@ function renderCards(container,places,type){
       <div class="card-desc"><span style="color:#1B3A5C;font-weight:600">${getLabel(p,type)}</span> · ${p.phone||''}</div>
       <div class="card-addr">${addr}</div>
       <div class="card-actions">
-        <button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent((p.place_name||'')+' '+addr)}','_blank')">Google Maps</button>
-        <button class="btn btn-review" onclick="window.open('${p.place_url||'https://map.kakao.com/link/search/'+encodeURIComponent(p.place_name)}','_blank')">Reviews</button>
-        <button class="btn btn-share" onclick="sharePlace('${(p.place_name||'').replace(/'/g,'')}','${addr.replace(/'/g,'')}','${type}')">Share</button>
+        <button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent((p.place_name||'')+' '+addr)}','_blank')"><i class="fas fa-directions"></i> Google Maps</button>
+        <button class="btn btn-review" onclick="window.open('${p.place_url||'https://map.kakao.com/link/search/'+encodeURIComponent(p.place_name)}','_blank')"><i class="fas fa-star"></i> Reviews</button>
+        <button class="btn btn-share" onclick="sharePlace('${(p.place_name||'').replace(/'/g,'')}','${addr.replace(/'/g,'')}','${type}')"><i class="fas fa-share-alt"></i> Share</button>
       </div>
     </div>`;
   }).join('');
@@ -598,15 +613,17 @@ const STORY_EPISODES=[
    text:"They walked along Gyeongbokgung's stone wall.\nCherry blossoms fell on Claire's hair.\nDoryung carefully picked a petal off. Their fingertips touched.\nSpring in Hanyang was short.\nBut for Doryung, it was the longest season of his life."},
   {img:'story/ep5.jpg',title:'Episode 5: The Yeonrimoek',
    text:"Two pine trees that grew toward each other and became one.\nThey buried a jade hairpin and a lavender mirror beneath the tree.\n\"As long as this tree lives, our love lives too.\"\nThey did not know — this tree truly grants wishes.\nBut never the way you imagine."},
-  {img:'story/ep6.jpg',title:'Episode 6: Farewell',
+  {img:'story/ep6.jpg',title:'Episode 6: The Storm',
+   text:"1839. The persecution began.\nClaire's uncle was captured and executed.\nDoryung hid her beneath his floor.\nBaekgu guarded the door every night.\nFor three months they lived in shadows.\nOne night she whispered through the cracks:\n\"Oppa, this kkakdugi is the most delicious thing in the world.\"\nIn her darkest moment, she spoke the most Korean words."},
+  {img:'story/ep7.jpg',title:'Episode 7: Farewell',
    text:"\"Oppa. Let's meet again. For sure.\"\nThat was the last time Doryung heard her voice.\nThe ship dissolved into the horizon.\nAll that remained was the faint scent of lavender and sea\ncarried on the cold dawn wind."},
-  {img:'story/ep7.jpg',title:'Episode 7: Same Night, Same Choice',
+  {img:'story/ep8.jpg',title:'Episode 8: Same Night, Same Choice',
    text:"Same night. Same choice. Neither knowing the other chose the same.\nDoryung before the yeonrimoek: \"Let me meet her again.\"\nClaire on the ship: \"Let me meet him again.\"\nLight engulfed them both.\nOne second. No hesitation. Both of them."},
-  {img:'story/ep8.jpg',title:'Episode 8: 190 Years',
+  {img:'story/ep9.jpg',title:'Episode 9: 190 Years',
    text:"Hanyang became Gyeongseong. Gyeongseong became Seoul.\nTile roofs gave way to power lines, then skyscrapers.\nDoryung crossed 190 years in the body of a 24-year-old.\nWith Baekgu.\nOnly they remained unchanged."},
-  {img:'story/ep9.jpg',title:'Episode 9: Now',
+  {img:'story/ep10.jpg',title:'Episode 10: Now',
    text:"18 million foreigners visit Korea each year.\nDoryung is kind to all of them.\nThe best restaurants, the most beautiful places,\nthe warmest Korean words.\nBecause he doesn't know who she is.\nShe could be anyone."},
-  {img:'story/ep10.jpg',title:'Episode 10: When That Day Comes',
+  {img:'story/ep11.jpg',title:'Episode 11: When That Day Comes',
    text:"Baekgu will wag his tail like mad.\nFor the first time in 190 years, for someone other than his master.\nThe wind will blow. Lavender and sea.\nDoryung will cry. Smiling.\n\n\"...I have waited a long time.\""},
 ];
 
@@ -655,6 +672,9 @@ const LEARN_DATA={
     {kr:'안녕히 가세요',roman:'annyeonghi gaseyo',en:'Goodbye (to someone leaving)',ex:'Doryung says: "I\'ve said this too many times in 190 years..."'},
     {kr:'만나서 반갑습니다',roman:'mannaseo bangapseumnida',en:'Nice to meet you',ex:'Doryung says: "Baekgu wags his tail when he hears this."'},
     {kr:'오빠',roman:'oppa',en:'Older brother / close older male',ex:'Doryung says: "...someone called me this once. It\'s very special."'},
+    {kr:'잘 지내세요?',roman:'jal jinaeseyo?',en:'How are you?',ex:'Doryung says: "Koreans ask this but don\'t expect a long answer. Just say 네, 잘 지내요!"'},
+    {kr:'천만에요',roman:'cheonmaneyo',en:'You\'re welcome',ex:'Doryung says: "The polite response to 감사합니다."'},
+    {kr:'실례합니다',roman:'sillyehamnida',en:'Excuse me (polite)',ex:'Doryung says: "Use this before asking a stranger for help."'},
   ],
   food:[
     {kr:'맛있어요!',roman:'mashisseoyo!',en:'It\'s delicious!',ex:'Doryung says: "The magic word that makes any restaurant owner smile."'},
@@ -666,23 +686,87 @@ const LEARN_DATA={
     {kr:'배불러요',roman:'baebulleoyo',en:'I\'m full',ex:'Doryung says: "Korean portions are generous. You\'ll use this often."'},
     {kr:'매워요!',roman:'maewoyo!',en:'It\'s spicy!',ex:'Doryung says: "I remember someone\'s tears from tteokbokki... long ago."'},
     {kr:'맵지 않게 해주세요',roman:'maepji anke haejuseyo',en:'Not spicy, please',ex:'Doryung says: "No shame in this. Your stomach will thank you."'},
+    {kr:'한 명이요 / 두 명이요',roman:'han myeong-iyo / du myeong-iyo',en:'For 1 person / 2 people',ex:'Doryung says: "Say this when entering a restaurant. They\'ll seat you right away."'},
+    {kr:'소주 한 병 주세요',roman:'soju han byeong juseyo',en:'One bottle of soju, please',ex:'Doryung says: "Korea\'s national drink. ₩5,000 at a restaurant, ₩1,800 at a store."'},
+    {kr:'추천해 주세요',roman:'chucheonhae juseyo',en:'Please recommend something',ex:'Doryung says: "Staff will recommend the best dish. Trust them!"'},
   ],
   directions:[
     {kr:'어디예요?',roman:'eodiyeyo?',en:'Where is it?',ex:'Doryung says: "Add a place name before this. Like: 명동이 어디예요?"'},
-    {kr:'지하철역',roman:'jihacheol-yeok',en:'Subway station',ex:'Doryung says: "Korea\'s subway is the best way to travel. Trust me, I walked for 150 years before they built it."'},
+    {kr:'지하철역',roman:'jihacheol-yeok',en:'Subway station',ex:'Doryung says: "Korea\'s subway is the best way to travel."'},
     {kr:'화장실 어디예요?',roman:'hwajangsil eodiyeyo?',en:'Where is the bathroom?',ex:'Doryung says: "The most urgently needed phrase in any language."'},
     {kr:'여기요',roman:'yeogiyo',en:'Over here! / Excuse me!',ex:'Doryung says: "Use this to call a waiter. It\'s not rude in Korea."'},
-    {kr:'왼쪽 / 오른쪽',roman:'oenjjok / oreunjjok',en:'Left / Right',ex:'Doryung says: "Helpful when following directions from kind strangers."'},
+    {kr:'왼쪽 / 오른쪽',roman:'oenjjok / oreunjjok',en:'Left / Right',ex:'Doryung says: "Helpful when following directions."'},
     {kr:'직진',roman:'jikjin',en:'Go straight',ex:'Doryung says: "Korean directions are simpler than you think."'},
+    {kr:'택시 타고 싶어요',roman:'taeksi tago sipeoyo',en:'I want to take a taxi',ex:'Doryung says: "Show the driver your destination on your phone map."'},
+    {kr:'여기서 내려주세요',roman:'yeogiseo naeryeojuseyo',en:'Please drop me off here',ex:'Doryung says: "Say this to the taxi driver when you arrive."'},
+    {kr:'얼마나 걸려요?',roman:'eolmana geollyeoyo?',en:'How long does it take?',ex:'Doryung says: "Useful for planning. Works for subway, bus, and walking."'},
   ],
   shopping:[
     {kr:'깎아 주세요',roman:'kkakka juseyo',en:'Give me a discount, please',ex:'Doryung says: "Works in traditional markets, NOT in regular stores."'},
     {kr:'카드 돼요?',roman:'kadeu dwaeyo?',en:'Can I pay by card?',ex:'Doryung says: "Korea is nearly cashless. Cards work almost everywhere."'},
     {kr:'영수증 주세요',roman:'yeongsujeung juseyo',en:'Receipt, please',ex:'Doryung says: "You might need this for tax refund at the airport."'},
-    {kr:'너무 비싸요',roman:'neomu bissayo',en:'It\'s too expensive',ex:'Doryung says: "Be honest but polite. Sometimes they\'ll lower the price."'},
+    {kr:'너무 비싸요',roman:'neomu bissayo',en:'It\'s too expensive',ex:'Doryung says: "Be honest but polite."'},
     {kr:'이쁘다!',roman:'ippeuda!',en:'It\'s pretty/beautiful!',ex:'Doryung says: "Compliment the products. Koreans love this."'},
-  ]
+    {kr:'선물이에요',roman:'seonmul-ieyo',en:'It\'s a gift',ex:'Doryung says: "They\'ll wrap it nicely for free!"'},
+    {kr:'다른 색 있어요?',roman:'dareun saek isseoyo?',en:'Do you have another color?',ex:'Doryung says: "Korean shops usually have many color options."'},
+  ],
+  emotions:[
+    {kr:'좋아요!',roman:'joayo!',en:'I like it! / It\'s good!',ex:'Doryung says: "Use this everywhere. Food, places, people."'},
+    {kr:'재미있어요',roman:'jaemiisseoyo',en:'It\'s fun / interesting',ex:'Doryung says: "Perfect for K-culture experiences."'},
+    {kr:'피곤해요',roman:'pigonhaeyo',en:'I\'m tired',ex:'Doryung says: "After walking all day, you\'ll need this one."'},
+    {kr:'배고파요',roman:'baegopayo',en:'I\'m hungry',ex:'Doryung says: "Korea has food everywhere. You won\'t stay hungry long."'},
+    {kr:'행복해요',roman:'haengbokhaeyo',en:'I\'m happy',ex:'Doryung says: "I hope Korea makes you say this often."'},
+    {kr:'보고 싶어요',roman:'bogo sipeoyo',en:'I miss you',ex:'Doryung says: "...I say this every day. To someone who doesn\'t remember me."'},
+    {kr:'사랑해요',roman:'saranghaeyo',en:'I love you',ex:'Doryung says: "The most powerful word in any language. Use it wisely."'},
+    {kr:'대박!',roman:'daebak!',en:'Wow! / Amazing!',ex:'Doryung says: "Modern slang. Even a 190-year-old uses it now."'},
+    {kr:'아이고~',roman:'aigo~',en:'Oh my! (surprise/frustration)',ex:'Doryung says: "The most Korean expression. Hard to translate, easy to feel."'},
+  ],
+  numbers:[
+    {kr:'하나, 둘, 셋, 넷, 다섯',roman:'hana, dul, set, net, daseot',en:'1, 2, 3, 4, 5 (native Korean)',ex:'Doryung says: "Use this system for counting items and ordering."'},
+    {kr:'여섯, 일곱, 여덟, 아홉, 열',roman:'yeoseot, ilgop, yeodeol, ahop, yeol',en:'6, 7, 8, 9, 10',ex:'Doryung says: "Korean has TWO number systems. This is the native one."'},
+    {kr:'일, 이, 삼, 사, 오',roman:'il, i, sam, sa, o',en:'1, 2, 3, 4, 5 (Sino-Korean)',ex:'Doryung says: "Use this system for prices, phone numbers, dates."'},
+    {kr:'만 원',roman:'man won',en:'10,000 won (~$7.50)',ex:'Doryung says: "The basic unit. Most meals cost 1~2만원."'},
+    {kr:'천 원',roman:'cheon won',en:'1,000 won (~$0.75)',ex:'Doryung says: "Enough for a bag of chips or water."'},
+    {kr:'오만 원',roman:'o-man won',en:'50,000 won (~$37)',ex:'Doryung says: "The biggest bill. Be careful losing these!"'},
+  ],
+  cafe:[
+    {kr:'아이스 아메리카노 한 잔 주세요',roman:'aiseu amerikano han jan juseyo',en:'One iced Americano, please',ex:'Doryung says: "Korea runs on iced Americano. Even in winter."'},
+    {kr:'여기서 먹을게요 / 가져갈게요',roman:'yeogiseo meogeulgeyo / gajyeogalgeyo',en:'For here / To go',ex:'Doryung says: "They always ask this. Be ready!"'},
+    {kr:'와이파이 비밀번호가 뭐예요?',roman:'waipai bimilbeonhoga mwoyeyo?',en:'What\'s the WiFi password?',ex:'Doryung says: "Usually on the receipt or a sign near the counter."'},
+    {kr:'콘센트 있어요?',roman:'konsenteu isseoyo?',en:'Is there a power outlet?',ex:'Doryung says: "Important for digital nomads and travelers."'},
+    {kr:'한 잔 더 주세요',roman:'han jan deo juseyo',en:'One more cup, please',ex:'Doryung says: "Korean coffee is good. You\'ll want another."'},
+    {kr:'건배!',roman:'geonbae!',en:'Cheers!',ex:'Doryung says: "Clink glasses with both hands for respect. I learned this 190 years ago."'},
+    {kr:'소맥',roman:'somaek',en:'Soju + beer mix',ex:'Doryung says: "The most popular drink combo. Be careful, it\'s stronger than you think!"'},
+  ],
+  emergency:[
+    {kr:'도와주세요!',roman:'dowajuseyo!',en:'Help me!',ex:'Doryung says: "I hope you never need this, but remember it just in case."'},
+    {kr:'경찰서',roman:'gyeongchalseo',en:'Police station',ex:'Doryung says: "Dial 112 for police. They have English interpreters."'},
+    {kr:'병원',roman:'byeongwon',en:'Hospital',ex:'Doryung says: "Dial 119 for ambulance. Korea\'s hospitals are excellent."'},
+    {kr:'아파요',roman:'apayo',en:'It hurts / I\'m sick',ex:'Doryung says: "Point to where it hurts. Doctors understand."'},
+    {kr:'약국',roman:'yakguk',en:'Pharmacy',ex:'Doryung says: "Green cross sign. They\'re everywhere and staff are helpful."'},
+    {kr:'한국어 못해요',roman:'hangugeo mothaeyo',en:'I can\'t speak Korean',ex:'Doryung says: "Many Koreans understand basic English. Don\'t worry too much."'},
+    {kr:'영어 할 수 있어요?',roman:'yeongeo hal su isseoyo?',en:'Can you speak English?',ex:'Doryung says: "Ask this politely and many will try their best to help."'},
+  ],
 };
+
+const LEARN_CATS=[
+  {id:'greetings',img:'learn/greetings.jpg',icon:'\u{1F44B}',name:'Greetings',desc:'Hello, Thanks, Bye'},
+  {id:'food',img:'learn/food.jpg',icon:'\u{1F35C}',name:'Food',desc:'Order, Pay, Spicy!'},
+  {id:'directions',img:'learn/directions.jpg',icon:'\u{1F5FA}',name:'Directions',desc:'Where, Subway, Taxi'},
+  {id:'shopping',img:'learn/shopping.jpg',icon:'\u{1F6CD}',name:'Shopping',desc:'Discount, Card'},
+  {id:'emotions',img:'learn/emotions.jpg',icon:'\u{1F60D}',name:'Emotions',desc:'Happy, Love, Wow!'},
+  {id:'numbers',img:'learn/numbers.jpg',icon:'\u{1F522}',name:'Numbers',desc:'Counting, Won'},
+  {id:'cafe',img:'learn/cafe.jpg',icon:'\u{2615}',name:'Cafe & Drinks',desc:'Coffee, Soju'},
+  {id:'emergency',img:'learn/emergency.jpg',icon:'\u{1F6A8}',name:'Emergency',desc:'Help, Hospital'},
+];
+
+function renderCatCards(){
+  return LEARN_CATS.map(c=>{
+    const active=currentCat===c.id?'active':'';
+    const visual=c.img?'<img class="lc-img" src="'+c.img+'">':'<div class="lc-icon">'+c.icon+'</div>';
+    return '<button class="learn-cat-btn '+active+'" onclick="currentCat=\''+c.id+'\';currentIdx=0;quizMode=false;renderLearnPage()">'+visual+'<div class="lc-name">'+c.name+'</div><div class="lc-count">'+c.desc+'</div></button>';
+  }).join('');
+}
 
 let currentCat='greetings',currentIdx=0,quizMode=false,quizScore=0,quizTotal=0;
 
@@ -710,20 +794,28 @@ function renderLearnPage(){
       <div style="font-size:16px;font-weight:800;color:#1B3A5C">Learn Korean with Doryung</div>
     </div>
     <div class="learn-cat">
-      <button class="learn-cat-btn ${currentCat==='greetings'?'active':''}" onclick="currentCat='greetings';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F44B;</div><div class="lc-name">Greetings</div></button>
-      <button class="learn-cat-btn ${currentCat==='food'?'active':''}" onclick="currentCat='food';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F35C;</div><div class="lc-name">Food & Dining</div></button>
-      <button class="learn-cat-btn ${currentCat==='directions'?'active':''}" onclick="currentCat='directions';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F5FA;</div><div class="lc-name">Directions</div></button>
-      <button class="learn-cat-btn ${currentCat==='shopping'?'active':''}" onclick="currentCat='shopping';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F6CD;</div><div class="lc-name">Shopping</div></button>
+      ${renderCatCards()}
     </div>
     ${quizMode?renderQuiz():renderFlashcard(item,items)}
     <div class="ad-banner" style="margin-top:16px">Ad Space (AdSense)</div>
   `;
 }
 
+function speakKorean(text){
+  if('speechSynthesis' in window){
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ko-KR';u.rate=0.8;
+    speechSynthesis.speak(u);
+  }
+}
+
 function renderFlashcard(item,items){
   return `
     <div class="learn-card">
-      <div class="learn-kr">${item.kr}</div>
+      <div class="learn-kr" style="cursor:pointer" onclick="speakKorean('${item.kr.replace(/'/g,"\\'")}')">
+        ${item.kr} <span style="font-size:16px;vertical-align:middle">&#x1F50A;</span>
+      </div>
+      <div style="font-size:10px;color:#bbb;margin-bottom:4px">Tap to hear pronunciation</div>
       <div class="learn-roman">${item.roman}</div>
       <div class="learn-en">${item.en}</div>
       <div class="learn-example">${item.ex}</div>
@@ -799,10 +891,11 @@ document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',()=>{
 document.querySelectorAll('.nav-item').forEach(n=>{n.addEventListener('click',()=>{
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
   const v=n.dataset.nav;
+  document.getElementById('storyView').classList.remove('active');
   if(v==='map')openMap();
   else if(v==='story'){openStory()}
   else if(v==='learn'){showLearnPage()}
-  else{document.getElementById('mapView').classList.remove('active');document.querySelector('.content').style.display='';document.getElementById('tabs').style.display='';const lp=document.getElementById('learnPage');if(lp)lp.classList.remove('active')}
+  else{document.getElementById('mapView').classList.remove('active');document.getElementById('storyView').classList.remove('active');document.querySelector('.content').style.display='';document.getElementById('tabs').style.display='';const lp=document.getElementById('learnPage');if(lp)lp.classList.remove('active')}
 })});
 
 // ===== CHAT (Kim Doryung AI) =====
@@ -935,6 +1028,10 @@ document.getElementById('myLocBtn').addEventListener('click',()=>{
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 
 // ===== INIT =====
+const splashVid=document.getElementById('splashVideo');
+if(splashVid){splashVid.addEventListener('ended',()=>{videoEnded=true;tryCloseSplash()})}
+// 영상 로드 실패 시 fallback
+setTimeout(()=>{videoEnded=true;tryCloseSplash()},10000);
 initGPS();
 </script>
 
