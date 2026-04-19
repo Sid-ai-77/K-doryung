@@ -961,8 +961,67 @@ function showMyMkr(){
   myMkr.setMap(kMap);
 }
 
+// Landmarks (star markers)
+const LANDMARKS=[
+  {name:'Gyeongbokgung Palace',kr:'경복궁',lat:37.5796,lng:126.9770,info:'Free with Hanbok'},
+  {name:'Changdeokgung Palace',kr:'창덕궁',lat:37.5794,lng:126.9910,info:'UNESCO Heritage'},
+  {name:'National Museum',kr:'국립중앙박물관',lat:37.5238,lng:126.9801,info:'Free'},
+  {name:'N Seoul Tower',kr:'N서울타워',lat:37.5512,lng:126.9882,info:'Observatory paid'},
+  {name:'Bukchon Hanok Village',kr:'북촌한옥마을',lat:37.5816,lng:126.9842,info:'Free'},
+  {name:'Insadong',kr:'인사동',lat:37.5746,lng:126.9852,info:'Free'},
+  {name:'Hongdae',kr:'홍대',lat:37.5565,lng:126.9238,info:'Free'},
+  {name:'Myeongdong',kr:'명동',lat:37.5636,lng:126.9836,info:'Free'},
+  {name:'DDP',kr:'동대문디자인플라자',lat:37.5670,lng:127.0095,info:'Free'},
+  {name:'Cheonggyecheon',kr:'청계천',lat:37.5697,lng:126.9784,info:'Free'},
+  {name:'Gwangjang Market',kr:'광장시장',lat:37.5702,lng:126.9996,info:'Free entry'},
+  {name:'Seongsu-dong',kr:'성수동',lat:37.5445,lng:127.0562,info:'Free'},
+  {name:'Yeouido Hangang Park',kr:'여의도한강공원',lat:37.5283,lng:126.9346,info:'Free'},
+  {name:'Banpo Hangang Park',kr:'반포한강공원',lat:37.5121,lng:126.9969,info:'Rainbow Fountain'},
+  {name:'Ttukseom Hangang Park',kr:'뚝섬한강공원',lat:37.5310,lng:127.0660,info:'Free'},
+  {name:'Haeundae Beach',kr:'해운대',lat:35.1586,lng:129.1604,info:'Free'},
+  {name:'Gamcheon Village',kr:'감천문화마을',lat:35.0972,lng:129.0106,info:'Free'},
+  {name:'Jagalchi Market',kr:'자갈치시장',lat:35.0965,lng:129.0300,info:'Free entry'},
+  {name:'Hallasan',kr:'한라산',lat:33.3617,lng:126.5292,info:'Free'},
+  {name:'Seongsan Ilchulbong',kr:'성산일출봉',lat:33.4585,lng:126.9424,info:'Paid'},
+  {name:'Jeonju Hanok Village',kr:'전주한옥마을',lat:35.8154,lng:127.1524,info:'Free'},
+  {name:'Bulguksa Temple',kr:'불국사',lat:35.7896,lng:129.3316,info:'UNESCO'},
+  {name:'Suwon Hwaseong',kr:'수원화성',lat:37.2857,lng:127.0135,info:'UNESCO'},
+  {name:'Nami Island',kr:'남이섬',lat:37.7938,lng:127.5166,info:'Paid'},
+  {name:'Seoraksan',kr:'설악산',lat:38.1197,lng:128.4657,info:'Free'},
+];
+let lmMarkers=[];
+
+function showLandmarks(){
+  lmMarkers.forEach(m=>m.setMap(null));lmMarkers=[];
+  if(!kMap)return;
+  const bounds=kMap.getBounds();
+  LANDMARKS.forEach(lm=>{
+    const pos=new kakao.maps.LatLng(lm.lat,lm.lng);
+    if(!bounds.contain(pos))return;
+    const mk=document.createElement('div');mk.style.cssText='display:flex;flex-direction:column;align-items:center;cursor:pointer';
+    mk.innerHTML='<img src="marker-star.png" style="width:36px;height:36px;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))"><div style="background:#FFD700;color:#333;font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;margin-top:-2px;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,0.2)">'+lm.name+'</div>';
+    const ov=new kakao.maps.CustomOverlay({position:pos,content:mk,yAnchor:1.3});
+    ov.setMap(kMap);lmMarkers.push(ov);
+    mk.addEventListener('click',()=>{
+      showMapInfo({place_name:lm.name+' ('+lm.kr+')',category_name:'Landmark',road_address_name:lm.info,y:lm.lat,x:lm.lng});
+      kMap.panTo(pos);
+    });
+  });
+}
+
+// Dedupe nearby markers (30m radius)
+function dedupeNearby(places){
+  const result=[];const used=new Set();
+  places.forEach((p,i)=>{
+    if(used.has(i))return;result.push(p);
+    places.forEach((q,j)=>{if(i===j||used.has(j))return;if(getDist(parseFloat(p.y),parseFloat(p.x),parseFloat(q.y),parseFloat(q.x))<0.03)used.add(j)});
+  });
+  return result;
+}
+
 function searchMap(cat){
   kMarkers.forEach(m=>m.setMap(null));kMarkers=[];document.getElementById('mapInfo').classList.remove('show');
+  showLandmarks();
   const kwm={all:['착한가격업소','공원','도서관','박물관'],cheap:['착한가격업소','맛집'],free:['공원','도서관','박물관','무료']};
   const kws=kwm[cat]||kwm.all;
   const cn=kMap.getCenter();const lv=kMap.getLevel();const r=Math.min(Math.max(lv*1500,1000),20000);
@@ -975,6 +1034,7 @@ function searchMap(cat){
         if(s===kakao.maps.services.Status.OK)all=all.concat(d);done++;
         if(done===kws.length){
           const seen=new Set();all=all.filter(p=>{if(seen.has(p.id))return false;seen.add(p.id);return true});
+          all=dedupeNearby(all);
           document.getElementById('mapCount').textContent=all.length+' spots';
           all.forEach(p=>{
             const isCheap=((p.place_name||'')+(p.category_name||'')).includes('착한가격')||((p.category_name||'')).includes('음식');
