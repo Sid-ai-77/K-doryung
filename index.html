@@ -804,7 +804,12 @@ function renderLearnPage(){
 function speakKorean(text){
   if('speechSynthesis' in window){
     const u=new SpeechSynthesisUtterance(text);
-    u.lang='ko-KR';u.rate=0.8;
+    u.lang='ko-KR';u.rate=0.8;u.pitch=0.8;
+    // 남성 음성 선택 시도
+    const voices=speechSynthesis.getVoices();
+    const maleKo=voices.find(v=>v.lang.includes('ko')&&(v.name.toLowerCase().includes('male')||v.name.includes('남')));
+    if(maleKo)u.voice=maleKo;
+    else{u.pitch=0.7;} // 남성 음색으로 낮춤
     speechSynthesis.speak(u);
   }
 }
@@ -1014,7 +1019,7 @@ function dedupeNearby(places){
   const result=[];const used=new Set();
   places.forEach((p,i)=>{
     if(used.has(i))return;result.push(p);
-    places.forEach((q,j)=>{if(i===j||used.has(j))return;if(getDist(parseFloat(p.y),parseFloat(p.x),parseFloat(q.y),parseFloat(q.x))<0.03)used.add(j)});
+    places.forEach((q,j)=>{if(i===j||used.has(j))return;if(getDist(parseFloat(p.y),parseFloat(p.x),parseFloat(q.y),parseFloat(q.x))<0.1)used.add(j)});
   });
   return result;
 }
