@@ -117,6 +117,31 @@
   .map-info.show{display:block;animation:slideUp 0.2s ease}
   @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
+  /* Korean Learning */
+  .learn-page{display:none;padding:12px 16px 80px}
+  .learn-page.active{display:block}
+  .learn-cat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .learn-cat-btn{background:#fff;border:2px solid #eee;border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .learn-cat-btn.active{border-color:#1B3A5C;background:#f0f5fa}
+  .learn-cat-btn .lc-icon{font-size:28px;margin-bottom:4px}
+  .learn-cat-btn .lc-name{font-size:12px;font-weight:700;color:#333}
+  .learn-card{background:#fff;border-radius:14px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);text-align:center}
+  .learn-kr{font-size:28px;font-weight:800;color:#1B3A5C;margin-bottom:6px}
+  .learn-roman{font-size:14px;color:#888;margin-bottom:4px}
+  .learn-en{font-size:16px;font-weight:600;color:#333;margin-bottom:12px}
+  .learn-example{font-size:12px;color:#999;font-style:italic;margin-bottom:12px;line-height:1.5}
+  .learn-nav{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+  .learn-nav-btn{background:#1B3A5C;color:#fff;border:none;padding:8px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer}
+  .learn-nav-btn:disabled{background:#ccc}
+  .learn-progress{font-size:12px;color:#999}
+  .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .quiz-opt{background:#fff;border:2px solid #eee;border-radius:10px;padding:12px;cursor:pointer;font-size:14px;font-weight:600;text-align:center;transition:all 0.2s;font-family:inherit}
+  .quiz-opt:active{transform:scale(0.97)}
+  .quiz-opt.correct{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
+  .quiz-opt.wrong{border-color:#C62828;background:#FFEBEE;color:#C62828}
+  .quiz-score{text-align:center;padding:20px;font-size:14px;color:#1B3A5C}
+  .quiz-score .score-num{font-size:48px;font-weight:800;color:#FFD700}
+
   /* Utils */
   .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:10px;font-size:12px;font-weight:600;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none}
   .toast.show{opacity:1}
@@ -130,17 +155,17 @@
 
 <!-- Splash -->
 <div class="splash" id="splash">
-  <video src="loading.mp4" autoplay loop muted playsinline style="width:200px;height:200px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,0.3)"></video>
-  <div class="splash-name">K-Doryung</div>
-  <div class="splash-sub">Your Korean Budget Travel Guide</div>
-  <div class="splash-status" id="splashStatus">Finding your location...</div>
-  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  <video src="loading.mp4" autoplay loop muted playsinline style="width:80vw;max-width:360px;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,0.3)"></video>
+  <div style="position:absolute;bottom:40px;width:100%;text-align:center">
+    <div class="splash-status" id="splashStatus">Finding your location...</div>
+    <div class="splash-bar" style="margin:8px auto"><div class="splash-bar-fill"></div></div>
+  </div>
 </div>
 
 <!-- Header -->
 <div class="header">
   <div>
-    <h1><img src="icon-192.png" alt="">K-Doryung</h1>
+    <h1><img src="face-doryung.png" alt="" style="border-radius:50%">K-Doryung</h1>
     <div class="loc" id="locText">Locating...</div>
   </div>
   <div class="header-right">
@@ -168,7 +193,7 @@
   <div class="section active" id="sec-home">
     <!-- Doryung Chat -->
     <div class="chat-section">
-      <div class="chat-title"><img src="icon-192.png" style="width:24px;height:24px;border-radius:6px"> Ask Kim Doryung</div>
+      <div class="chat-title"><img src="face-doryung.png" style="width:24px;height:24px;border-radius:50%"> Ask Kim Doryung</div>
       <div class="chat-messages" id="chatMessages">
         <div class="chat-msg bot">Welcome to Korea! I'm Kim Doryung, and I've been exploring this land for 190 years. Ask me anything — cheap eats, free attractions, Korean culture. Baekgu and I are here to help! &#x1F436;</div>
       </div>
@@ -275,8 +300,8 @@
 <div class="bottom-nav">
   <div class="nav-item active" data-nav="home"><div class="nav-icon">&#x1F3E0;</div>Home</div>
   <div class="nav-item" data-nav="map"><div class="nav-icon">&#x1F5FA;</div>Map</div>
-  <div class="nav-item" data-nav="partner"><div class="nav-icon">&#x1F91D;</div>Partner</div>
-  <div class="nav-item" data-nav="my"><div class="nav-icon">&#x1F464;</div>About</div>
+  <div class="nav-item" data-nav="learn"><div class="nav-icon">&#x1F1F0;&#x1F1F7;</div>Korean</div>
+  <div class="nav-item" data-nav="my"><div class="nav-icon">&#x1F464;</div>More</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -315,6 +340,10 @@ function hideSplash(){
   if(s){document.getElementById('splashStatus').textContent='Ready!';setTimeout(()=>s.classList.add('hide'),500);setTimeout(()=>s.remove(),1000)}
 }
 
+// Korean→English city mapping
+const cityEN={'서울특별시':'Seoul','부산광역시':'Busan','대구광역시':'Daegu','인천광역시':'Incheon','광주광역시':'Gwangju','대전광역시':'Daejeon','울산광역시':'Ulsan','세종특별자치시':'Sejong','경기도':'Gyeonggi','강원특별자치도':'Gangwon','충청북도':'Chungbuk','충청남도':'Chungnam','전북특별자치도':'Jeonbuk','전라남도':'Jeonnam','경상북도':'Gyeongbuk','경상남도':'Gyeongnam','제주특별자치도':'Jeju'};
+const distEN={'수지구':'Suji','기흥구':'Giheung','처인구':'Cheoin','분당구':'Bundang','수정구':'Sujeong','중원구':'Jungwon','강남구':'Gangnam','서초구':'Seocho','송파구':'Songpa','마포구':'Mapo','영등포구':'Yeongdeungpo','종로구':'Jongno','중구':'Jung-gu','용산구':'Yongsan','성동구':'Seongdong','동대문구':'Dongdaemun','성북구':'Seongbuk','강북구':'Gangbuk','도봉구':'Dobong','노원구':'Nowon','은평구':'Eunpyeong','서대문구':'Seodaemun','광진구':'Gwangjin','동작구':'Dongjak','관악구':'Gwanak','강서구':'Gangseo','양천구':'Yangcheon','구로구':'Guro','금천구':'Geumcheon','강동구':'Gangdong','중랑구':'Jungnang','동안구':'Dongan','만안구':'Manan','수원시':'Suwon','성남시':'Seongnam','용인시':'Yongin','고양시':'Goyang','화성시':'Hwaseong','안양시':'Anyang','평택시':'Pyeongtaek','안산시':'Ansan','남양주시':'Namyangju','해운대구':'Haeundae','수영구':'Suyeong','부산진구':'Busanjin','연수구':'Yeonsu','남동구':'Namdong','명동':'Myeongdong','홍대':'Hongdae','강남':'Gangnam','이태원':'Itaewon','신촌':'Sinchon','동대문':'Dongdaemun','잠실':'Jamsil'};
+
 function onReady(){
   document.getElementById('locText').textContent=myLat.toFixed(4)+', '+myLng.toFixed(4);
   document.getElementById('splashStatus').textContent='Loading nearby spots...';
@@ -324,8 +353,10 @@ function onReady(){
       if(st===kakao.maps.services.Status.OK&&r[0]){
         myCity=r[0].region_1depth_name||'Seoul';
         myDistrict=r[0].region_2depth_name||'';
-        document.getElementById('locText').textContent=myCity+' '+myDistrict;
-        document.getElementById('districtText').textContent=myDistrict;
+        const cityE=cityEN[myCity]||myCity;
+        const distE=distEN[myDistrict]||myDistrict;
+        document.getElementById('locText').textContent=cityE+' '+distE;
+        document.getElementById('districtText').textContent=distE;
       }
       hideSplash();
       loadHome();
@@ -358,6 +389,10 @@ function loadCheapData(cb){
   fetch('cheap-data.json').then(r=>r.json()).then(d=>{cheapData=d;cb()}).catch(()=>cb());
 }
 
+const KRW_USD=1350; // approximate rate
+function wonToUsd(w){return'$'+((w/KRW_USD).toFixed(2))}
+function fmtPrice(won){return'₩'+Number(won).toLocaleString()+' ('+wonToUsd(won)+')'}
+
 function matchPrice(name){
   if(!cheapData||!name)return '';
   const c=name.replace(/\s/g,'');
@@ -365,10 +400,10 @@ function matchPrice(name){
   if(!f)f=cheapData.find(s=>{if(!s.n)return false;const sc=s.n.replace(/\s/g,'');return(sc.length>=4&&c.includes(sc))||(c.length>=4&&sc.includes(c))});
   if(!f)return '';
   const m=[];
-  if(f.me1&&f.p1)m.push(f.me1+' ₩'+Number(f.p1).toLocaleString());
-  else if(f.m1&&f.p1)m.push(f.m1+' ₩'+Number(f.p1).toLocaleString());
-  if(f.me2&&f.p2)m.push(f.me2+' ₩'+Number(f.p2).toLocaleString());
-  else if(f.m2&&f.p2)m.push(f.m2+' ₩'+Number(f.p2).toLocaleString());
+  if(f.me1&&f.p1)m.push(f.me1+' '+fmtPrice(f.p1));
+  else if(f.m1&&f.p1)m.push(f.m1+' '+fmtPrice(f.p1));
+  if(f.me2&&f.p2)m.push(f.me2+' '+fmtPrice(f.p2));
+  else if(f.m2&&f.p2)m.push(f.m2+' '+fmtPrice(f.p2));
   return m.join(' / ');
 }
 
@@ -406,10 +441,10 @@ function loadCheap(){
           c.appendChild(h);
           stores.slice(0,30).forEach(s=>{
             const m=[];
-            if(s.me1&&s.p1)m.push(s.me1+' ₩'+Number(s.p1).toLocaleString());
-            else if(s.m1&&s.p1)m.push(s.m1+' ₩'+Number(s.p1).toLocaleString());
-            if(s.me2&&s.p2)m.push(s.me2+' ₩'+Number(s.p2).toLocaleString());
-            else if(s.m2&&s.p2)m.push(s.m2+' ₩'+Number(s.p2).toLocaleString());
+            if(s.me1&&s.p1)m.push(s.me1+' '+fmtPrice(s.p1));
+            else if(s.m1&&s.p1)m.push(s.m1+' '+fmtPrice(s.p1));
+            if(s.me2&&s.p2)m.push(s.me2+' '+fmtPrice(s.p2));
+            else if(s.m2&&s.p2)m.push(s.m2+' '+fmtPrice(s.p2));
             const div=document.createElement('div');div.className='card';
             div.innerHTML=`<div class="card-top"><span class="badge badge-food">Budget Certified</span><span style="font-size:11px;color:#888">${s.te||''}</span></div>
               <div class="card-name">${s.n||''}</div>
@@ -471,7 +506,7 @@ function renderCards(container,places,type){
     const addr=p.road_address_name||p.address_name||'';
     return `<div class="card">
       <div class="card-top"><span class="badge ${badge}">${label}</span><span class="card-dist">${dist}</span></div>
-      <div class="card-name">${p.place_name||''}</div>
+      <div class="card-name">${p.place_name||''} <span style="font-size:11px;color:#999;font-weight:400">(${getLabel(p,type)})</span></div>
       ${price?'<div class="card-price">'+price+'</div>':''}
       <div class="card-desc">${p.category_name||''}${p.phone?' · '+p.phone:''}</div>
       <div class="card-addr">${addr}</div>
@@ -514,6 +549,139 @@ function sharePlace(name,addr,type){
   else{navigator.clipboard.writeText(text).then(()=>toast('Copied!')).catch(()=>{})}
 }
 
+// ===== KOREAN LEARNING =====
+const LEARN_DATA={
+  greetings:[
+    {kr:'안녕하세요',roman:'annyeonghaseyo',en:'Hello',ex:'Doryung says: "The most important word! Use it everywhere."'},
+    {kr:'감사합니다',roman:'gamsahamnida',en:'Thank you',ex:'Doryung says: "Koreans appreciate polite foreigners."'},
+    {kr:'죄송합니다',roman:'joesonghamnida',en:'I\'m sorry / Excuse me',ex:'Doryung says: "Useful when bumping into people in crowded markets."'},
+    {kr:'네 / 아니요',roman:'ne / aniyo',en:'Yes / No',ex:'Doryung says: "Simple but essential!"'},
+    {kr:'안녕히 가세요',roman:'annyeonghi gaseyo',en:'Goodbye (to someone leaving)',ex:'Doryung says: "I\'ve said this too many times in 190 years..."'},
+    {kr:'만나서 반갑습니다',roman:'mannaseo bangapseumnida',en:'Nice to meet you',ex:'Doryung says: "Baekgu wags his tail when he hears this."'},
+    {kr:'오빠',roman:'oppa',en:'Older brother / close older male',ex:'Doryung says: "...someone called me this once. It\'s very special."'},
+  ],
+  food:[
+    {kr:'맛있어요!',roman:'mashisseoyo!',en:'It\'s delicious!',ex:'Doryung says: "The magic word that makes any restaurant owner smile."'},
+    {kr:'얼마예요?',roman:'eolmayeyo?',en:'How much is it?',ex:'Doryung says: "Essential for budget travelers!"'},
+    {kr:'이거 주세요',roman:'igeo juseyo',en:'This one, please',ex:'Doryung says: "Just point at the menu and say this. Works every time."'},
+    {kr:'메뉴판 주세요',roman:'menyu-pan juseyo',en:'Menu, please',ex:'Doryung says: "Most restaurants have picture menus now."'},
+    {kr:'물 주세요',roman:'mul juseyo',en:'Water, please',ex:'Doryung says: "Water is always free in Korean restaurants!"'},
+    {kr:'계산이요',roman:'gyesan-iyo',en:'Check, please',ex:'Doryung says: "Usually you pay at the counter, not at the table."'},
+    {kr:'배불러요',roman:'baebulleoyo',en:'I\'m full',ex:'Doryung says: "Korean portions are generous. You\'ll use this often."'},
+    {kr:'매워요!',roman:'maewoyo!',en:'It\'s spicy!',ex:'Doryung says: "I remember someone\'s tears from tteokbokki... long ago."'},
+    {kr:'맵지 않게 해주세요',roman:'maepji anke haejuseyo',en:'Not spicy, please',ex:'Doryung says: "No shame in this. Your stomach will thank you."'},
+  ],
+  directions:[
+    {kr:'어디예요?',roman:'eodiyeyo?',en:'Where is it?',ex:'Doryung says: "Add a place name before this. Like: 명동이 어디예요?"'},
+    {kr:'지하철역',roman:'jihacheol-yeok',en:'Subway station',ex:'Doryung says: "Korea\'s subway is the best way to travel. Trust me, I walked for 150 years before they built it."'},
+    {kr:'화장실 어디예요?',roman:'hwajangsil eodiyeyo?',en:'Where is the bathroom?',ex:'Doryung says: "The most urgently needed phrase in any language."'},
+    {kr:'여기요',roman:'yeogiyo',en:'Over here! / Excuse me!',ex:'Doryung says: "Use this to call a waiter. It\'s not rude in Korea."'},
+    {kr:'왼쪽 / 오른쪽',roman:'oenjjok / oreunjjok',en:'Left / Right',ex:'Doryung says: "Helpful when following directions from kind strangers."'},
+    {kr:'직진',roman:'jikjin',en:'Go straight',ex:'Doryung says: "Korean directions are simpler than you think."'},
+  ],
+  shopping:[
+    {kr:'깎아 주세요',roman:'kkakka juseyo',en:'Give me a discount, please',ex:'Doryung says: "Works in traditional markets, NOT in regular stores."'},
+    {kr:'카드 돼요?',roman:'kadeu dwaeyo?',en:'Can I pay by card?',ex:'Doryung says: "Korea is nearly cashless. Cards work almost everywhere."'},
+    {kr:'영수증 주세요',roman:'yeongsujeung juseyo',en:'Receipt, please',ex:'Doryung says: "You might need this for tax refund at the airport."'},
+    {kr:'너무 비싸요',roman:'neomu bissayo',en:'It\'s too expensive',ex:'Doryung says: "Be honest but polite. Sometimes they\'ll lower the price."'},
+    {kr:'이쁘다!',roman:'ippeuda!',en:'It\'s pretty/beautiful!',ex:'Doryung says: "Compliment the products. Koreans love this."'},
+  ]
+};
+
+let currentCat='greetings',currentIdx=0,quizMode=false,quizScore=0,quizTotal=0;
+
+function showLearnPage(){
+  document.querySelector('.content').style.display='none';
+  document.getElementById('tabs').style.display='none';
+  document.getElementById('mapView').classList.remove('active');
+  let lp=document.getElementById('learnPage');
+  if(!lp){
+    lp=document.createElement('div');lp.id='learnPage';lp.className='learn-page';
+    document.getElementById('mainContent')||document.querySelector('.content').parentNode;
+    document.querySelector('.content').after(lp);
+  }
+  lp.classList.add('active');
+  renderLearnPage();
+}
+
+function renderLearnPage(){
+  const lp=document.getElementById('learnPage');
+  const items=LEARN_DATA[currentCat];
+  const item=items[currentIdx];
+  lp.innerHTML=`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <img src="face-doryung.png" style="width:32px;height:32px;border-radius:50%">
+      <div style="font-size:16px;font-weight:800;color:#1B3A5C">Learn Korean with Doryung</div>
+    </div>
+    <div class="learn-cat">
+      <button class="learn-cat-btn ${currentCat==='greetings'?'active':''}" onclick="currentCat='greetings';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F44B;</div><div class="lc-name">Greetings</div></button>
+      <button class="learn-cat-btn ${currentCat==='food'?'active':''}" onclick="currentCat='food';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F35C;</div><div class="lc-name">Food & Dining</div></button>
+      <button class="learn-cat-btn ${currentCat==='directions'?'active':''}" onclick="currentCat='directions';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F5FA;</div><div class="lc-name">Directions</div></button>
+      <button class="learn-cat-btn ${currentCat==='shopping'?'active':''}" onclick="currentCat='shopping';currentIdx=0;quizMode=false;renderLearnPage()"><div class="lc-icon">&#x1F6CD;</div><div class="lc-name">Shopping</div></button>
+    </div>
+    ${quizMode?renderQuiz():renderFlashcard(item,items)}
+    <div class="ad-banner" style="margin-top:16px">Ad Space (AdSense)</div>
+  `;
+}
+
+function renderFlashcard(item,items){
+  return `
+    <div class="learn-card">
+      <div class="learn-kr">${item.kr}</div>
+      <div class="learn-roman">${item.roman}</div>
+      <div class="learn-en">${item.en}</div>
+      <div class="learn-example">${item.ex}</div>
+      <div class="learn-nav">
+        <button class="learn-nav-btn" onclick="currentIdx=Math.max(0,currentIdx-1);renderLearnPage()" ${currentIdx===0?'disabled':''}>&#x25C0; Prev</button>
+        <span class="learn-progress">${currentIdx+1} / ${items.length}</span>
+        <button class="learn-nav-btn" onclick="currentIdx=Math.min(${items.length-1},currentIdx+1);renderLearnPage()" ${currentIdx===items.length-1?'disabled':''}>Next &#x25B6;</button>
+      </div>
+    </div>
+    <button class="learn-nav-btn" style="width:100%;margin-top:10px;background:#FFD700;color:#333" onclick="quizMode=true;quizScore=0;quizTotal=0;renderLearnPage()">&#x1F3AE; Quiz Mode</button>
+  `;
+}
+
+function renderQuiz(){
+  const items=LEARN_DATA[currentCat];
+  if(quizTotal>=items.length){
+    return `<div class="learn-card"><div class="quiz-score">
+      <div>Quiz Complete!</div>
+      <div class="score-num">${quizScore}/${quizTotal}</div>
+      <div style="margin-top:8px">${quizScore===quizTotal?'Perfect! Doryung is impressed! &#x1F389;':quizScore>=quizTotal/2?'Good job! Keep practicing! &#x1F44D;':'Try again! Doryung believes in you! &#x1F4AA;'}</div>
+      <button class="learn-nav-btn" style="margin-top:16px" onclick="quizMode=false;currentIdx=0;renderLearnPage()">Back to Flashcards</button>
+      <button class="learn-nav-btn" style="margin-top:8px;background:#FFD700;color:#333" onclick="quizScore=0;quizTotal=0;renderLearnPage()">Try Again</button>
+    </div></div>`;
+  }
+  const q=items[quizTotal];
+  const opts=[q.en];
+  const allEn=Object.values(LEARN_DATA).flat().map(x=>x.en).filter(x=>x!==q.en);
+  while(opts.length<4&&allEn.length){const r=allEn.splice(Math.floor(Math.random()*allEn.length),1)[0];if(!opts.includes(r))opts.push(r)}
+  opts.sort(()=>Math.random()-0.5);
+  return `
+    <div class="learn-card">
+      <div style="font-size:12px;color:#999;margin-bottom:8px">What does this mean?</div>
+      <div class="learn-kr" style="font-size:32px">${q.kr}</div>
+      <div class="learn-roman">${q.roman}</div>
+      <div class="quiz-options">
+        ${opts.map(o=>`<button class="quiz-opt" onclick="checkQuiz(this,'${o.replace(/'/g,"\\'")}','${q.en.replace(/'/g,"\\'")}')">${o}</button>`).join('')}
+      </div>
+      <div class="learn-progress" style="margin-top:12px">Question ${quizTotal+1} / ${items.length}</div>
+    </div>
+  `;
+}
+
+window.checkQuiz=function(btn,ans,correct){
+  const opts=btn.parentNode.querySelectorAll('.quiz-opt');
+  opts.forEach(o=>{
+    o.style.pointerEvents='none';
+    if(o.textContent===correct)o.classList.add('correct');
+  });
+  if(ans===correct){quizScore++;toast('Correct! &#x2705;')}
+  else{btn.classList.add('wrong');toast('Wrong! The answer is: '+correct)}
+  quizTotal++;
+  setTimeout(renderLearnPage,1500);
+};
+
 // ===== SEARCH =====
 document.getElementById('searchInput').addEventListener('keydown',function(e){
   if(e.key==='Enter'){
@@ -536,9 +704,9 @@ document.querySelectorAll('.nav-item').forEach(n=>{n.addEventListener('click',()
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
   const v=n.dataset.nav;
   if(v==='map')openMap();
-  else if(v==='partner'){toast('Partnership inquiries coming soon!')}
+  else if(v==='learn'){showLearnPage()}
   else if(v==='my'){toast('About K-Doryung — coming soon!')}
-  else{document.getElementById('mapView').classList.remove('active');document.querySelector('.content').style.display='';document.getElementById('tabs').style.display=''}
+  else{document.getElementById('mapView').classList.remove('active');document.querySelector('.content').style.display='';document.getElementById('tabs').style.display='';const lp=document.getElementById('learnPage');if(lp)lp.classList.remove('active')}
 })});
 
 // ===== CHAT (Kim Doryung AI) =====
@@ -622,7 +790,7 @@ function searchMap(cat){
           all.forEach(p=>{
             const isCheap=((p.place_name||'')+(p.category_name||'')).includes('착한가격')||((p.category_name||'')).includes('음식');
             const mk=document.createElement('div');mk.style.cssText='cursor:pointer';
-            mk.innerHTML='<img src="'+(isCheap?'marker-doryung.png':'marker-baekgu.png')+'" style="width:36px;height:36px;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">';
+            mk.innerHTML='<div style="background:#fff;border-radius:50% 50% 50% 0;padding:3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);transform:rotate(-45deg);display:inline-block"><img src="'+(isCheap?'marker-doryung.png':'marker-baekgu.png')+'" style="width:36px;height:36px;transform:rotate(45deg)"></div>';
             const ov=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(p.y,p.x),content:mk,yAnchor:1.2});
             ov.setMap(kMap);kMarkers.push(ov);
             mk.addEventListener('click',()=>{showMapInfo(p);kMap.panTo(new kakao.maps.LatLng(p.y,p.x))});
