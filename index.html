@@ -117,6 +117,23 @@
   .map-info.show{display:block;animation:slideUp 0.2s ease}
   @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
+  /* Story */
+  .story-view{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:95;background:#000}
+  .story-view.active{display:flex;flex-direction:column}
+  .story-header{position:absolute;top:0;left:0;right:0;z-index:96;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(180deg,rgba(0,0,0,0.6),transparent)}
+  .story-header .ep-title{color:#fff;font-size:14px;font-weight:700}
+  .story-close{background:none;border:none;color:#fff;font-size:24px;cursor:pointer}
+  .story-progress{display:flex;gap:3px;padding:0 16px;position:absolute;top:4px;left:0;right:0;z-index:97}
+  .story-dot{flex:1;height:3px;background:rgba(255,255,255,0.3);border-radius:2px}
+  .story-dot.active{background:#FFD700}
+  .story-dot.done{background:rgba(255,255,255,0.7)}
+  .story-slide{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .story-img{width:100%;height:65vh;object-fit:contain}
+  .story-text{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.6) 70%,transparent 100%);padding:40px 20px 24px;color:#fff;font-size:14px;line-height:1.8;text-align:center}
+  .story-nav-area{position:absolute;top:50px;bottom:80px;z-index:96}
+  .story-nav-left{left:0;width:30%}
+  .story-nav-right{right:0;width:30%}
+
   /* Korean Learning */
   .learn-page{display:none;padding:12px 16px 80px}
   .learn-page.active{display:block}
@@ -260,6 +277,21 @@
   </div>
 </div>
 
+<!-- Story -->
+<div class="story-view" id="storyView">
+  <div class="story-progress" id="storyProgress"></div>
+  <div class="story-header">
+    <span class="ep-title" id="storyTitle">Episode 1</span>
+    <button class="story-close" id="storyClose">&#x2715;</button>
+  </div>
+  <div class="story-slide">
+    <img class="story-img" id="storyImg" src="">
+    <div class="story-text" id="storyText"></div>
+  </div>
+  <div class="story-nav-area story-nav-left" id="storyPrev"></div>
+  <div class="story-nav-area story-nav-right" id="storyNext"></div>
+</div>
+
 <!-- Map -->
 <div class="map-view" id="mapView">
   <div class="map-header">
@@ -300,8 +332,8 @@
 <div class="bottom-nav">
   <div class="nav-item active" data-nav="home"><div class="nav-icon">&#x1F3E0;</div>Home</div>
   <div class="nav-item" data-nav="map"><div class="nav-icon">&#x1F5FA;</div>Map</div>
+  <div class="nav-item" data-nav="story"><div class="nav-icon">&#x1F4D6;</div>Story</div>
   <div class="nav-item" data-nav="learn"><div class="nav-icon">&#x1F1F0;&#x1F1F7;</div>Korean</div>
-  <div class="nav-item" data-nav="my"><div class="nav-icon">&#x1F464;</div>More</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -554,6 +586,65 @@ function sharePlace(name,addr,type){
   else{navigator.clipboard.writeText(text).then(()=>toast('Copied!')).catch(()=>{})}
 }
 
+// ===== STORY =====
+const STORY_EPISODES=[
+  {img:'story/ep1.jpg',title:'Episode 1: The Scholar of Hanyang',
+   text:"Joseon Dynasty, 1836.\nIn Bukchon, Hanyang, there lived a young man named Kim Seonho.\nEvery morning he was drawn to Gwangjang Market by the smell of bindaetteok.\nBeside him always walked a white Jindo dog named Baekgu."},
+  {img:'story/ep2.jpg',title:'Episode 2: First Meeting',
+   text:"\"An...nyeong...haseyo.\"\nHer pronunciation was terrible. But her eyes were sincere.\n\"I'll teach you,\" said Doryung.\nThat day, Baekgu wagged his tail for a stranger.\nFor the first time in seventeen years."},
+  {img:'story/ep3.jpg',title:'Episode 3: Oppa',
+   text:"\"That word is not for just anyone.\nIt is only for someone to whom you have given your heart.\"\n\"Then may I use it for you?\"\nFrom that day, Claire called him \"oppa.\"\nA language that was neither French nor Korean. Theirs alone."},
+  {img:'story/ep4.jpg',title:'Episode 4: Spring in Hanyang',
+   text:"They walked along Gyeongbokgung's stone wall.\nCherry blossoms fell on Claire's hair.\nDoryung carefully picked a petal off. Their fingertips touched.\nSpring in Hanyang was short.\nBut for Doryung, it was the longest season of his life."},
+  {img:'story/ep5.jpg',title:'Episode 5: The Yeonrimoek',
+   text:"Two pine trees that grew toward each other and became one.\nThey buried a jade hairpin and a lavender mirror beneath the tree.\n\"As long as this tree lives, our love lives too.\"\nThey did not know — this tree truly grants wishes.\nBut never the way you imagine."},
+  {img:'story/ep6.jpg',title:'Episode 6: Farewell',
+   text:"\"Oppa. Let's meet again. For sure.\"\nThat was the last time Doryung heard her voice.\nThe ship dissolved into the horizon.\nAll that remained was the faint scent of lavender and sea\ncarried on the cold dawn wind."},
+  {img:'story/ep7.jpg',title:'Episode 7: Same Night, Same Choice',
+   text:"Same night. Same choice. Neither knowing the other chose the same.\nDoryung before the yeonrimoek: \"Let me meet her again.\"\nClaire on the ship: \"Let me meet him again.\"\nLight engulfed them both.\nOne second. No hesitation. Both of them."},
+  {img:'story/ep8.jpg',title:'Episode 8: 190 Years',
+   text:"Hanyang became Gyeongseong. Gyeongseong became Seoul.\nTile roofs gave way to power lines, then skyscrapers.\nDoryung crossed 190 years in the body of a 24-year-old.\nWith Baekgu.\nOnly they remained unchanged."},
+  {img:'story/ep9.jpg',title:'Episode 9: Now',
+   text:"18 million foreigners visit Korea each year.\nDoryung is kind to all of them.\nThe best restaurants, the most beautiful places,\nthe warmest Korean words.\nBecause he doesn't know who she is.\nShe could be anyone."},
+  {img:'story/ep10.jpg',title:'Episode 10: When That Day Comes',
+   text:"Baekgu will wag his tail like mad.\nFor the first time in 190 years, for someone other than his master.\nThe wind will blow. Lavender and sea.\nDoryung will cry. Smiling.\n\n\"...I have waited a long time.\""},
+];
+
+let storyIdx=0;
+function openStory(){
+  storyIdx=0;
+  document.getElementById('storyView').classList.add('active');
+  renderStory();
+}
+function renderStory(){
+  const ep=STORY_EPISODES[storyIdx];
+  document.getElementById('storyImg').src=ep.img;
+  document.getElementById('storyTitle').textContent=ep.title;
+  document.getElementById('storyText').textContent=ep.text;
+  const prog=document.getElementById('storyProgress');
+  prog.innerHTML=STORY_EPISODES.map((_,i)=>'<div class="story-dot '+(i<storyIdx?'done':i===storyIdx?'active':'')+'"></div>').join('');
+}
+document.getElementById('storyNext').addEventListener('click',()=>{
+  if(storyIdx<STORY_EPISODES.length-1){storyIdx++;renderStory()}
+  else{document.getElementById('storyView').classList.remove('active')}
+});
+document.getElementById('storyPrev').addEventListener('click',()=>{
+  if(storyIdx>0){storyIdx--;renderStory()}
+});
+document.getElementById('storyClose').addEventListener('click',()=>{
+  document.getElementById('storyView').classList.remove('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item[data-nav="home"]').classList.add('active');
+});
+// Swipe support
+let storyTouchX=0;
+document.getElementById('storyView').addEventListener('touchstart',e=>{storyTouchX=e.touches[0].clientX},{passive:true});
+document.getElementById('storyView').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-storyTouchX;
+  if(dx<-50&&storyIdx<STORY_EPISODES.length-1){storyIdx++;renderStory()}
+  else if(dx>50&&storyIdx>0){storyIdx--;renderStory()}
+});
+
 // ===== KOREAN LEARNING =====
 const LEARN_DATA={
   greetings:[
@@ -709,8 +800,8 @@ document.querySelectorAll('.nav-item').forEach(n=>{n.addEventListener('click',()
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
   const v=n.dataset.nav;
   if(v==='map')openMap();
+  else if(v==='story'){openStory()}
   else if(v==='learn'){showLearnPage()}
-  else if(v==='my'){toast('About K-Doryung — coming soon!')}
   else{document.getElementById('mapView').classList.remove('active');document.querySelector('.content').style.display='';document.getElementById('tabs').style.display='';const lp=document.getElementById('learnPage');if(lp)lp.classList.remove('active')}
 })});
 
