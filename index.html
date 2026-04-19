@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B3A5C">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>K-Doryung</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4566861735736673" crossorigin="anonymous"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#333;min-height:100vh;max-width:480px;margin:0 auto;position:relative;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+
+  /* Splash */
+  .splash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1B3A5C,#2C5F8A);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s}
+  .splash.hide{opacity:0;pointer-events:none}
+  .splash-icon{width:160px;height:160px;border-radius:30px;animation:splashBounce 1s ease infinite;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+  @keyframes splashBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .splash-name{color:#fff;font-size:28px;font-weight:800;margin-top:16px;letter-spacing:1px}
+  .splash-sub{color:rgba(255,255,255,0.7);font-size:13px;margin-top:6px}
+  .splash-status{color:rgba(255,255,255,0.6);font-size:11px;margin-top:16px}
+  .splash-bar{width:120px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin-top:12px;overflow:hidden}
+  .splash-bar-fill{height:100%;background:#FFD700;border-radius:2px;animation:barFill 3s ease forwards}
+  @keyframes barFill{0%{width:0%}30%{width:30%}60%{width:60%}80%{width:80%}100%{width:95%}}
+
+  /* Header */
+  .header{background:linear-gradient(135deg,#1B3A5C,#2C5F8A);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(27,58,92,0.3)}
+  .header h1{font-size:18px;font-weight:800;display:flex;align-items:center;gap:6px}
+  .header h1 img{width:28px;height:28px;border-radius:8px}
+  .header .loc{font-size:11px;opacity:0.8;margin-top:2px}
+  .header-right{text-align:right}
+  .header-district{font-size:11px;font-weight:600;opacity:0.9}
+  .header-time{font-size:10px;opacity:0.6}
+
+  /* Search */
+  .search-box{padding:10px 16px;background:#fff;border-bottom:1px solid #eee}
+  .search-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:12px;font-size:14px;font-family:inherit;outline:none;background:#f9f9f9}
+  .search-input:focus{border-color:#1B3A5C;background:#fff}
+
+  /* Tabs */
+  .tabs{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid #eee;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:7px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border:1.5px solid #eee;background:#fff;color:#888;font-family:inherit;transition:all 0.2s}
+  .tab.active{background:#1B3A5C;color:#fff;border-color:#1B3A5C}
+
+  /* Content */
+  .content{padding:12px 16px;padding-bottom:80px}
+  .section{display:none}
+  .section.active{display:block}
+
+  /* Cards */
+  .card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #f0f0f0}
+  .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
+  .badge-food{background:#FFF3E0;color:#E65100}
+  .badge-free{background:#E8F5E9;color:#2E7D32}
+  .badge-culture{background:#E3F2FD;color:#1565C0}
+  .badge-event{background:#F3E5F5;color:#7B1FA2}
+  .card-name{font-size:14px;font-weight:700;color:#222;margin-bottom:4px}
+  .card-price{font-size:13px;font-weight:800;color:#E65100;margin:4px 0}
+  .card-desc{font-size:12px;color:#888;line-height:1.5;margin-bottom:4px}
+  .card-addr{font-size:11px;color:#aaa}
+  .card-dist{color:#1B3A5C;font-weight:600;font-size:12px}
+  .card-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:inherit}
+  .btn-primary{background:#1B3A5C;color:#fff}
+  .btn-review{background:#FFD700;color:#333}
+  .btn-share{background:#FFD700;color:#333}
+  .btn-heart{background:none;border:1px solid #eee;color:#ddd;font-size:14px;padding:4px 8px}
+
+  .ad-banner{background:linear-gradient(135deg,#f9f9f9,#f0f0f0);border:1px dashed #ddd;border-radius:10px;padding:14px;text-align:center;margin:12px 0;font-size:11px;color:#bbb}
+  .empty{text-align:center;padding:40px 20px;color:#bbb;font-size:13px;line-height:1.6}
+  .loading{text-align:center;padding:30px;color:#bbb;font-size:13px}
+  .loading::after{content:'';display:inline-block;width:16px;height:16px;border:2px solid #eee;border-top-color:#1B3A5C;border-radius:50%;animation:spin 0.8s linear infinite;margin-left:8px;vertical-align:middle}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:80px;margin-bottom:10px}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+  /* Chat */
+  .chat-section{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #f0f0f0}
+  .chat-title{font-size:14px;font-weight:700;color:#1B3A5C;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .chat-messages{max-height:200px;overflow-y:auto;margin-bottom:10px}
+  .chat-msg{margin-bottom:8px;font-size:12px;line-height:1.5}
+  .chat-msg.bot{color:#1B3A5C;background:#f0f5fa;padding:8px 10px;border-radius:10px;border-top-left-radius:2px}
+  .chat-msg.user{color:#333;background:#f5f5f5;padding:8px 10px;border-radius:10px;border-top-right-radius:2px;text-align:right}
+  .chat-input-row{display:flex;gap:6px}
+  .chat-input{flex:1;padding:8px 12px;border:1.5px solid #eee;border-radius:10px;font-size:12px;font-family:inherit;outline:none}
+  .chat-input:focus{border-color:#1B3A5C}
+  .chat-send{background:#1B3A5C;color:#fff;border:none;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer}
+
+  /* Bottom Nav */
+  .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:6px 0 max(10px,env(safe-area-inset-bottom));z-index:100}
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;color:#999;font-size:10px;font-weight:600;transition:color 0.2s}
+  .nav-item.active{color:#1B3A5C}
+  .nav-icon{font-size:20px}
+
+  /* Map */
+  .map-view{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:90;background:#f5f5f5}
+  .map-view.active{display:flex;flex-direction:column}
+  .map-header{background:linear-gradient(135deg,#1B3A5C,#2C5F8A);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;z-index:91}
+  .map-header h2{font-size:16px;font-weight:800}
+  .map-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px;font-weight:700}
+  .map-container{flex:1;position:relative}
+  #kakaoMap{width:100%;height:100%}
+  .map-cat-bar{position:absolute;top:10px;left:10px;right:10px;z-index:92;display:flex;gap:6px;overflow-x:auto}
+  .map-cat-bar::-webkit-scrollbar{display:none}
+  .map-cat{padding:6px 12px;border-radius:18px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:#fff;color:#666;box-shadow:0 1px 4px rgba(0,0,0,0.15);font-family:inherit}
+  .map-cat.active{background:#1B3A5C;color:#fff}
+  .map-count{position:absolute;top:50px;right:10px;z-index:92;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;font-weight:600;padding:4px 10px;border-radius:10px}
+  .map-controls{position:absolute;bottom:20px;right:16px;z-index:92;display:flex;flex-direction:column;gap:8px}
+  .map-ctrl-btn{width:44px;height:44px;border-radius:50%;background:#fff;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+  .map-info{position:absolute;bottom:16px;left:16px;right:16px;z-index:93;background:#fff;border-radius:14px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.15);display:none;max-height:45vh;overflow-y:auto}
+  .map-info.show{display:block;animation:slideUp 0.2s ease}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  /* Utils */
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:10px;font-size:12px;font-weight:600;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none}
+  .toast.show{opacity:1}
+
+  /* Emergency Info */
+  .emergency{background:#FFF3E0;border:1px solid #FFE0B2;border-radius:10px;padding:12px;margin-bottom:12px;font-size:11px;color:#E65100;line-height:1.6}
+  .emergency b{font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- Splash -->
+<div class="splash" id="splash">
+  <video src="loading.mp4" autoplay loop muted playsinline style="width:200px;height:200px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,0.3)"></video>
+  <div class="splash-name">K-Doryung</div>
+  <div class="splash-sub">Your Korean Budget Travel Guide</div>
+  <div class="splash-status" id="splashStatus">Finding your location...</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <h1><img src="icon-192.png" alt="">K-Doryung</h1>
+    <div class="loc" id="locText">Locating...</div>
+  </div>
+  <div class="header-right">
+    <div class="header-district" id="districtText"></div>
+    <div class="header-time" id="timeText">Loading...</div>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="search-box">
+  <input type="text" class="search-input" placeholder="Search cheap eats, free attractions..." id="searchInput" autocomplete="off">
+</div>
+
+<!-- Tabs -->
+<div class="tabs" id="tabs">
+  <button class="tab active" data-tab="home">Home</button>
+  <button class="tab" data-tab="cheap">Cheap Eats</button>
+  <button class="tab" data-tab="free">Free Spots</button>
+  <button class="tab" data-tab="events">Events</button>
+  <button class="tab" data-tab="tips">Travel Tips</button>
+</div>
+
+<div class="content">
+  <!-- Home -->
+  <div class="section active" id="sec-home">
+    <!-- Doryung Chat -->
+    <div class="chat-section">
+      <div class="chat-title"><img src="icon-192.png" style="width:24px;height:24px;border-radius:6px"> Ask Kim Doryung</div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg bot">Welcome to Korea! I'm Kim Doryung, and I've been exploring this land for 190 years. Ask me anything — cheap eats, free attractions, Korean culture. Baekgu and I are here to help! &#x1F436;</div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="Ask Doryung anything..." autocomplete="off">
+        <button class="chat-send" id="chatSend">Ask</button>
+      </div>
+    </div>
+
+    <!-- Emergency -->
+    <div class="emergency">
+      <b>&#x1F6A8; Emergency Numbers</b><br>
+      Police: <a href="tel:112" style="color:#E65100;font-weight:700">112</a> &nbsp;|&nbsp;
+      Ambulance: <a href="tel:119" style="color:#E65100;font-weight:700">119</a> &nbsp;|&nbsp;
+      Tourism Help: <a href="tel:1330" style="color:#E65100;font-weight:700">1330</a><br>
+      &#x1F4A1; Korea has no tipping culture!
+    </div>
+
+    <div class="ad-banner">Ad Space (AdSense)</div>
+    <div id="items-home"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+  </div>
+
+  <!-- Cheap Eats -->
+  <div class="section" id="sec-cheap">
+    <div id="items-cheap"><div class="loading">Finding budget restaurants near you...</div></div>
+  </div>
+
+  <!-- Free Spots -->
+  <div class="section" id="sec-free">
+    <div id="items-free"><div class="loading">Finding free attractions near you...</div></div>
+  </div>
+
+  <!-- Events -->
+  <div class="section" id="sec-events">
+    <div id="items-events"><div class="skeleton"></div><div class="skeleton"></div></div>
+  </div>
+
+  <!-- Travel Tips -->
+  <div class="section" id="sec-tips">
+    <div class="card">
+      <div class="card-name">&#x1F4B0; Currency</div>
+      <div class="card-desc">Korean Won (KRW). 1 USD &#x2248; 1,350 KRW. Cards accepted almost everywhere. Cash needed for traditional markets.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">&#x1F687; Transportation</div>
+      <div class="card-desc">Get a T-money card at any convenience store (&#x20A9;2,500). Works on subway, bus, and taxis. Subway is the cheapest way to travel.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">&#x1F4F6; WiFi & SIM</div>
+      <div class="card-desc">Free WiFi available at most cafes, subway stations, and public areas. Tourist SIM cards available at Incheon Airport.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">&#x1F3EF; Free Attractions</div>
+      <div class="card-desc">Gyeongbokgung, Changdeokgung (Hanbok = free entry), National Museum, War Memorial, most parks and temples are FREE.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">&#x1F35C; Eating Cheap</div>
+      <div class="card-desc">Look for "착한가격업소" (Budget-Certified) sticker. Gimbap shops, market food, and convenience store meals are great budget options.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">&#x1F1F0;&#x1F1F7; Basic Korean</div>
+      <div class="card-desc">Hello: 안녕하세요 (annyeonghaseyo)<br>Thank you: 감사합니다 (gamsahamnida)<br>How much: 얼마예요? (eolmayeyo?)<br>Delicious: 맛있어요! (mashisseoyo!)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Map -->
+<div class="map-view" id="mapView">
+  <div class="map-header">
+    <h2 id="mapTitle">Nearby Budget Spots</h2>
+    <button class="map-close" id="mapClose">&#x2715;</button>
+  </div>
+  <div class="map-container">
+    <div class="map-cat-bar">
+      <button class="map-cat active" data-mcat="all">All</button>
+      <button class="map-cat" data-mcat="cheap">Cheap Eats</button>
+      <button class="map-cat" data-mcat="free">Free Spots</button>
+    </div>
+    <div class="map-count" id="mapCount">Searching...</div>
+    <div id="kakaoMap"></div>
+    <div class="map-controls">
+      <button class="map-ctrl-btn" id="myLocBtn">&#x1F4CD;</button>
+    </div>
+    <div class="map-info" id="mapInfo">
+      <div style="position:absolute;top:8px;right:12px;display:flex;gap:6px">
+        <button id="mapShareBtn" style="background:#FFD700;border:none;font-size:11px;color:#333;cursor:pointer;border-radius:4px;padding:2px 6px;font-weight:600">Share</button>
+        <button id="mapCloseInfo" style="background:none;border:none;font-size:18px;color:#ccc;cursor:pointer">&#x2715;</button>
+      </div>
+      <div class="badge badge-food" id="mapBadge">Budget</div>
+      <div class="card-name" id="mapName" style="margin-top:6px"></div>
+      <div class="card-price" id="mapPrice"></div>
+      <div class="card-desc" id="mapDesc"></div>
+      <div class="card-addr" id="mapAddr"></div>
+      <div class="card-actions" style="margin-top:10px">
+        <button class="btn btn-primary" id="mapNaviBtn">Google Maps</button>
+        <button class="btn btn-review" id="mapReviewBtn">Reviews</button>
+      </div>
+      <div class="ad-banner" style="margin-top:10px;padding:8px">Ad Space</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <div class="nav-item active" data-nav="home"><div class="nav-icon">&#x1F3E0;</div>Home</div>
+  <div class="nav-item" data-nav="map"><div class="nav-icon">&#x1F5FA;</div>Map</div>
+  <div class="nav-item" data-nav="partner"><div class="nav-icon">&#x1F91D;</div>Partner</div>
+  <div class="nav-item" data-nav="my"><div class="nav-icon">&#x1F464;</div>About</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== CONFIG =====
+const KAKAO_KEY='ce765ea76cec4f89f8af6f81c6e464c1';
+const DEFAULT_LAT=37.5636,DEFAULT_LNG=126.9869; // Myeongdong (default for overseas)
+
+// ===== UTILS =====
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+function getDist(a,b,c,d){const R=6371,dL=(c-a)*Math.PI/180,dN=(d-b)*Math.PI/180,x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
+function fmtDist(k){if(k<0.1)return Math.round(k*1000)+'m';if(k<1)return(k*1000).toFixed(0)+'m';return k.toFixed(1)+'km'}
+
+// ===== GPS =====
+let myLat=null,myLng=null,myCity='',myDistrict='';
+
+function initGPS(){
+  if(!navigator.geolocation){useDefault();return}
+  navigator.geolocation.getCurrentPosition(p=>{
+    myLat=p.coords.latitude;myLng=p.coords.longitude;
+    // Check if in Korea (lat 33~39, lng 124~132)
+    if(myLat<33||myLat>39||myLng<124||myLng>132){useDefault();return}
+    onReady();
+  },()=>useDefault(),{enableHighAccuracy:true,timeout:8000});
+}
+
+function useDefault(){
+  myLat=DEFAULT_LAT;myLng=DEFAULT_LNG;myCity='Seoul';myDistrict='Myeongdong';
+  document.getElementById('splashStatus').textContent='Welcome to Korea! Setting default to Myeongdong...';
+  onReady();
+}
+
+function hideSplash(){
+  const s=document.getElementById('splash');
+  if(s){document.getElementById('splashStatus').textContent='Ready!';setTimeout(()=>s.classList.add('hide'),500);setTimeout(()=>s.remove(),1000)}
+}
+
+function onReady(){
+  document.getElementById('locText').textContent=myLat.toFixed(4)+', '+myLng.toFixed(4);
+  document.getElementById('splashStatus').textContent='Loading nearby spots...';
+  waitKakao(()=>{
+    const gc=new kakao.maps.services.Geocoder();
+    gc.coord2RegionCode(myLng,myLat,(r,st)=>{
+      if(st===kakao.maps.services.Status.OK&&r[0]){
+        myCity=r[0].region_1depth_name||'Seoul';
+        myDistrict=r[0].region_2depth_name||'';
+        document.getElementById('locText').textContent=myCity+' '+myDistrict;
+        document.getElementById('districtText').textContent=myDistrict;
+      }
+      hideSplash();
+      loadHome();
+      loadCheap();
+      loadFree();
+      loadEvents();
+      document.getElementById('timeText').textContent=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
+    });
+  });
+}
+
+function waitKakao(cb){
+  if(typeof kakao!=='undefined'&&kakao.maps&&kakao.maps.services){cb();return}
+  let t=0;const tm=setInterval(()=>{t++;if(typeof kakao!=='undefined'&&kakao.maps&&kakao.maps.services){clearInterval(tm);cb()}else if(t>=20){clearInterval(tm);hideSplash()}},300);
+}
+
+// ===== KAKAO PLACES =====
+let kPlaces=null;
+function searchNear(kw,cb,opts={}){
+  waitKakao(()=>{
+    if(!kPlaces)kPlaces=new kakao.maps.services.Places();
+    kPlaces.keywordSearch(kw,(d,s)=>{cb(s===kakao.maps.services.Status.OK?d:[])},{x:myLng,y:myLat,radius:opts.r||5000,size:15,sort:kakao.maps.services.SortBy.DISTANCE});
+  });
+}
+
+// ===== CHEAP DATA =====
+let cheapData=null;
+function loadCheapData(cb){
+  if(cheapData){cb();return}
+  fetch('cheap-data.json').then(r=>r.json()).then(d=>{cheapData=d;cb()}).catch(()=>cb());
+}
+
+function matchPrice(name){
+  if(!cheapData||!name)return '';
+  const c=name.replace(/\s/g,'');
+  let f=cheapData.find(s=>s.n&&s.n.replace(/\s/g,'')===c);
+  if(!f)f=cheapData.find(s=>{if(!s.n)return false;const sc=s.n.replace(/\s/g,'');return(sc.length>=4&&c.includes(sc))||(c.length>=4&&sc.includes(c))});
+  if(!f)return '';
+  const m=[];
+  if(f.me1&&f.p1)m.push(f.me1+' ₩'+Number(f.p1).toLocaleString());
+  else if(f.m1&&f.p1)m.push(f.m1+' ₩'+Number(f.p1).toLocaleString());
+  if(f.me2&&f.p2)m.push(f.me2+' ₩'+Number(f.p2).toLocaleString());
+  else if(f.m2&&f.p2)m.push(f.m2+' ₩'+Number(f.p2).toLocaleString());
+  return m.join(' / ');
+}
+
+// ===== HOME =====
+function loadHome(){
+  const c=document.getElementById('items-home');
+  const kws=['착한가격업소','free park','museum','library'];
+  let all=[];let done=0;
+  kws.forEach(kw=>{
+    searchNear(kw,d=>{all=all.concat(d);done++;if(done===kws.length){
+      const seen=new Set();all=all.filter(p=>{if(seen.has(p.id))return false;seen.add(p.id);return true});
+      all.sort((a,b)=>(parseFloat(a.distance)||9999)-(parseFloat(b.distance)||9999));
+      renderCards(c,all.slice(0,15),'home');
+    }},{r:5000});
+  });
+}
+
+// ===== CHEAP =====
+function loadCheap(){
+  const c=document.getElementById('items-cheap');
+  c.innerHTML='<div class="loading">Finding budget restaurants...</div>';
+  loadCheapData(()=>{
+    searchNear('착한가격업소',data=>{
+      renderCards(c,data,'cheap');
+      // Add certified restaurants from JSON
+      if(cheapData){
+        let stores=cheapData;
+        if(myDistrict)stores=stores.filter(s=>(s.g&&s.g.includes(myDistrict))||(s.a&&s.a.includes(myDistrict)));
+        else if(myCity)stores=stores.filter(s=>s.s&&s.s.includes(myCity));
+        if(stores.length>0&&stores.length<5&&myCity)stores=cheapData.filter(s=>s.s&&s.s.includes(myCity));
+        if(stores.length>0){
+          const h=document.createElement('div');
+          h.style.cssText='font-size:12px;font-weight:700;color:#E65100;padding:8px 0;border-bottom:1px solid #f0f0f0;margin:16px 0 10px';
+          h.textContent='Government-Certified Budget Restaurants ('+stores.length+')';
+          c.appendChild(h);
+          stores.slice(0,30).forEach(s=>{
+            const m=[];
+            if(s.me1&&s.p1)m.push(s.me1+' ₩'+Number(s.p1).toLocaleString());
+            else if(s.m1&&s.p1)m.push(s.m1+' ₩'+Number(s.p1).toLocaleString());
+            if(s.me2&&s.p2)m.push(s.me2+' ₩'+Number(s.p2).toLocaleString());
+            else if(s.m2&&s.p2)m.push(s.m2+' ₩'+Number(s.p2).toLocaleString());
+            const div=document.createElement('div');div.className='card';
+            div.innerHTML=`<div class="card-top"><span class="badge badge-food">Budget Certified</span><span style="font-size:11px;color:#888">${s.te||''}</span></div>
+              <div class="card-name">${s.n||''}</div>
+              ${m.length?'<div class="card-price">'+m.join(' / ')+'</div>':''}
+              <div class="card-addr">${s.a||''}</div>
+              <div class="card-actions"><button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(s.n+' '+s.a)}','_blank')">Google Maps</button><button class="btn btn-share" onclick="sharePlace('${(s.n||'').replace(/'/g,'')}','${(s.a||'').replace(/'/g,'')}','cheap')">Share</button></div>`;
+            c.appendChild(div);
+          });
+        }
+      }
+    },{r:10000});
+  });
+}
+
+// ===== FREE =====
+function loadFree(){
+  const c=document.getElementById('items-free');
+  c.innerHTML='<div class="loading">Finding free spots...</div>';
+  const kws=['무료주차장','도서관','공원','체육센터','문화센터','박물관'];
+  let all=[];let done=0;
+  kws.forEach(kw=>{searchNear(kw,d=>{all=all.concat(d);done++;if(done===kws.length){
+    const seen=new Set();all=all.filter(p=>{if(seen.has(p.id))return false;seen.add(p.id);return true});
+    all.sort((a,b)=>(parseFloat(a.distance)||9999)-(parseFloat(b.distance)||9999));
+    renderCards(c,all.slice(0,20),'free');
+  }},{r:5000})});
+}
+
+// ===== EVENTS =====
+function loadEvents(){
+  const c=document.getElementById('items-events');
+  const loc=myCity||'Korea';
+  fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+loc+'+festival+OR+free+event+OR+K-pop+OR+concert&hl=en&gl=KR&ceid=KR:en'))
+    .then(r=>r.json()).then(j=>{
+      if(j.status==='ok'&&j.items){
+        c.innerHTML=j.items.slice(0,10).map(item=>{
+          const date=item.pubDate?new Date(item.pubDate).toLocaleDateString('en'):'';
+          const title=(item.title||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+          const link=item.link||'#';
+          return `<div class="card"><a href="${link}" target="_blank" style="text-decoration:none;color:inherit">
+            <div class="card-top"><span class="badge badge-event">Event</span><button class="btn btn-share" onclick="event.preventDefault();event.stopPropagation();sharePlace('${title.replace(/'/g,'')}','','event')" style="font-size:10px">Share</button></div>
+            <div class="card-name">${title}</div>
+            <div class="card-addr">${date}</div>
+          </a></div>`;
+        }).join('');
+      }else{c.innerHTML='<div class="empty">No events found.</div>'}
+    }).catch(()=>{c.innerHTML='<div class="empty">Could not load events.</div>'});
+}
+
+// ===== RENDER CARDS =====
+function renderCards(container,places,type){
+  if(!places.length){container.innerHTML='<div class="empty">No spots found nearby. Try zooming out on the map.</div>';return}
+  const badgeMap={home:'badge-food',cheap:'badge-food',free:'badge-free'};
+  const labelMap={home:'Nearby',cheap:'Budget',free:'Free'};
+  container.innerHTML=places.map(p=>{
+    const dist=p.distance?fmtDist(parseFloat(p.distance)/1000):'';
+    const price=matchPrice(p.place_name||'');
+    const badge=badgeMap[type]||'badge-food';
+    const label=getLabel(p,type);
+    const addr=p.road_address_name||p.address_name||'';
+    return `<div class="card">
+      <div class="card-top"><span class="badge ${badge}">${label}</span><span class="card-dist">${dist}</span></div>
+      <div class="card-name">${p.place_name||''}</div>
+      ${price?'<div class="card-price">'+price+'</div>':''}
+      <div class="card-desc">${p.category_name||''}${p.phone?' · '+p.phone:''}</div>
+      <div class="card-addr">${addr}</div>
+      <div class="card-actions">
+        <button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent((p.place_name||'')+' '+addr)}','_blank')">Google Maps</button>
+        <button class="btn btn-review" onclick="window.open('${p.place_url||'https://map.kakao.com/link/search/'+encodeURIComponent(p.place_name)}','_blank')">Reviews</button>
+        <button class="btn btn-share" onclick="sharePlace('${(p.place_name||'').replace(/'/g,'')}','${addr.replace(/'/g,'')}','${type}')">Share</button>
+      </div>
+    </div>`;
+  }).join('');
+  // Ads
+  const cards=container.querySelectorAll('.card');
+  [2,6,11].forEach(i=>{if(cards[i]){const ad=document.createElement('div');ad.className='ad-banner';ad.textContent='Ad Space (AdSense)';cards[i].after(ad)}});
+}
+
+function getLabel(p,type){
+  const n=((p.place_name||'')+(p.category_name||'')).toLowerCase();
+  if(n.includes('착한가격'))return 'Budget Certified';
+  if(n.includes('도서관')||n.includes('library'))return 'Library';
+  if(n.includes('공원')||n.includes('park'))return 'Park';
+  if(n.includes('주차')||n.includes('parking'))return 'Free Parking';
+  if(n.includes('박물관')||n.includes('museum'))return 'Museum';
+  if(n.includes('체육')||n.includes('sport'))return 'Sports';
+  if(n.includes('문화')||n.includes('culture'))return 'Culture';
+  return type==='cheap'?'Budget':type==='free'?'Free':'Nearby';
+}
+
+// ===== SHARE =====
+function sharePlace(name,addr,type){
+  const quotes={
+    cheap:"Doryung says: \"In my 190 years, I've found this place serves the finest food at the fairest price. Baekgu wags his tail every time we visit.\"",
+    free:"Doryung says: \"Why pay when Korea offers such wonders for free? I've been enjoying this place since before your grandparents were born.\"",
+    event:"Doryung says: \"A festival! In 190 years, I've never missed one. Neither should you.\"",
+    home:"Doryung says: \"I've walked every corner of Korea for 190 years. Trust me, this place is worth your visit.\""
+  };
+  const q=quotes[type]||quotes.home;
+  const url='https://sid-ai-77.github.io/k-doryung/';
+  const text=q+'\n\n'+name+(addr?'\n'+addr:'')+'\n\nDiscover more on K-Doryung\n'+url;
+  if(navigator.share){navigator.share({title:'K-Doryung - '+name,text:text}).catch(()=>{})}
+  else{navigator.clipboard.writeText(text).then(()=>toast('Copied!')).catch(()=>{})}
+}
+
+// ===== SEARCH =====
+document.getElementById('searchInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){
+    const q=this.value.trim();if(!q)return;this.value='';
+    const sec=document.querySelector('.section.active');
+    sec.innerHTML='<div class="loading">Searching "'+q+'"...</div>';
+    searchNear(q,d=>{renderCards(sec,d,'home');if(!d.length)window.open('https://www.google.com/maps/search/'+encodeURIComponent(q+' Korea'),'_blank')},{r:10000});
+  }
+});
+
+// ===== TABS =====
+document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');document.getElementById('sec-'+t.dataset.tab).classList.add('active');
+})});
+
+// ===== NAV =====
+document.querySelectorAll('.nav-item').forEach(n=>{n.addEventListener('click',()=>{
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
+  const v=n.dataset.nav;
+  if(v==='map')openMap();
+  else if(v==='partner'){toast('Partnership inquiries coming soon!')}
+  else if(v==='my'){toast('About K-Doryung — coming soon!')}
+  else{document.getElementById('mapView').classList.remove('active');document.querySelector('.content').style.display='';document.getElementById('tabs').style.display=''}
+})});
+
+// ===== CHAT (Kim Doryung AI) =====
+document.getElementById('chatSend').addEventListener('click',sendChat);
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat()});
+
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();if(!msg)return;input.value='';
+  const msgs=document.getElementById('chatMessages');
+  msgs.innerHTML+=`<div class="chat-msg user">${msg}</div>`;
+  msgs.innerHTML+=`<div class="chat-msg bot" id="chatLoading">Doryung is thinking... &#x1F914;</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  // For MVP: simple responses (no API needed)
+  setTimeout(()=>{
+    const loading=document.getElementById('chatLoading');
+    if(loading)loading.outerHTML=`<div class="chat-msg bot">${getDoryungResponse(msg)}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },1000);
+}
+
+function getDoryungResponse(q){
+  const ql=q.toLowerCase();
+  if(ql.includes('eat')||ql.includes('food')||ql.includes('restaurant')||ql.includes('hungry'))
+    return "Ah, you seek sustenance! In my 190 years, I have discovered that the best cheap eats are in traditional markets. Try Gwangjang Market for bindaetteok (mung bean pancake, ~₩5,000) or tteokbokki (~₩3,000). Baekgu always drools there! Check the 'Cheap Eats' tab for budget-certified restaurants near you. &#x1F35C;";
+  if(ql.includes('free')||ql.includes('museum')||ql.includes('temple')||ql.includes('park'))
+    return "Free attractions? Korea has many! The National Museum of Korea — magnificent, and zero won. Gyeongbokgung Palace — wear hanbok and enter free! Bukchon Hanok Village, Cheonggyecheon Stream, Namsan Tower trail... I have walked them all for 190 years. Check the 'Free Spots' tab! &#x1F3EF;";
+  if(ql.includes('hello')||ql.includes('hi')||ql.includes('hey'))
+    return "Annyeonghaseyo! Welcome to Korea, my friend. I am Kim Doryung, and this is Baekgu. We have been exploring this beautiful land for 190 years. How may I guide you today? &#x1F60A;";
+  if(ql.includes('oppa')||ql.includes('오빠'))
+    return "...that word. Someone called me that once, long ago. It means something very special in Korean — only used for someone close to your heart. Where... where did you hear that word? &#x1F62E;";
+  if(ql.includes('korean')||ql.includes('language')||ql.includes('learn'))
+    return "Korean is a beautiful language! I taught someone Korean once... she had the most beautiful pronunciation. Start with: 안녕하세요 (hello), 감사합니다 (thank you), 맛있어요 (delicious!), 얼마예요? (how much?). &#x1F4DA;";
+  if(ql.includes('cheap')||ql.includes('budget')||ql.includes('money')||ql.includes('save'))
+    return "A wise traveler! Look for 착한가격업소 (Budget-Certified) stickers on restaurants — government-verified fair prices. Also: convenience store meals (~₩3,000-5,000), market food, and free water at most restaurants. I have been saving money for 190 years! &#x1F4B0;";
+  if(ql.includes('seoul')||ql.includes('busan')||ql.includes('jeju'))
+    return "Excellent choice! Each city has its own charm. Seoul: palaces, street food, K-pop. Busan: beaches, seafood, Jagalchi Market. Jeju: nature, black pork, waterfalls. I have visited them all... many times over 190 years. What interests you most? &#x1F30F;";
+  return "An interesting question! I have seen much in my 190 years of wandering Korea. Try checking the tabs above for cheap eats, free attractions, and events near you. Or ask me about food, culture, Korean language, or specific cities! Baekgu and I are here to help. &#x1F436;";
+}
+
+// ===== MAP =====
+let kMap,kMarkers=[],myMkr,selectedPlace=null;
+
+function openMap(){
+  document.getElementById('mapView').classList.add('active');
+  if(!kMap){waitKakao(()=>{
+    const c=new kakao.maps.LatLng(myLat||DEFAULT_LAT,myLng||DEFAULT_LNG);
+    kMap=new kakao.maps.Map(document.getElementById('kakaoMap'),{center:c,level:5});
+    showMyMkr();searchMap('all');
+    kakao.maps.event.addListener(kMap,'idle',()=>{
+      if(document.getElementById('mapInfo').classList.contains('show'))return;
+      clearTimeout(window._mst);window._mst=setTimeout(()=>{searchMap(document.querySelector('.map-cat.active').dataset.mcat)},500);
+    });
+    document.querySelectorAll('.map-cat').forEach(b=>{b.addEventListener('click',()=>{
+      document.querySelectorAll('.map-cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');searchMap(b.dataset.mcat);
+    })});
+  })}else{kMap.relayout();if(myLat)kMap.setCenter(new kakao.maps.LatLng(myLat,myLng))}
+}
+
+function showMyMkr(){
+  if(!myLat||!kMap)return;if(myMkr)myMkr.setMap(null);
+  myMkr=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(myLat,myLng),content:'<div style="width:16px;height:16px;background:#4285F4;border:3px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.3)"></div>',yAnchor:0.5,xAnchor:0.5});
+  myMkr.setMap(kMap);
+}
+
+function searchMap(cat){
+  kMarkers.forEach(m=>m.setMap(null));kMarkers=[];document.getElementById('mapInfo').classList.remove('show');
+  const kwm={all:['착한가격업소','공원','도서관','박물관'],cheap:['착한가격업소','맛집'],free:['공원','도서관','박물관','무료']};
+  const kws=kwm[cat]||kwm.all;
+  const cn=kMap.getCenter();const lv=kMap.getLevel();const r=Math.min(Math.max(lv*1500,1000),20000);
+  let all=[];let done=0;
+  document.getElementById('mapCount').textContent='Searching...';
+  kws.forEach(kw=>{
+    waitKakao(()=>{
+      if(!kPlaces)kPlaces=new kakao.maps.services.Places();
+      kPlaces.keywordSearch(kw,(d,s)=>{
+        if(s===kakao.maps.services.Status.OK)all=all.concat(d);done++;
+        if(done===kws.length){
+          const seen=new Set();all=all.filter(p=>{if(seen.has(p.id))return false;seen.add(p.id);return true});
+          document.getElementById('mapCount').textContent=all.length+' spots';
+          all.forEach(p=>{
+            const isCheap=((p.place_name||'')+(p.category_name||'')).includes('착한가격')||((p.category_name||'')).includes('음식');
+            const mk=document.createElement('div');mk.style.cssText='cursor:pointer';
+            mk.innerHTML='<img src="'+(isCheap?'marker-doryung.png':'marker-baekgu.png')+'" style="width:36px;height:36px;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">';
+            const ov=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(p.y,p.x),content:mk,yAnchor:1.2});
+            ov.setMap(kMap);kMarkers.push(ov);
+            mk.addEventListener('click',()=>{showMapInfo(p);kMap.panTo(new kakao.maps.LatLng(p.y,p.x))});
+          });
+        }
+      },{x:cn.getLng(),y:cn.getLat(),radius:r,size:15,sort:kakao.maps.services.SortBy.DISTANCE});
+    });
+  });
+}
+
+function showMapInfo(p){
+  selectedPlace=p;
+  document.getElementById('mapName').textContent=p.place_name||'';
+  const price=matchPrice(p.place_name||'');
+  document.getElementById('mapPrice').textContent=price;
+  document.getElementById('mapDesc').textContent=(p.category_name||'')+(p.phone?' · '+p.phone:'');
+  document.getElementById('mapAddr').textContent=p.road_address_name||p.address_name||'';
+  document.getElementById('mapInfo').classList.add('show');
+}
+
+document.getElementById('mapNaviBtn').addEventListener('click',()=>{
+  if(!selectedPlace)return;const p=selectedPlace;
+  window.open('https://www.google.com/maps/search/'+encodeURIComponent((p.place_name||'')+' '+(p.road_address_name||p.address_name||'')),'_blank');
+});
+document.getElementById('mapReviewBtn').addEventListener('click',()=>{
+  if(!selectedPlace)return;window.open(selectedPlace.place_url||'https://map.kakao.com/link/search/'+encodeURIComponent(selectedPlace.place_name),'_blank');
+});
+document.getElementById('mapShareBtn').addEventListener('click',()=>{
+  if(!selectedPlace)return;sharePlace(selectedPlace.place_name,selectedPlace.road_address_name||'','cheap');
+});
+document.getElementById('mapCloseInfo').addEventListener('click',()=>{
+  document.getElementById('mapInfo').classList.remove('show');
+  const ac=document.querySelector('.map-cat.active');if(ac)searchMap(ac.dataset.mcat);
+});
+document.getElementById('mapClose').addEventListener('click',()=>{
+  document.getElementById('mapView').classList.remove('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item[data-nav="home"]').classList.add('active');
+});
+document.getElementById('myLocBtn').addEventListener('click',()=>{
+  if(!navigator.geolocation)return;
+  navigator.geolocation.getCurrentPosition(p=>{myLat=p.coords.latitude;myLng=p.coords.longitude;if(kMap){kMap.setCenter(new kakao.maps.LatLng(myLat,myLng));showMyMkr()}},()=>{},{enableHighAccuracy:true,timeout:8000});
+});
+
+// ===== PWA =====
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+
+// ===== INIT =====
+initGPS();
+</script>
+
+<script>
+(function(){
+  const s=document.createElement('script');
+  s.src='//dapi.kakao.com/v2/maps/sdk.js?appkey='+KAKAO_KEY+'&autoload=false&libraries=services';
+  s.onload=()=>{kakao.maps.load(()=>{console.log('Kakao SDK ready')})};
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
