@@ -356,7 +356,7 @@ function onReady(){
         const cityE=cityEN[myCity]||myCity;
         const distE=distEN[myDistrict]||myDistrict;
         document.getElementById('locText').textContent=cityE+' '+distE;
-        document.getElementById('districtText').textContent=distE;
+        document.getElementById('districtText').textContent=cityE+' '+distE;
       }
       hideSplash();
       loadHome();
@@ -424,38 +424,43 @@ function loadHome(){
 // ===== CHEAP =====
 function loadCheap(){
   const c=document.getElementById('items-cheap');
-  c.innerHTML='<div class="loading">Finding budget restaurants...</div>';
+  c.innerHTML='<div class="loading">Finding budget-certified restaurants...</div>';
   loadCheapData(()=>{
-    searchNear('착한가격업소',data=>{
-      renderCards(c,data,'cheap');
-      // Add certified restaurants from JSON
-      if(cheapData){
-        let stores=cheapData;
-        if(myDistrict)stores=stores.filter(s=>(s.g&&s.g.includes(myDistrict))||(s.a&&s.a.includes(myDistrict)));
-        else if(myCity)stores=stores.filter(s=>s.s&&s.s.includes(myCity));
-        if(stores.length>0&&stores.length<5&&myCity)stores=cheapData.filter(s=>s.s&&s.s.includes(myCity));
-        if(stores.length>0){
-          const h=document.createElement('div');
-          h.style.cssText='font-size:12px;font-weight:700;color:#E65100;padding:8px 0;border-bottom:1px solid #f0f0f0;margin:16px 0 10px';
-          h.textContent='Government-Certified Budget Restaurants ('+stores.length+')';
-          c.appendChild(h);
-          stores.slice(0,30).forEach(s=>{
-            const m=[];
-            if(s.me1&&s.p1)m.push(s.me1+' '+fmtPrice(s.p1));
-            else if(s.m1&&s.p1)m.push(s.m1+' '+fmtPrice(s.p1));
-            if(s.me2&&s.p2)m.push(s.me2+' '+fmtPrice(s.p2));
-            else if(s.m2&&s.p2)m.push(s.m2+' '+fmtPrice(s.p2));
-            const div=document.createElement('div');div.className='card';
-            div.innerHTML=`<div class="card-top"><span class="badge badge-food">Budget Certified</span><span style="font-size:11px;color:#888">${s.te||''}</span></div>
-              <div class="card-name">${s.n||''}</div>
-              ${m.length?'<div class="card-price">'+m.join(' / ')+'</div>':''}
-              <div class="card-addr">${s.a||''}</div>
-              <div class="card-actions"><button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(s.n+' '+s.a)}','_blank')">Google Maps</button><button class="btn btn-share" onclick="sharePlace('${(s.n||'').replace(/'/g,'')}','${(s.a||'').replace(/'/g,'')}','cheap')">Share</button></div>`;
-            c.appendChild(div);
-          });
-        }
-      }
-    },{r:10000});
+    if(!cheapData||!cheapData.length){c.innerHTML='<div class="empty">Could not load budget restaurant data.</div>';return}
+    // 음식 관련 업종만 필터 (미용/세탁/숙박/목욕 제외)
+    const foodTypes=['한식','중식','일식','양식','요식'];
+    let stores=cheapData.filter(s=>{
+      const t=s.t||'';
+      return foodTypes.some(ft=>t.includes(ft));
+    });
+    // 지역 필터
+    if(myDistrict){
+      const local=stores.filter(s=>(s.g&&s.g.includes(myDistrict))||(s.a&&s.a.includes(myDistrict)));
+      if(local.length>=3)stores=local;
+      else if(myCity)stores=stores.filter(s=>(s.s&&s.s.includes(myCity))||(s.a&&s.a.includes(myCity)));
+    }else if(myCity){
+      stores=stores.filter(s=>s.s&&s.s.includes(myCity));
+    }
+    if(!stores.length){c.innerHTML='<div class="empty">No budget restaurants found in this area.</div>';return}
+
+    const cityE=cityEN[myCity]||myCity;
+    c.innerHTML='<div style="font-size:12px;font-weight:700;color:#E65100;padding:8px 0;border-bottom:1px solid #f0f0f0;margin-bottom:10px">Government-Certified Budget Restaurants in '+cityE+' ('+stores.length+')</div>';
+    stores.slice(0,40).forEach((s,i)=>{
+      const m=[];
+      if(s.me1&&s.p1)m.push(s.me1+' '+fmtPrice(s.p1));
+      else if(s.m1&&s.p1)m.push(s.m1+' '+fmtPrice(s.p1));
+      if(s.me2&&s.p2)m.push(s.me2+' '+fmtPrice(s.p2));
+      else if(s.m2&&s.p2)m.push(s.m2+' '+fmtPrice(s.p2));
+      const div=document.createElement('div');div.className='card';
+      div.innerHTML=`<div class="card-top"><span class="badge badge-food">Budget Certified &#x2705;</span><span style="font-size:11px;color:#888">${s.te||''}</span></div>
+        <div class="card-name">${s.n||''}</div>
+        ${m.length?'<div class="card-price">'+m.join(' / ')+'</div>':''}
+        <div class="card-addr">${s.a||''}</div>
+        <div class="card-actions"><button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(s.n+' '+s.a)}','_blank')">Google Maps</button><button class="btn btn-review" onclick="window.open('https://map.kakao.com/link/search/${encodeURIComponent(s.n)}','_blank')">Reviews</button><button class="btn btn-share" onclick="sharePlace('${(s.n||'').replace(/'/g,'')}','${(s.a||'').replace(/'/g,'')}','cheap')">Share</button></div>`;
+      c.appendChild(div);
+      // Ads
+      if(i===2||i===7||i===13){const ad=document.createElement('div');ad.className='ad-banner';ad.textContent='Ad Space (AdSense)';c.appendChild(ad)}
+    });
   });
 }
 
@@ -508,7 +513,7 @@ function renderCards(container,places,type){
       <div class="card-top"><span class="badge ${badge}">${label}</span><span class="card-dist">${dist}</span></div>
       <div class="card-name">${p.place_name||''} <span style="font-size:11px;color:#999;font-weight:400">(${getLabel(p,type)})</span></div>
       ${price?'<div class="card-price">'+price+'</div>':''}
-      <div class="card-desc">${p.category_name||''}${p.phone?' · '+p.phone:''}</div>
+      <div class="card-desc"><span style="color:#1B3A5C;font-weight:600">${getLabel(p,type)}</span> · ${p.phone||''}</div>
       <div class="card-addr">${addr}</div>
       <div class="card-actions">
         <button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent((p.place_name||'')+' '+addr)}','_blank')">Google Maps</button>
@@ -790,7 +795,7 @@ function searchMap(cat){
           all.forEach(p=>{
             const isCheap=((p.place_name||'')+(p.category_name||'')).includes('착한가격')||((p.category_name||'')).includes('음식');
             const mk=document.createElement('div');mk.style.cssText='cursor:pointer';
-            mk.innerHTML='<div style="background:#fff;border-radius:50% 50% 50% 0;padding:3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);transform:rotate(-45deg);display:inline-block"><img src="'+(isCheap?'marker-doryung.png':'marker-baekgu.png')+'" style="width:36px;height:36px;transform:rotate(45deg)"></div>';
+            mk.innerHTML='<img src="'+(isCheap?'marker-doryung.png':'marker-baekgu.png')+'" style="width:40px;height:40px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))">';
             const ov=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(p.y,p.x),content:mk,yAnchor:1.2});
             ov.setMap(kMap);kMarkers.push(ov);
             mk.addEventListener('click',()=>{showMapInfo(p);kMap.panTo(new kakao.maps.LatLng(p.y,p.x))});
