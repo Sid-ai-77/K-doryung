@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>K-Doryung World Book</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+  @page{margin:20mm 15mm;size:A4}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard',-apple-system,serif;color:#222;line-height:1.8;max-width:800px;margin:0 auto;padding:40px 30px;background:#fff}
+
+  /* Cover */
+  .cover{text-align:center;padding:80px 20px;page-break-after:always;background:linear-gradient(135deg,#1B3A5C,#2C5F8A);color:#fff;border-radius:20px;margin-bottom:40px}
+  .cover img{width:180px;border-radius:30px;margin-bottom:20px;box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+  .cover h1{font-size:48px;font-weight:900;letter-spacing:2px;margin-bottom:8px}
+  .cover .sub{font-size:18px;opacity:0.8;margin-bottom:6px}
+  .cover .tagline{font-size:14px;opacity:0.6;font-style:italic}
+
+  /* Chapter */
+  .chapter{margin:40px 0 20px;page-break-before:auto}
+  .chapter h2{font-size:24px;font-weight:800;color:#1B3A5C;border-bottom:3px solid #1B3A5C;padding-bottom:8px;margin-bottom:20px}
+  .chapter h3{font-size:18px;font-weight:700;color:#2C5F8A;margin:24px 0 12px}
+
+  /* Text */
+  p{font-size:14px;margin-bottom:16px;text-align:justify;color:#333}
+  .quote{background:#f0f5fa;border-left:4px solid #1B3A5C;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0;font-style:italic;color:#1B3A5C}
+  .highlight{background:#FFF8E1;border-left:4px solid #FFD700;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0;font-size:13px}
+
+  /* Characters */
+  .char-grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+  .char-card{text-align:center;flex:1;min-width:200px;max-width:250px}
+  .char-card img{width:180px;height:auto;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:8px}
+  .char-card .name{font-size:16px;font-weight:800;color:#1B3A5C}
+  .char-card .role{font-size:12px;color:#888}
+
+  /* Story */
+  .story{font-size:15px;line-height:2}
+  .story-title{font-size:20px;font-weight:800;color:#1B3A5C;margin:32px 0 16px;text-align:center}
+  .separator{text-align:center;margin:30px 0;color:#ccc;font-size:20px;letter-spacing:10px}
+
+  /* Footer */
+  .footer{text-align:center;color:#aaa;font-size:11px;margin-top:60px;padding-top:20px;border-top:1px solid #eee}
+
+  @media print{
+    .cover{break-after:page}
+    .chapter{break-before:auto}
+    body{padding:0}
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <img src="app-icon.png" alt="K-Doryung">
+  <h1>K-Doryung</h1>
+  <div class="sub">World Book</div>
+  <div class="tagline">"He's been waiting for someone. Until then, he guides you."</div>
+</div>
+
+<!-- CHARACTERS -->
+<div class="chapter">
+  <h2>Characters</h2>
+
+  <div class="char-grid">
+    <div class="char-card">
+      <img src="doryung-a.jpg" alt="Kim Doryung">
+      <div class="name">Kim Doryung</div>
+      <div class="role">190-year-old Korean Scholar</div>
+    </div>
+    <div class="char-card">
+      <img src="doryung-b.jpg" alt="Kim Doryung Chibi">
+      <div class="name">Kim Doryung</div>
+      <div class="role">App Character</div>
+    </div>
+  </div>
+
+  <h3>Kim Doryung (Korean: &#xAE40;&#xB3C4;&#xB839;)</h3>
+  <p>Born as Kim Seonho in 1836, he is a 24-year-old scholar from a noble Yangban family in Bukchon, Hanyang (modern-day Seoul). He passed the national civil service exam at age 19, becoming the youngest top scorer in the kingdom. Yet he had no interest in government office. He preferred people over power, street food over formal banquets.</p>
+  <p>After a curse bound him to eternal youth, he has lived for 190 years without aging. He now guides every foreign tourist in Korea, searching for the one person whose scent Baekgu might recognize.</p>
+
+  <div class="char-grid">
+    <div class="char-card">
+      <img src="baekgu-a.jpg" alt="Baekgu">
+      <div class="name">Baekgu</div>
+      <div class="role">Loyal Jindo Dog</div>
+    </div>
+    <div class="char-card">
+      <img src="baekgu-b.jpg" alt="Baekgu Chibi">
+      <div class="name">Baekgu</div>
+      <div class="role">App Character</div>
+    </div>
+  </div>
+
+  <h3>Baekgu (Korean: &#xBC31;&#xAD6C;)</h3>
+  <p>A white Korean Jindo dog who has been Doryung's companion since 1836. He never wags his tail for strangers&mdash;except once, for Claire. When Doryung's curse took hold, Baekgu leaped into the light to protect his master and was bound to the same fate. He is the only being in the world who can detect Claire's lavender-and-sea scent across 190 years and any face she may wear.</p>
+
+  <div class="char-grid">
+    <div class="char-card">
+      <img src="claire-a.jpg" alt="Claire">
+      <div class="name">Claire</div>
+      <div class="role">The One He Waits For</div>
+    </div>
+    <div class="char-card">
+      <img src="claire-b.jpg" alt="Claire Chibi">
+      <div class="name">Claire</div>
+      <div class="role">App Character</div>
+    </div>
+  </div>
+
+  <h3>Claire (Korean: &#xD074;&#xB808;&#xB974;)</h3>
+  <p>A 21-year-old French woman who came to Joseon Korea in 1836 as the niece of a Western missionary. She fell in love with Doryung while learning Korean from him. After their forced separation, she accepted the same curse as Doryung&mdash;losing all memories, her face, even her nationality. Only her soul's scent (lavender and sea) remains unchanged. She lives somewhere in the world, not knowing why she feels drawn to Korea.</p>
+</div>
+
+<!-- STORY -->
+<div class="chapter">
+  <h2>The Story</h2>
+
+  <div class="story-title">&#xC11C;&#xC7A5;. A Man Named Kim Seonho</div>
+  <div class="story">
+  <p>In the second year of King Heonjong's reign, 1836.</p>
+  <p>In Bukchon, on a hill overlooking the stone walls of Gyeongbokgung Palace, there lived a young man named Kim Seonho. The eldest son of a noble family whose father had served as Inspector General. He had topped the national civil service examination at nineteen, earning fame across the eight provinces of Hanyang, yet he had no desire for government office. He preferred people over books, the bustling marketplace over the formal court.</p>
+  <p>Every morning, he was drawn out of his house by the smell of bindaetteok frying at Gwangjang Market. For lunch, he would drink steaming seolleongtang at a shop in Jongno. In the evenings, he would tear pieces of pajeon over a bowl of takju at a tavern by Cheonggyecheon Stream, teaching neighborhood children to read and write.</p>
+  <p>Doryung had one habit he never broke. No matter how busy he was, he would walk along the Hanyang Fortress Wall once a day. From the rocks of Inwangsan, past the pine trees of Bugaksan, to the sunset views of Naksan. Beside him always walked a white Jindo dog named Baekgu, brought from Jindo Island in Jeolla Province when Doryung was seven years old. Seventeen years of companionship.</p>
+  <p>Baekgu was a strange dog. He never wagged his tail for strangers. Not for officers, not for noblemen, not even when the meat vendor at the market waved ox bones in his face. But when Doryung called, Baekgu wagged his tail as if he had won the whole world.</p>
+  <p>The people of Hanyang said: "Kim Doryung and Baekgu must have been brothers in a past life."</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <div class="story-title">&#xC81C;1&#xC7A5;. Claire</div>
+  <div class="story">
+  <p>That early winter, a group of strangers arrived at Yakhyeon Hill outside Hanyang.</p>
+  <p>They were missionaries from the West. In a kingdom that forbade foreigners, they had entered secretly with the help of Korean believers. They moved only at night and hid in earthen huts by day.</p>
+  <p>Among them was a young woman of twenty-one. Her name was Claire, the niece of the lead missionary. Born in Paris near the Seine, she had always been curious about the world. Especially about "the Land of the Morning Calm" her uncle had described in his letters: "In this country, mornings are wrapped in mountain mist, and at the market they steam white rice cakes that billow with fragrant clouds."</p>
+  <p>On her first night in Joseon, Claire peered through a crack in the hut door and looked up at the sky. The same stars as in Paris. But the air was different. Pine trees, doenjang simmering, and somewhere far away, the smell of roasting chestnuts.</p>
+  <p>A Korean believer handed her something warm. Sikhye. The sweet, cool taste made Claire's eyes widen. There was nothing like this in Paris.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <div class="story-title">&#xC81C;2&#xC7A5;. Spring in Hanyang</div>
+  <div class="story">
+  <p>Winter passed and spring arrived.</p>
+  <p>Doryung visited the Catholic village every evening after sunset. He taught Claire hangeul, Korean words, and read poetry to her. Claire taught Doryung the French names of stars.</p>
+  <p>One day, while teaching forms of address:</p>
+  <div class="quote">"In Joseon, a younger woman calls an older man she trusts 'orabeoni.' Between close ones, simply 'oppa.'"<br><br>Claire repeated: "O...ppa?"<br><br>Doryung shook his head. "That is not a word for just anyone. It is only for someone to whom you have given your heart."<br><br>Claire asked: "Then may I use it for you?"<br><br>Doryung lost his words. His face turned red. A Yangban scholar blushing was something that hadn't happened even during the state examinations.</div>
+  <p>From that day, Claire called Doryung "oppa." At first with a French accent&mdash;"o~ppa"&mdash;stretched long and lilting. Later, as naturally as breathing. A language that was neither French nor Korean. Theirs alone.</p>
+  <p>During the day, they walked through Hanyang together. They shared tteokbokki at Gwangjang Market. "Oppa, this is too spicy!" Claire cried, tears streaming. Doryung laughed and handed her sungnyung. "In this country, something sweet always follows something spicy."</p>
+  <p>They bought hotteok on Jongno Street&mdash;crisp outside, molten brown sugar inside. They drank omija tea at a traditional teahouse in Insadong. "Oppa, this tea changes seasons on my tongue," Claire marveled.</p>
+  <p>They climbed Namsan and looked down at Hanyang's rooftops, smoke rising from each. "Oppa, Paris doesn't have scenery like this. The evenings here smell warm."</p>
+  <p>They walked along the stone wall of Gyeongbokgung as cherry blossoms fell. A petal landed on Claire's honey-blonde hair. Doryung carefully picked it off. Their fingertips touched. Both looked away.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <div class="story-title">The Yeonrimoek (&#xC5F0;&#xB9AC;&#xBAA9;)</div>
+  <div class="story">
+  <p>One spring afternoon, while climbing Bugaksan together, Doryung stopped.</p>
+  <p>There stood a tree. Or rather, two trees. Two pine trees that had grown toward each other until their trunks became one. Branches embraced; roots tangled beneath the earth. Moss and centuries had made them inseparable.</p>
+  <div class="quote">"Oppa, why does this tree look like that?"<br><br>"It is called a yeonrimoek. Two trees that grew toward each other and became one. The old ones say that love pledged beneath this tree will always be fulfilled."<br><br>He added with a smile: "Though the way it is fulfilled is not decided by the person, but by the tree."</div>
+  <p>Doryung took out a jade binyeo (hairpin) his mother had given him. Claire removed a small hand mirror from her neck&mdash;a gift from her mother in Paris. On its back, lavender flowers were delicately engraved.</p>
+  <p>They buried the jade binyeo and the mirror side by side beneath the yeonrimoek. Covered them with earth. Placed a small stone on top.</p>
+  <p>"As long as this tree lives, our love lives too."</p>
+  <p>They did not know. That this tree truly granted wishes. And that the way it granted them was nothing like what humans imagined.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <div class="story-title">&#xC81C;4&#xC7A5;. The Last Night</div>
+  <div class="story">
+  <p>Beneath the yeonrimoek on Bugaksan. A bright moon. Doryung took out a small cloth bundle. Two pieces of injeolmi. Coated in bean powder.</p>
+  <div class="quote">"This is what Koreans share when parting. Those who eat it are destined to meet again."</div>
+  <p>Claire took a bite. The rice cake stretched. "Oppa. Like this tteok, we won't break apart either."</p>
+  <p>At dawn, Jemulpo Port. Doryung pressed a small pouch into Claire's hands. Inside: roasted barley and misutgaru powder. "The voyage will be long. Mix this with water when you're hungry."</p>
+  <p>Claire boarded the ship. Standing at the rail, looking down at Doryung:</p>
+  <div class="quote">"Oppa. Let's meet again. For sure."</div>
+  <p>That was the last time Doryung heard her voice.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <div class="story-title">&#xC81C;5&#xC7A5;. The Price of the Yeonrimoek</div>
+  <div class="story">
+  <p>That night. Doryung climbed to the yeonrimoek. He dug up Claire's mirror. Traced the lavender engraving on its back. Looked at his own reflection&mdash;eyes red and swollen.</p>
+  <p>"Let me meet her again."</p>
+  <p>He spoke to the tree. To the yeonrimoek. To two trunks that had become one.</p>
+  <p>There was no wind. But the branches began to sway. Slowly. Light seeped from where the two trunks were joined. Faintly, then stronger. The jade binyeo buried in the earth glowed too. Mirror and binyeo resonating as one.</p>
+  <p>Light seeped into Doryung's body. Time stopped within him. At twenty-four. Forever.</p>
+  <p>At that moment, Baekgu leaped in front of Doryung, trying to block the light. The light engulfed Baekgu too. Seventeen years of loyalty made manifest. The yeonrimoek gave Baekgu the same fate.</p>
+  </div>
+
+  <div class="highlight">
+  <b>The Same Night. On a ship in the East China Sea.</b><br><br>
+  Claire stood on deck, clutching the jade binyeo she had secretly dug up from beneath the tree. The same tree. The same pledge. The yeonrimoek's power reached across the sea.<br><br>
+  "Let me meet him again."<br><br>
+  Light enveloped Claire. Her memories erased. Her face began to change. Her blue eyes vanished. Her honey-blonde hair vanished. Even the name Claire vanished.<br><br>
+  The tree's price: memories and identity. She might no longer be French. No one&mdash;not even she herself&mdash;could know what she looks like now.<br><br>
+  But two things remained:<br>
+  <b>1.</b> Her soul's scent: lavender and sea. Unchanged no matter what body she inhabits.<br>
+  <b>2.</b> Heart-traces: tears at the taste of tteokbokki, warmth at the word "oppa," an ache at the smell of hotteok. Not memories. Echoes of the heart.<br><br>
+  And a pull toward the east. Growing stronger each year.
+  </div>
+  <p>Same night. Same choice. Neither knowing the other chose the same. For the same reason.</p>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <div class="story-title">&#xC885;&#xC7A5;. Now (2026)</div>
+  <div class="story">
+  <p>190 years have passed.</p>
+  <p>Kim Doryung is still twenty-four. He lives in an old hanok in a back alley of Myeongdong. Mornings: kalguksu in the noodle alley. Lunch: mayak gimbap at Gwangjang Market. Evenings: odeng broth and soju at a pojangmacha in Jongno.</p>
+  <p>18 million foreigners visit Korea each year.</p>
+  <p>Doryung is kind to all of them. He recommends the hidden kalguksu shop in Euljiro, guides them to traditional teahouses in Ikseon-dong, suggests bibimbap in Jeonju Hanok Village, introduces sashimi at Busan's Jagalchi Market, shares the secret of Jeju's black pork.</p>
+  <p>Because he doesn't know who she is. She could be a Japanese backpacker, an American exchange student, honeymooners from Thailand, a businessperson from Nigeria. Any one of them might carry the scent of lavender and sea.</p>
+  <p>Baekgu has never left Doryung's side in 190 years. When a foreigner approaches, he goes to them first, sniffing. One person. Then another. 190 years. Tens of thousands of scents. He has never once forgotten that fragrance.</p>
+  <div class="quote">
+  "Welcome to Korea. Where may I guide you?"<br><br>
+  He smiles brightly. As always.<br><br>
+  But sometimes&mdash;just sometimes&mdash;when Baekgu's nose twitches and he moves toward someone, Doryung's heart stops.<br><br>
+  And when Baekgu turns back, tail drooping:<br><br>
+  "Not yet."<br><br>
+  But in his heart: "Maybe tomorrow."
+  </div>
+  <p>And when that day comes, at the arrival gate of Incheon Airport, a twenty-four-year-old man in hanbok will be standing there. With a white Jindo dog.</p>
+  <p>Doryung won't recognize her. Different face. Different name. Different country.</p>
+  <p>But Baekgu will wag his tail like mad. For the first time in 190 years, for someone other than his master.</p>
+  <p>And when the wind blows, the scent of lavender and sea will reach Doryung's nose. After 190 years.</p>
+  <p>Doryung will cry. Smiling.</p>
+  <div class="quote">"...I have waited a long time."</div>
+  <p>She won't know why she's crying in front of this stranger. Why this white dog feels so familiar. Why the word "oppa" keeps forming on her lips.</p>
+  <p>But her heart will know.</p>
+  <p>That this is where she was meant to come.</p>
+  <p>That this is the person who was waiting.</p>
+  <p>And that the tteokbokki, the hotteok, the injeolmi, the kalguksu, the bibimbap of this country&mdash;why they felt so desperately missed.</p>
+  <p style="text-align:center;color:#1B3A5C;margin-top:40px;font-style:italic">Somewhere on Bugaksan, the yeonrimoek quietly sways its branches.<br>After 190 years, the wish has been fulfilled.<br>As two trunks became one, two people have become one again.</p>
+  </div>
+</div>
+
+<div class="footer">
+  K-Doryung World Book &copy; 2026<br>
+  "Your 190-Year-Old Korean Friend"
+</div>
+
+</body>
+</html>

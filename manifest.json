@@ -1,7 +1,7 @@
 {
-  "name": "K-Doryung — Your Korean Budget Travel Guide",
-  "short_name": "K-Doryung",
-  "description": "Find cheap eats & free attractions in Korea. Guided by a 190-year-old Korean scholar and his loyal Jindo dog.",
+  "name": "Korea Budget Guide · K-Doryung — Cheap Eats, Free Attractions, AI Travel Buddy",
+  "short_name": "Korea Budget Guide",
+  "description": "Korea budget travel guide for foreign visitors — cheap eats, free attractions in Seoul, T-money subway tips, live exchange rate, AI Korean guide. Powered by K-Doryung, your 500-year-old Korean spirit guide and his Jindo dog Baekgu.",
   "start_url": "/k-doryung/",
   "display": "standalone",
   "background_color": "#f5f5f5",
