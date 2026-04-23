@@ -590,8 +590,7 @@ function onReady(){
         myDistrict=r[0].region_2depth_name||'';
         const cityE=cityEN[myCity]||myCity;
         const distE=distEN[myDistrict]||myDistrict;
-        document.getElementById('locText').textContent=cityE+' '+distE;
-        document.getElementById('districtText').textContent=cityE+' '+distE;
+        const loc=document.getElementById('locText'); if(loc) loc.textContent=cityE+' '+distE;
       }
       hideSplash();
       loadHome();
@@ -599,7 +598,6 @@ function onReady(){
       loadFree();
       loadEvents();
       loadFX();
-      document.getElementById('timeText').textContent=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
     });
   });
 }
