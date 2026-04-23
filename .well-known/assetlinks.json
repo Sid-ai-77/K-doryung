@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.sidai77.kdoryung",
+        "sha256_cert_fingerprints": ["45:60:A6:45:85:7F:D8:A5:86:1A:25:1B:0A:1C:FC:87:6E:B3:7C:03:85:F5:19:A2:4D:1E:D1:55:AF:05:6F:FA"]
+      }
+    }]
