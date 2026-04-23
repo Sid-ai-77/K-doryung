@@ -135,7 +135,11 @@
   .map-cat-bar::-webkit-scrollbar{display:none}
   .map-cat{padding:6px 12px;border-radius:18px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:#fff;color:#666;box-shadow:0 1px 4px rgba(0,0,0,0.15);font-family:inherit}
   .map-cat.active{background:#1B3A5C;color:#fff}
-  .map-count{position:absolute;top:50px;right:10px;z-index:92;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;font-weight:600;padding:4px 10px;border-radius:10px}
+  .map-hood-bar{position:absolute;top:50px;left:10px;right:10px;z-index:92;display:flex;gap:6px;overflow-x:auto;padding-right:4px}
+  .map-hood-bar::-webkit-scrollbar{display:none}
+  .map-hood{padding:6px 12px;border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:rgba(255,255,255,0.95);color:#57534E;box-shadow:0 1px 4px rgba(0,0,0,0.12);font-family:inherit;letter-spacing:0.02em;flex-shrink:0;transition:transform 0.1s}
+  .map-hood:active{transform:scale(0.95);background:#C2410C;color:#fff}
+  .map-count{position:absolute;top:90px;right:10px;z-index:92;background:rgba(0,0,0,0.65);color:#fff;font-size:10px;font-weight:600;padding:4px 10px;border-radius:10px;letter-spacing:0.02em}
   .map-controls{position:absolute;bottom:20px;right:16px;z-index:92;display:flex;flex-direction:column;gap:8px}
   .map-ctrl-btn{width:44px;height:44px;border-radius:50%;background:#fff;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
   .map-info{position:absolute;bottom:16px;left:16px;right:16px;z-index:93;background:#fff;border-radius:14px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.15);display:none;max-height:45vh;overflow-y:auto}
@@ -488,6 +492,19 @@
       <button class="map-cat active" data-mcat="all">All</button>
       <button class="map-cat" data-mcat="cheap">Cheap Eats</button>
       <button class="map-cat" data-mcat="free">Free Spots</button>
+      <button class="map-cat" data-mcat="kto">Attractions</button>
+      <button class="map-cat" data-mcat="festival">Festivals</button>
+    </div>
+    <div class="map-hood-bar" id="mapHoodBar">
+      <button class="map-hood" data-lat="37.5636" data-lng="126.983">Myeongdong</button>
+      <button class="map-hood" data-lat="37.5563" data-lng="126.9236">Hongdae</button>
+      <button class="map-hood" data-lat="37.4979" data-lng="127.0276">Gangnam</button>
+      <button class="map-hood" data-lat="37.5346" data-lng="126.9947">Itaewon</button>
+      <button class="map-hood" data-lat="37.5447" data-lng="127.0557">Seongsu</button>
+      <button class="map-hood" data-lat="37.5729" data-lng="126.9794">Jongno</button>
+      <button class="map-hood" data-lat="37.5826" data-lng="126.9838">Bukchon</button>
+      <button class="map-hood" data-lat="37.5665" data-lng="126.9919">Euljiro</button>
+      <button class="map-hood" data-lat="37.5345" data-lng="127.0079">Hannam</button>
     </div>
     <div class="map-count" id="mapCount">Searching...</div>
     <div id="kakaoMap"></div>
@@ -1281,6 +1298,15 @@ function openMap(){
     document.querySelectorAll('.map-cat').forEach(b=>{b.addEventListener('click',()=>{
       document.querySelectorAll('.map-cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');searchMap(b.dataset.mcat);
     })});
+    document.querySelectorAll('.map-hood').forEach(b=>{b.addEventListener('click',()=>{
+      const lat=parseFloat(b.dataset.lat),lng=parseFloat(b.dataset.lng);
+      if(!isNaN(lat)&&!isNaN(lng)&&kMap){
+        kMap.setCenter(new kakao.maps.LatLng(lat,lng));
+        kMap.setLevel(4);
+        const activeCat=document.querySelector('.map-cat.active');
+        searchMap(activeCat?activeCat.dataset.mcat:'all');
+      }
+    })});
   })}else{kMap.relayout();if(myLat)kMap.setCenter(new kakao.maps.LatLng(myLat,myLng))}
 }
 
@@ -1324,7 +1350,7 @@ let lmMarkers=[];
 function mkPin(color,iconClass){
   return `<div style="position:relative;width:32px;height:42px;cursor:pointer">
     <div style="width:32px;height:32px;background:${color};border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 3px 6px rgba(0,0,0,0.35);border:2px solid #fff;position:absolute;top:0;left:0"></div>
-    <div style="position:absolute;top:0;left:0;width:32px;height:24px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px"><i class="${iconClass}"></i></div>
+    <div style="position:absolute;top:4px;left:0;width:32px;height:24px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;pointer-events:none"><i class="${iconClass}"></i></div>
   </div>`;
 }
 
@@ -1356,9 +1382,37 @@ function dedupeNearby(places){
   return result;
 }
 
+const KTO_PROXY = 'https://shushu-bigglz.pages.dev/api/kto-nearby';
+async function fetchKTO(lat,lng,radius,type){
+  const u = `${KTO_PROXY}?lat=${lat}&lng=${lng}&radius=${radius}&numOfRows=30${type?'&type='+type:''}`;
+  try{ const r = await fetch(u); if(!r.ok) return []; const j = await r.json(); return j.items||[]; }
+  catch(e){ console.warn('KTO fetch fail',e); return []; }
+}
+
 function searchMap(cat){
   kMarkers.forEach(m=>m.setMap(null));kMarkers=[];document.getElementById('mapInfo').classList.remove('show');
   showLandmarks();
+  // KTO category path (skip Kakao keywords)
+  if(cat==='kto' || cat==='festival'){
+    const cn=kMap.getCenter();
+    const ktoType = cat==='festival' ? '15' : '12'; // 12=attractions, 15=festivals
+    const radius=Math.min(Math.max(kMap.getLevel()*2000,1000),20000);
+    document.getElementById('mapCount').textContent='Loading KTO data...';
+    fetchKTO(cn.getLat(),cn.getLng(),radius,ktoType).then(items=>{
+      document.getElementById('mapCount').textContent=items.length+' spots';
+      const color = cat==='festival' ? '#9333EA' : '#0284C7';
+      const icon = cat==='festival' ? 'fas fa-music' : 'fas fa-landmark';
+      items.forEach(it=>{
+        if(!it.lat||!it.lng) return;
+        const mk=document.createElement('div');mk.style.cssText='cursor:pointer';
+        mk.innerHTML=mkPin(color,icon);
+        const ov=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(it.lat,it.lng),content:mk,yAnchor:1.2});
+        ov.setMap(kMap);kMarkers.push(ov);
+        mk.addEventListener('click',()=>{showMapInfoKTO(it);kMap.panTo(new kakao.maps.LatLng(it.lat,it.lng))});
+      });
+    });
+    return;
+  }
   const kwm={all:['착한가격업소','공원','도서관','박물관'],cheap:['착한가격업소','맛집'],free:['공원','도서관','박물관','무료']};
   const kws=kwm[cat]||kwm.all;
   const cn=kMap.getCenter();const lv=kMap.getLevel();const r=Math.min(Math.max(lv*1500,1000),20000);
@@ -1405,6 +1459,41 @@ function showMapInfo(p){
   document.getElementById('mapDesc').textContent=(p.category_name||'')+(p.phone?' · '+p.phone:'');
   document.getElementById('mapAddr').textContent=p.road_address_name||p.address_name||'';
   document.getElementById('mapInfo').classList.add('show');
+}
+
+function showMapInfoKTO(it){
+  // Adapt KTO item to the Kakao-shaped selectedPlace for share/navi to still work
+  selectedPlace={
+    place_name: it.name,
+    road_address_name: it.address,
+    address_name: it.address,
+    phone: it.tel,
+    category_name: 'Attraction · KTO',
+    place_url: 'https://english.visitkorea.or.kr/'
+  };
+  const info = document.getElementById('mapInfo');
+  // Build a photo-first card inside mapInfo
+  const img = it.image ? `<div style="margin:-16px -16px 12px;height:140px;background:#EDE7D9 url('${it.image}') center/cover no-repeat;border-radius:14px 14px 0 0"></div>` : '';
+  info.innerHTML = `${img}
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div style="flex:1">
+        <div style="font-size:10px;font-weight:700;color:#0284C7;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px">KTO Official</div>
+        <div style="font-family:Fraunces,serif;font-size:20px;font-weight:700;color:#1C1917;line-height:1.2">${it.name||''}</div>
+      </div>
+      <button class="btn btn-heart" id="mapCloseInfo">&#x2715;</button>
+    </div>
+    <div style="font-size:12px;color:#57534E;line-height:1.5;margin-bottom:4px">${it.address||''}</div>
+    ${it.tel?`<div style="font-size:12px;color:#57534E;margin-bottom:8px">${it.tel}</div>`:''}
+    <div class="card-actions">
+      <button class="btn btn-primary" id="mapNaviBtn">Navigate</button>
+      <button class="btn btn-review" id="mapReviewBtn">VisitKorea</button>
+      <button class="btn btn-share" id="mapShareBtn">Share</button>
+    </div>`;
+  info.classList.add('show');
+  document.getElementById('mapCloseInfo').addEventListener('click',()=>{info.classList.remove('show');const ac=document.querySelector('.map-cat.active');if(ac)searchMap(ac.dataset.mcat);});
+  document.getElementById('mapNaviBtn').addEventListener('click',()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent((it.name||'')+' '+(it.address||'')),'_blank'));
+  document.getElementById('mapReviewBtn').addEventListener('click',()=>window.open('https://english.visitkorea.or.kr/','_blank'));
+  document.getElementById('mapShareBtn').addEventListener('click',()=>sharePlace(it.name,it.address,'culture'));
 }
 
 document.getElementById('mapNaviBtn').addEventListener('click',()=>{
