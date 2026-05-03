@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Slow Streets of Bukchon — An Editor’s Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  :root {
+    --ink: #111111;
+    --ink-soft: #2a2a2a;
+    --paper: #fbfaf6;
+    --rule: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #8a2a1f; /* deep cinnabar — used sparingly */
+    --serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+    --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Top mast — quiet, Condé-Nast-Traveler style */
+  .mast {
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--sans);
+  }
+  .mast .brand {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+  }
+  .mast .nav {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .mast .nav span { margin-left: 22px; }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    min-height: 480px;
+    overflow: hidden;
+  }
+  .hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.02) contrast(1.02);
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.0) 35%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
+  }
+  .hero-text {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 56px 64px 44px;
+    color: #fff;
+  }
+  .kicker {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #efe7d6;
+    margin-bottom: 14px;
+  }
+  .kicker .dot { margin: 0 10px; opacity: 0.6; }
+  h1.headline {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+    margin: 0 0 16px;
+    max-width: 14ch;
+  }
+  .deck {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: #f7eee0;
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  /* Byline rail */
+  .byline {
+    border-bottom: 1px solid var(--rule);
+    padding: 22px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .byline strong { color: var(--ink); font-weight: 600; }
+
+  /* Article body */
+  .article {
+    max-width: 720px;
+    margin: 56px auto 0;
+    padding: 0 28px;
+  }
+  .article p {
+    margin: 0 0 22px;
+    font-size: 18.5px;
+    line-height: 1.72;
+    color: var(--ink-soft);
+  }
+  .article p.lede::first-letter {
+    font-family: var(--serif);
+    font-weight: 700;
+    float: left;
+    font-size: 78px;
+    line-height: 0.85;
+    padding: 8px 12px 0 0;
+    color: var(--ink);
+  }
+  .article h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.005em;
+    margin: 44px 0 14px;
+    color: var(--ink);
+  }
+  .article h2::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 2px;
+    background: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  /* Pull-quote */
+  .pull {
+    margin: 48px -40px;
+    padding: 28px 0 24px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+  }
+  .pull blockquote {
+    margin: 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    max-width: 26ch;
+    margin-inline: auto;
+  }
+  .pull cite {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--sans);
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Inline figure (full-bleed) */
+  figure.bleed {
+    margin: 56px calc(50% - 50vw) 56px;
+    width: 100vw;
+  }
+  figure.bleed img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
+  }
+  figure figcaption {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 14px;
+    padding: 0 28px;
+  }
+
+  /* Inline figure (within column) */
+  figure.inline {
+    margin: 36px 0;
+  }
+  figure.inline img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  figure.inline figcaption {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+
+  /* IF YOU GO sidebar (Condé Nast classic) */
+  .ifyougo {
+    margin: 56px auto;
+    max-width: 720px;
+    border: 1px solid var(--rule);
+    padding: 28px 32px 24px;
+    background: #f1ece1;
+  }
+  .ifyougo .label {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .ifyougo h3 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 18px;
+    letter-spacing: -0.005em;
+  }
+  .ifyougo dl { margin: 0; }
+  .ifyougo dt {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    margin-top: 12px;
+  }
+  .ifyougo dd {
+    margin: 4px 0 0;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* Two-up image grid */
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 48px 0;
+  }
+  .grid2 figure { margin: 0; }
+  .grid2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+    display: block;
+  }
+  .grid2 figcaption {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  /* Footer credits */
+  .credits {
+    border-top: 1px solid var(--rule);
+    margin-top: 64px;
+    padding: 28px 64px 56px;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .credits strong { color: var(--ink); }
+
+  /* Print: A4 two-page */
+  @media print {
+    @page { size: A4; margin: 18mm 16mm; }
+    body { background: #fff; font-size: 11.5pt; }
+    .mast .nav, .credits .links { display: none; }
+    .hero { height: 96mm; min-height: 0; page-break-after: avoid; }
+    .hero-text { padding: 28px 32px; }
+    h1.headline { font-size: 38pt; }
+    .deck { font-size: 14pt; }
+    .article { margin: 18px auto 0; padding: 0; max-width: 100%; }
+    .article p { font-size: 11pt; line-height: 1.55; margin-bottom: 10pt; }
+    .article h2 { font-size: 16pt; margin: 18pt 0 6pt; }
+    .pull blockquote { font-size: 16pt; }
+    .ifyougo { padding: 14pt 16pt; }
+    figure.bleed { margin: 18pt 0; width: auto; }
+    figure.bleed img { aspect-ratio: 16/8; }
+    .grid2 { gap: 8pt; margin: 18pt 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .mast, .byline, .credits { padding-left: 22px; padding-right: 22px; }
+    .hero-text { padding: 32px 24px 28px; }
+    h1.headline { font-size: 40px; }
+    .deck { font-size: 18px; }
+    .article { padding: 0 22px; }
+    .pull { margin: 32px 0; }
+    .pull blockquote { font-size: 22px; }
+    .grid2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="brand">The Wanderer&rsquo;s Notebook</div>
+  <nav class="nav">
+    <span>SEOUL</span>
+    <span>HERITAGE</span>
+    <span>SLOW TRAVEL</span>
+  </nav>
+</header>
+
+<section class="hero">
+  <img
+    src="https://images.unsplash.com/photo-1670735403682-0faa5ec7dd75?auto=format&fit=crop&w=2200&q=80"
+    alt="A quiet alley in Bukchon at dusk, lined with tiled hanok rooftops"
+  />
+  <div class="hero-text">
+    <div class="kicker">
+      Editor&rsquo;s Notebook <span class="dot">&middot;</span> Seoul, South Korea
+    </div>
+    <h1 class="headline">The Slow Streets of Bukchon</h1>
+    <p class="deck">
+      A six-hundred-year-old neighborhood in the heart of Seoul keeps its tiled
+      rooftops, its hush, and its small ceremonies &mdash; if you know how to walk
+      them.
+    </p>
+  </div>
+</section>
+
+<div class="byline">
+  <span>By <strong>The Editor</strong></span>
+  <span>Bukchon Hanok Village &middot; Jongno-gu, Seoul</span>
+  <span>Field Notes, Spring 2026</span>
+</div>
+
+<article class="article">
+
+  <p class="lede">
+    The first time I climbed the cobbled rise of Gye-dong-gil, the city seemed
+    to soften under my feet. The taxi horns of Anguk Station fell behind, the
+    stoplights thinned, and within two blocks I was looking at a roofline that
+    has hardly changed in a hundred years &mdash; gray clay tiles tilted toward
+    the hills of Bugaksan, low eaves curling like brushstrokes against the
+    morning light. Bukchon Hanok Village does not announce itself. It simply
+    waits, the way old neighborhoods do, until you slow down enough to see it.
+  </p>
+
+  <p>
+    Bukchon &mdash; literally &ldquo;the north village&rdquo; &mdash; takes its
+    name from its position above the Cheonggyecheon stream and Jongno, tucked
+    between two of Seoul&rsquo;s great Joseon-era palaces, Gyeongbokgung to the
+    west and Changdeokgung to the east. For nearly six centuries this was
+    where the dynasty&rsquo;s scholars, ministers, and royal in-laws made their
+    homes. A 1906 census recorded that more than four out of every ten
+    residents here were aristocracy or senior officials &mdash; a density of
+    rank that would shape the streets long after the dynasty itself had
+    quietly closed its books.
+  </p>
+
+  <h2>A village rebuilt, twice</h2>
+
+  <p>
+    The hanok you see today are not, strictly speaking, the originals. Most
+    were built or rebuilt in the late 1800s and early 1900s, and a remarkable
+    number of them owe their existence to a single visionary developer named
+    Chŏng Segwŏn, who founded Korea&rsquo;s first home-grown real-estate
+    company around 1920. As the colonial city expanded and Western-style
+    housing crept north from the river, Chŏng bought up the old aristocratic
+    plots and subdivided them into compact urban hanok &mdash; small,
+    courtyard-centered houses sized for the new middle class. He kept the
+    timber, the tiled roofs, the wooden lattice doors. He simply made the
+    village livable for a different century. Today, walking the lanes of
+    Gahoe-dong and Wonseo-dong, you are walking through his improvisation as
+    much as through the Joseon dream he tried to preserve.
+  </p>
+
+  <figure class="bleed">
+    <img
+      src="https://images.unsplash.com/photo-1696943424708-d7fe7f7cb06b?auto=format&fit=crop&w=2200&q=80"
+      alt="A panoramic view of Bukchon Hanok Village rooftops with the Seoul skyline in the distance"
+    />
+    <figcaption>
+      Bukchon&rsquo;s rooftops fold toward Bugaksan, with downtown Seoul rising behind.
+    </figcaption>
+  </figure>
+
+  <h2>How to walk it</h2>
+
+  <p>
+    The honest answer is: slowly, and ideally before nine in the morning. Most
+    visitors arrive at Anguk Station (Line 3, Exit 2) and turn into Gye-dong-gil,
+    a narrow uphill lane lined with cafés in converted hanok and the kind of
+    small bookshops that still smell of paper. From there I climb to
+    Bukchon-ro 11-gil, sometimes called the &ldquo;postcard street,&rdquo; where the
+    stepped lane and the curve of the rooftops produce the photograph nearly
+    everyone has already seen. The Seoul Metropolitan Government has formally
+    catalogued <em>eight</em> photo views of Bukchon, and you can stitch most
+    of them into a quiet two-hour loop. Bring soft shoes. The stones are old
+    and a little uneven, which is part of the pleasure.
+  </p>
+
+  <div class="pull">
+    <blockquote>
+      &ldquo;Bukchon does not perform for visitors. It permits them.&rdquo;
+    </blockquote>
+    <cite>&mdash; Field note, 7:42 a.m.</cite>
+  </div>
+
+  <p>
+    You should know that people actually live here. Roughly nine thousand of
+    them, in fact, in the same houses with the same low gates and the same
+    thin walls. After years of overtourism, the Jongno-gu district imposed a
+    daytime visiting window: the residential lanes of Bukchon are now
+    designated a &ldquo;special tourism management zone,&rdquo; with quiet
+    hours after late afternoon and signage asking guests to lower their
+    voices, refrain from flash photography, and keep groups small. None of
+    this should feel like a restriction. It is the village&rsquo;s way of
+    teaching you what kind of traveler it would like you to be.
+  </p>
+
+  <div class="grid2">
+    <figure>
+      <img
+        src="https://images.unsplash.com/photo-1696943420472-f3b026c87478?auto=format&fit=crop&w=1200&q=80"
+        alt="Close-up of curved gray clay roof tiles on a hanok"
+      />
+      <figcaption>The eaves of a Gahoe-dong hanok, tiled in <em>giwa</em>.</figcaption>
+    </figure>
+    <figure>
+      <img
+        src="https://images.unsplash.com/photo-1632908785566-55ee4fbb427d?auto=format&fit=crop&w=1200&q=80"
+        alt="A traveler walking down a hanok-lined alley in Bukchon"
+      />
+      <figcaption>An early walker on Bukchon-ro 11-gil.</figcaption>
+    </figure>
+  </div>
+
+  <h2>Where to slip away</h2>
+
+  <p>
+    When the photo lanes get full &mdash; and they do, by mid-morning &mdash;
+    the village offers two natural escape routes. To the east, the slope
+    descends into <strong>Samcheong-ro</strong>, a chic spine of independent
+    boutiques, ceramic studios, third-wave coffee bars, and small private
+    museums; to the west, a narrower path drops you into <strong>Insa-dong</strong>,
+    the antique-and-tea quarter where calligraphy brushes still outnumber
+    smartphones. My favourite move is to time lunch in Samcheong-ro &mdash;
+    a bowl of <em>kalguksu</em> in a converted hanok &mdash; and double back
+    to Bukchon at the golden hour, when the rooftops glow and most of the
+    day-trippers have moved on.
+  </p>
+
+  <p>
+    Wearing <em>hanbok</em> &mdash; the traditional Korean dress &mdash; is
+    almost a rite of passage here. The rental shops cluster around Anguk
+    Station and run roughly ₩15,000 to ₩30,000 for two hours. The reward is
+    not just the photographs: visitors in hanbok are admitted free of charge
+    to all four Joseon palaces, including Gyeongbokgung and Changdeokgung,
+    each only minutes&rsquo; walk from Bukchon&rsquo;s southern edge. It is
+    one of the most generous tourism gestures any city in Asia offers, and
+    almost nobody outside Korea seems to know about it.
+  </p>
+
+</article>
+
+<aside class="ifyougo">
+  <div class="label">If You Go</div>
+  <h3>Bukchon Hanok Village &middot; Practical Notes</h3>
+  <dl>
+    <dt>Getting there</dt>
+    <dd>Anguk Station, Seoul Metro Line 3, Exit 2. Five minutes on foot to Gye-dong-gil.</dd>
+
+    <dt>Best time</dt>
+    <dd>Weekdays before 9 a.m. or after 4 p.m. Avoid Saturday afternoons and Korean public holidays.</dd>
+
+    <dt>Quiet hours</dt>
+    <dd>Designated tourism management zone. Voices low; no flash; respect the residents.</dd>
+
+    <dt>Hanbok rental</dt>
+    <dd>From ~₩15,000 / 2 hours. Free entry to the four Joseon palaces while wearing it.</dd>
+
+    <dt>Pair it with</dt>
+    <dd>Samcheong-ro for cafés and galleries; Changdeokgung&rsquo;s Secret Garden for an unhurried afternoon.</dd>
+
+    <dt>One small ritual</dt>
+    <dd>Stop at the top of Bukchon-ro 11-gil. Look down the lane, then up at the rooftops. Wait a full minute before lifting the camera.</dd>
+  </dl>
+</aside>
+
+<div class="credits">
+  <p>
+    <strong>Story</strong> by The Editor &middot; <strong>Field reporting</strong> in Seoul, Spring 2026 &middot;
+    <strong>Photographs</strong> via Unsplash, used under the Unsplash License (free for commercial use, attribution appreciated):
+    Roméo A. (@gronemo), Federica Bisso (@fedebisso), Ji&nbsp;Yong&nbsp;Won (@jiyong7), Chorom Park (@chrmbak).
+  </p>
+  <p>
+    The Wanderer&rsquo;s Notebook &middot; A draft layout, inspired by the editorial sensibility of <em>Condé Nast Traveler</em> and <em>Afar</em>.
+    Set in Cormorant Garamond &amp; Inter (Google Fonts).
+  </p>
+</div>
+
+</body>
+</html>
