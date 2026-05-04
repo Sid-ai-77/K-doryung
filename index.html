@@ -837,7 +837,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Jongno-gu</div>
           <div class="tips-title"><em>Bukchon Hanok Village</em></div>
-          <div class="tips-title-kr">북칼한옥마을</div>
+          <div class="tips-title-kr">북촌한옥마을</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Open lanes &mdash; no ticket booth.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -933,7 +933,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Jongno-gu</div>
           <div class="tips-title"><em>Insadong-gil</em></div>
-          <div class="tips-title-kr">인사동급</div>
+          <div class="tips-title-kr">인사동길</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Pedestrian-only craft street.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -1005,7 +1005,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Seongdong-gu</div>
           <div class="tips-title"><em>Seoul Forest</em></div>
-          <div class="tips-title-kr">서울쁍</div>
+          <div class="tips-title-kr">서울숲</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">City park, deer enclosure included.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -1575,16 +1575,22 @@ function loadCheap(){
     const cityE=cityEN[myCity]||myCity;
     c.innerHTML='<div style="font-size:12px;font-weight:700;color:#E65100;padding:8px 0;border-bottom:1px solid #f0f0f0;margin-bottom:10px">Government-Certified Budget Restaurants in '+cityE+' ('+stores.length+')</div>';
     stores.slice(0,40).forEach((s,i)=>{
+      const m1Label=s.m1_en||s.me1||s.m1||'';
+      const m2Label=s.m2_en||s.me2||s.m2||'';
       const m=[];
-      if(s.me1&&s.p1)m.push(s.me1+' '+fmtPrice(s.p1));
-      else if(s.m1&&s.p1)m.push(s.m1+' '+fmtPrice(s.p1));
-      if(s.me2&&s.p2)m.push(s.me2+' '+fmtPrice(s.p2));
-      else if(s.m2&&s.p2)m.push(s.m2+' '+fmtPrice(s.p2));
+      if(m1Label&&s.p1)m.push(m1Label+' '+fmtPrice(s.p1));
+      if(m2Label&&s.p2)m.push(m2Label+' '+fmtPrice(s.p2));
       const div=document.createElement('div');div.className='card';
+      const nameHtml=s.n_en
+        ? `<div class="card-name">${s.n_en} <span style="font-size:13px;font-weight:500;color:#6B6B6B;letter-spacing:0">(${s.n||''})</span></div>`
+        : `<div class="card-name">${s.n||''}</div>`;
+      const addrHtml=s.a_en
+        ? `<div class="card-addr">${s.a_en}</div><div class="card-addr" style="opacity:0.6;font-size:10.5px">${s.a||''}</div>`
+        : `<div class="card-addr">${s.a||''}</div>`;
       div.innerHTML=`<div class="card-top"><span class="badge badge-food">Budget Certified &#x2705;</span><span style="font-size:11px;color:#888">${s.te||''}</span></div>
-        <div class="card-name">${s.n||''}</div>
+        ${nameHtml}
         ${m.length?'<div class="card-price">'+m.join(' / ')+'</div>':''}
-        <div class="card-addr">${s.a||''}</div>
+        ${addrHtml}
         <div class="card-actions"><button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(s.n+' '+s.a)}','_blank')"><i class="fas fa-directions"></i> Google Maps</button><button class="btn btn-review" onclick="window.open('https://map.kakao.com/link/search/${encodeURIComponent(s.n)}','_blank')"><i class="fas fa-star"></i> Reviews</button><button class="btn btn-share" onclick="sharePlace('${(s.n||'').replace(/'/g,'')}','${(s.a||'').replace(/'/g,'')}','cheap')"><i class="fas fa-share-alt"></i> Share</button></div>`;
       c.appendChild(div);
       // Ads
