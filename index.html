@@ -59,21 +59,22 @@
   .search-box{padding:10px 20px 6px;background:var(--bg)}
   .search-input{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:99px;font-size:14px;font-family:inherit;outline:none;background:var(--surface);transition:border-color 0.15s,box-shadow 0.15s}
   .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(194,65,12,0.08)}
-  .plan-trigger{position:relative;width:100%;padding:14px 18px;border:none;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:space-between;letter-spacing:0.01em;transition:transform 0.1s,background 0.15s,box-shadow 0.15s;box-shadow:0 4px 16px rgba(28,25,23,0.12);animation:planPulse 2.6s ease-in-out infinite;overflow:hidden}
-  .plan-trigger::before{content:"";position:absolute;inset:-2px;border-radius:99px;border:2px solid var(--accent);opacity:0;animation:planRing 2.6s ease-out infinite;pointer-events:none}
+  .plan-trigger{position:relative;width:100%;padding:16px 20px;border:none;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:space-between;letter-spacing:0.01em;transition:transform 0.1s,background 0.15s,box-shadow 0.15s;box-shadow:0 6px 22px rgba(28,25,23,0.18),0 0 0 3px var(--gold);animation:planPulse 2s ease-in-out infinite;overflow:visible}
+  .plan-trigger::before{content:"";position:absolute;inset:-3px;border-radius:99px;border:3px solid var(--accent);opacity:0;animation:planRing 2s ease-out infinite;pointer-events:none}
+  .plan-trigger::after{content:"";position:absolute;inset:-9px;border-radius:99px;border:2px solid var(--gold);opacity:0;animation:planRing 2s ease-out 0.5s infinite;pointer-events:none}
   .plan-trigger:hover{background:var(--accent);animation:none}
-  .plan-trigger:hover::before{opacity:0}
+  .plan-trigger:hover::before,.plan-trigger:hover::after{opacity:0}
   .plan-trigger:active{transform:scale(0.98)}
   .plan-trigger-text{font-family:var(--serif);font-style:italic;font-size:16px;font-weight:600}
-  .plan-trigger-arrow{font-size:18px;font-weight:300;margin-left:8px;display:inline-block;animation:planArrow 2.6s ease-in-out infinite}
+  .plan-trigger-arrow{font-size:18px;font-weight:300;margin-left:8px;display:inline-block;animation:planArrow 2s ease-in-out infinite}
   @keyframes planPulse{
-    0%,100%{box-shadow:0 4px 16px rgba(28,25,23,0.12),0 0 0 0 rgba(122,31,31,0.0)}
-    50%{box-shadow:0 6px 22px rgba(28,25,23,0.18),0 0 0 6px rgba(122,31,31,0.08)}
+    0%,100%{box-shadow:0 6px 22px rgba(28,25,23,0.18),0 0 0 3px var(--gold)}
+    50%{box-shadow:0 8px 28px rgba(122,31,31,0.35),0 0 0 5px var(--accent)}
   }
   @keyframes planRing{
     0%{opacity:0;transform:scale(1)}
-    25%{opacity:0.55}
-    100%{opacity:0;transform:scale(1.06)}
+    25%{opacity:0.85}
+    100%{opacity:0;transform:scale(1.18)}
   }
   @keyframes planArrow{
     0%,60%,100%{transform:translateX(0)}
@@ -199,6 +200,38 @@
   .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--ink-muted);font-size:10px;font-weight:600;transition:color 0.2s;letter-spacing:0.04em;text-transform:uppercase}
   .nav-item.active{color:var(--accent)}
   .nav-icon{font-size:20px}
+
+  /* Chat view (full-screen Kim Doryung) */
+  .chat-view{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100%;z-index:96;background:var(--bg);flex-direction:column;-webkit-overflow-scrolling:touch}
+  .chat-view.active{display:flex}
+  .chat-topbar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+  .chat-topbar img{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;object-fit:cover;flex-shrink:0;padding:1px}
+  .chat-mast{flex:1;min-width:0}
+  .chat-mast strong{font-family:var(--serif);font-style:italic;font-size:16px;font-weight:700;color:var(--ink);display:block;line-height:1.2}
+  .chat-mast span{font-family:var(--mono,'IBM Plex Mono',monospace);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);display:block;margin-top:2px}
+  .chat-close{background:none;border:none;font-size:22px;color:var(--ink);cursor:pointer;padding:4px 8px;line-height:1;font-family:inherit}
+  .chat-ad{padding:8px 16px;border-bottom:1px solid var(--line);background:#FBF6E8;min-height:60px}
+  .chat-ad ins{min-height:60px}
+  .chat-thread{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+  .chat-bubble{max-width:80%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.55;animation:bubbleIn 0.2s ease;word-break:break-word;white-space:pre-wrap}
+  .chat-bubble.user{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+  .chat-bubble.bot{align-self:flex-start;background:var(--surface);color:var(--ink);border:1px solid var(--line-soft);border-bottom-left-radius:4px}
+  .chat-bubble.bot.thinking{font-style:italic;color:var(--ink-muted)}
+  @keyframes bubbleIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+  .chat-suggest{padding:10px 16px 6px;display:flex;gap:8px;overflow-x:auto;border-top:1px solid var(--line);background:var(--bg)}
+  .chat-suggest::-webkit-scrollbar{display:none}
+  .chat-chip{padding:8px 14px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0;transition:background 0.15s,color 0.15s}
+  .chat-chip:active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .chat-input-bar{display:flex;gap:8px;padding:10px 16px max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
+  .chat-bar-input{flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:99px;font-size:14px;font-family:inherit;outline:none;background:#fff}
+  .chat-bar-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(122,31,31,0.08)}
+  .chat-bar-send{background:var(--accent);color:#fff;border:none;padding:12px 20px;border-radius:99px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.04em;text-transform:uppercase}
+  .chat-bar-send:active{background:var(--accent-hover)}
+
+  /* Tap-affordance for Home chat-section card */
+  .chat-section{cursor:pointer;transition:transform 0.1s,box-shadow 0.15s}
+  .chat-section:active{transform:scale(0.99)}
+  .chat-section .chat-input,.chat-section .chat-send{cursor:pointer}
 
   /* My location marker — Doryung face with subtle pulse */
   .my-loc-doryung{position:relative;width:38px;height:38px;display:flex;align-items:center;justify-content:center}
@@ -377,7 +410,8 @@
   .shop-close{background:none;border:none;font-size:26px;line-height:1;color:var(--ink);cursor:pointer;padding:0 4px;font-family:inherit}
   .shop-body{padding:14px 16px 80px}
   .shop-featured{background:var(--surface);border:1px solid var(--line-soft);border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(28,25,23,0.08);margin-bottom:18px}
-  .shop-feat-eyebrow{padding:20px 18px 16px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);line-height:1.3}
+  .shop-featured{padding-top:6px}
+  .shop-feat-eyebrow{padding:28px 18px 18px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);line-height:1.4}
   .shop-feat-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--line-soft)}
   .shop-feat-body{padding:14px 18px 18px}
   .shop-feat-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);line-height:1.2;letter-spacing:-0.01em;margin-bottom:4px}
@@ -784,7 +818,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Jongno-gu</div>
           <div class="tips-title"><em>Bukchon Hanok Village</em></div>
-          <div class="tips-title-kr">&#48513;&#52860;&#54620;&#50725;&#47560;&#51012;</div>
+          <div class="tips-title-kr">북칼한옥마을</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Open lanes &mdash; no ticket booth.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -808,7 +842,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Jung-gu</div>
           <div class="tips-title"><em>Cheonggyecheon Stream</em></div>
-          <div class="tips-title-kr">&#52397;&#44228;&#52380;</div>
+          <div class="tips-title-kr">청계천</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">City stream walk, no fee.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -832,7 +866,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Yongsan-gu</div>
           <div class="tips-title"><em>Namsan Park &amp; N-Tower base</em></div>
-          <div class="tips-title-kr">&#45224;&#49328;&#44277;&#50896;</div>
+          <div class="tips-title-kr">남산공원</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Hike to the tower, gratis.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -856,7 +890,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Yeongdeungpo-gu</div>
           <div class="tips-title"><em>Han River &mdash; Yeouido Park</em></div>
-          <div class="tips-title-kr">&#50668;&#51032;&#46020; &#54620;&#44053;&#44277;&#50896;</div>
+          <div class="tips-title-kr">여의도 한강공원</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Riverbank, picnics, fireworks.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -880,7 +914,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Jongno-gu</div>
           <div class="tips-title"><em>Insadong-gil</em></div>
-          <div class="tips-title-kr">&#51064;&#49324;&#46041;&#44553;</div>
+          <div class="tips-title-kr">인사동급</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Pedestrian-only craft street.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -904,7 +938,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Yongsan-gu</div>
           <div class="tips-title"><em>National Museum of Korea</em></div>
-          <div class="tips-title-kr">&#44397;&#47549;&#51473;&#50521;&#48149;&#47932;&#44288;</div>
+          <div class="tips-title-kr">국립중앙박물관</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Permanent collection &mdash; free entry.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -928,7 +962,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Jongno-gu</div>
           <div class="tips-title"><em>Buam-dong Walk</em></div>
-          <div class="tips-title-kr">&#48512;&#50516;&#46041;</div>
+          <div class="tips-title-kr">부암동</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">Backstreet hill walk, caf&eacute;-spotted.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -952,7 +986,7 @@
         <div class="tips-head-text">
           <div class="tips-eyebrow">Seongdong-gu</div>
           <div class="tips-title"><em>Seoul Forest</em></div>
-          <div class="tips-title-kr">&#49436;&#50872;&#49229;</div>
+          <div class="tips-title-kr">서울쁍</div>
           <div class="tips-section-label tips-why">Why free</div>
           <div class="tips-summary">City park, deer enclosure included.</div>
           <span class="tips-toggle" aria-hidden="true">+</span>
@@ -1206,6 +1240,34 @@
       <div class="ad-banner" style="margin-top:10px;padding:8px">Ad Space</div>
     </div>
   </div>
+</div>
+
+<!-- Chat View (Doryung full-screen) -->
+<div class="chat-view" id="chatView">
+  <div class="chat-topbar">
+    <img src="face-doryung.png" alt="" />
+    <div class="chat-mast">
+      <strong>Kim Doryung</strong>
+      <span>+ Baekgu &middot; 190 yrs in service</span>
+    </div>
+    <button class="chat-close" id="chatViewClose" aria-label="Close">&times;</button>
+  </div>
+  <div class="chat-ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4566861735736673" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+  <div class="chat-thread" id="chatThread"></div>
+  <div class="chat-suggest" id="chatSuggest">
+    <button class="chat-chip" data-prompt="Where can I eat for ₩10,000 near here?">Where to eat &#8361;10K?</button>
+    <button class="chat-chip" data-prompt="How do I take the Seoul subway?">Subway help</button>
+    <button class="chat-chip" data-prompt="What's worth seeing in Bukchon today?">Bukchon today</button>
+    <button class="chat-chip" data-prompt="Free things to do in Seoul tonight">Free tonight</button>
+    <button class="chat-chip" data-prompt="Recommend Korean street food">Street food</button>
+  </div>
+  <form class="chat-input-bar" id="chatForm">
+    <input class="chat-bar-input" id="chatBarInput" placeholder="Ask Doryung anything..." autocomplete="off" />
+    <button class="chat-bar-send" type="submit">Send</button>
+  </form>
 </div>
 
 <!-- Plan Your Trip View -->
@@ -1593,15 +1655,93 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(sc&&sv)sc.addEventListener('click',()=>{sv.style.display='none';document.body.style.overflow=''});
 });
 
+// ===== CHAT (Kim Doryung full-screen, Gemini-backed) =====
+const CHAT_PROXY='https://kdoryung-chat-proxy.ptodak.workers.dev/chat';
+const CHAT_HISTORY=[];
+const CHAT_GREETING='Annyeonghaseyo. I am Kim Doryung. In a hundred and ninety years I have walked every alley in Seoul. Tell me what you want — cheap eats, hidden lanes, the subway, a small ritual for the day. Baekgu is here too. He votes for food.';
+function _chatThread(){return document.getElementById('chatThread')}
+function chatAddBubble(role,text){
+  const t=_chatThread();if(!t)return null;
+  const b=document.createElement('div');b.className='chat-bubble '+role;b.textContent=text;
+  t.appendChild(b);t.scrollTop=t.scrollHeight;return b;
+}
+function openChatView(){
+  const v=document.getElementById('chatView');if(!v)return;
+  v.classList.add('active');
+  if(CHAT_HISTORY.length===0){
+    chatAddBubble('bot',CHAT_GREETING);
+    CHAT_HISTORY.push({role:'assistant',content:CHAT_GREETING});
+  }
+  setTimeout(()=>{const i=document.getElementById('chatBarInput');if(i)i.focus()},150);
+}
+function closeChatView(){
+  const v=document.getElementById('chatView');if(v)v.classList.remove('active');
+}
+async function sendChatMsg(msg){
+  msg=(msg||'').trim();if(!msg)return;
+  chatAddBubble('user',msg);
+  CHAT_HISTORY.push({role:'user',content:msg});
+  const t=_chatThread();
+  const thinking=document.createElement('div');
+  thinking.className='chat-bubble bot thinking';
+  thinking.textContent='Doryung is thinking…';
+  t.appendChild(thinking);t.scrollTop=t.scrollHeight;
+  try{
+    const r=await fetch(CHAT_PROXY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:CHAT_HISTORY})
+    });
+    const j=await r.json();
+    thinking.remove();
+    if(j&&j.text){
+      chatAddBubble('bot',j.text);
+      CHAT_HISTORY.push({role:'assistant',content:j.text});
+    }else{
+      chatAddBubble('bot',"Forgive me — the wind ate my words. Please ask again.");
+    }
+  }catch(e){
+    thinking.remove();
+    chatAddBubble('bot',"Doryung's connection is silent for a moment. Please try again.");
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  // Open from Home chat-section card
+  const homeChat=document.querySelector('.chat-section');
+  if(homeChat){
+    homeChat.addEventListener('click',(e)=>{
+      // Avoid double-trigger when tapping the inner input/button
+      if(e.target.closest('.chat-input,.chat-send'))return;
+      e.preventDefault();
+      openChatView();
+    });
+  }
+  const close=document.getElementById('chatViewClose');
+  if(close)close.addEventListener('click',closeChatView);
+  document.querySelectorAll('.chat-chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+      sendChatMsg(c.dataset.prompt||c.textContent);
+    });
+  });
+  const form=document.getElementById('chatForm');
+  if(form)form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const i=document.getElementById('chatBarInput');
+    const v=i.value.trim();if(!v)return;
+    i.value='';
+    sendChatMsg(v);
+  });
+});
+
 // ===== EDITORIAL COLUMNS (Doryung's own) =====
 const EDITORIAL_COLUMNS=[
   {slug:'bukchon-hanok-village',type:'long',title:'The Slow Streets of Bukchon',kicker:'Editor\u2019s Notebook \u00b7 Jongno-gu',excerpt:'A six-hundred-year-old neighborhood in the heart of Seoul keeps its tiled rooftops, its hush, and its small ceremonies.',img:'https://images.unsplash.com/photo-1670735403682-0faa5ec7dd75?auto=format&fit=crop&w=900&q=80'},
   {slug:'insadong-gil',type:'long',title:'The Slow Streets of Insadong-gil',kicker:'Editor\u2019s Notebook \u00b7 Jongno-gu',excerpt:'A pedestrian lane where ink, paper and tea outnumber phones, and where every shopkeeper still folds your purchase by hand.',img:'https://images.unsplash.com/photo-1742734703252-25ef2a605d33?auto=format&fit=crop&w=900&q=80'},
   {slug:'cheonggyecheon',type:'long',title:'Cheonggyecheon \u2014 Where the City Comes Up for Air',kicker:'Editor\u2019s Notebook \u00b7 Jung-gu',excerpt:'A river was buried under a highway, then unburied by a city that decided it preferred the water. Take the stairs down.',img:'https://images.unsplash.com/photo-1687779176476-55920ac3f400?auto=format&fit=crop&w=900&q=80'},
   {slug:'subway-five-steps',type:'short',title:'Five Steps to Survive the Seoul Subway',kicker:'Field Note \u00b7 Transit',excerpt:'A T-money card, two taps, and the calmest underground in Asia. Do not let Google Maps route you here.',img:'https://images.unsplash.com/photo-1679212843220-b36bf01ff859?auto=format&fit=crop&w=900&q=80'},
-  {slug:'gwangjang-bindaetteok',type:'short',title:'The Gwangjang Bindaetteok Gospel',kicker:'Field Note \u00b7 Eat',excerpt:'A market, a low table, an aunt who never lets you leave hungry, and ten thousand won between you and a story.',img:'https://images.unsplash.com/photo-1583224944844-5b268c057b72?auto=format&fit=crop&w=900&q=80'},
-  {slug:'banana-milk-hack',type:'short',title:'The Banana-Milk Hack: Korea\u2019s Viral Convenience-Store Coffee',kicker:'Field Note \u00b7 Trend',excerpt:'A noisy yellow bottle, an ice cup, and one shot of espresso. Three thousand won and you understand the country.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80'},
-  {slug:'hanbok-free-palace',type:'short',title:'Why Hanbok Is Free at the Palace',kicker:'Field Note \u00b7 Tradition',excerpt:'Korea offers entry to four royal palaces at no cost \u2014 if you arrive in hanbok. Almost no one outside Korea knows.',img:'https://images.unsplash.com/photo-1674154083287-c36a5b34050a?auto=format&fit=crop&w=900&q=80'},
+  {slug:'gwangjang-bindaetteok',type:'short',title:'The Gwangjang Bindaetteok Gospel',kicker:'Field Note \u00b7 Eat',excerpt:'A market, a low table, an aunt who never lets you leave hungry, and ten thousand won between you and a story.',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Korean_pancake-Bindaetteok-04.jpg/1024px-Korean_pancake-Bindaetteok-04.jpg'},
+  {slug:'banana-milk-hack',type:'short',title:'The Banana-Milk Hack: Korea\u2019s Viral Convenience-Store Coffee',kicker:'Field Note \u00b7 Trend',excerpt:'A noisy yellow bottle, an ice cup, and one shot of espresso. Three thousand won and you understand the country.',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Binggrae_Banana_Flavored_Milk_03.jpg/960px-Binggrae_Banana_Flavored_Milk_03.jpg'},
+  {slug:'hanbok-free-palace',type:'short',title:'Why Hanbok Is Free at the Palace',kicker:'Field Note \u00b7 Tradition',excerpt:'Korea offers entry to four royal palaces at no cost \u2014 if you arrive in hanbok. Almost no one outside Korea knows.',img:'https://images.unsplash.com/photo-1588676907230-020a495f4cc9?auto=format&fit=crop&w=900&q=80',imgPos:'center 25%'},
   {slug:'han-river-after-dark',type:'short',title:'Han River After Dark',kicker:'Field Note \u00b7 Outdoors',excerpt:'A mat, a chimaek, a slow bridge that changes color, and a city that, just for an evening, agrees to stop hurrying.',img:'https://images.unsplash.com/photo-1611410873756-63d72ad1b732?auto=format&fit=crop&w=900&q=80'},
   {slug:'buamdong-painters',type:'short',title:'Buam-dong: Where the Painters Hid',kicker:'Field Note \u00b7 Walk',excerpt:'A steep, quiet hill behind the palace where painters and poets disappeared when the city below grew too loud.',img:'https://images.unsplash.com/photo-1773149660396-21c22230cd6c?auto=format&fit=crop&w=900&q=80'},
   {slug:'ten-words',type:'short',title:'The Ten Words You Actually Need',kicker:'Field Note \u00b7 Language',excerpt:'A market vendor, a cab driver, and a pharmacist all want the same ten words from you. Here they are.',img:'https://images.unsplash.com/photo-1620041786470-616bc1224fb6?auto=format&fit=crop&w=900&q=80'}
@@ -1612,7 +1752,7 @@ function renderEditorial(){
   c.innerHTML=EDITORIAL_COLUMNS.map(col=>{
     const tag=col.type==='long'?'Feature':'Field Note';
     return `<a class="editor-col" href="columns/${col.slug}.html">
-      <div class="editor-col-img" style="background-image:url('${col.img}')">
+      <div class="editor-col-img" style="background-image:url('${col.img}');background-position:${col.imgPos||'center'}">
         <span class="editor-col-tag">${tag}</span>
       </div>
       <div class="editor-col-body">
