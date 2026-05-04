@@ -59,22 +59,23 @@
   .search-box{padding:10px 20px 6px;background:var(--bg)}
   .search-input{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:99px;font-size:14px;font-family:inherit;outline:none;background:var(--surface);transition:border-color 0.15s,box-shadow 0.15s}
   .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(194,65,12,0.08)}
-  .plan-trigger{position:relative;width:100%;padding:16px 20px;border:none;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:space-between;letter-spacing:0.01em;transition:transform 0.1s,background 0.15s,box-shadow 0.15s;box-shadow:0 6px 22px rgba(28,25,23,0.18),0 0 0 3px var(--gold);animation:planPulse 2s ease-in-out infinite;overflow:visible}
-  .plan-trigger::before{content:"";position:absolute;inset:-3px;border-radius:99px;border:3px solid var(--accent);opacity:0;animation:planRing 2s ease-out infinite;pointer-events:none}
-  .plan-trigger::after{content:"";position:absolute;inset:-9px;border-radius:99px;border:2px solid var(--gold);opacity:0;animation:planRing 2s ease-out 0.5s infinite;pointer-events:none}
+  .search-box{overflow:hidden;padding:14px 20px 10px}
+  .plan-trigger{position:relative;width:100%;padding:16px 20px;border:none;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:space-between;letter-spacing:0.01em;transition:transform 0.1s,background 0.15s,box-shadow 0.15s;box-shadow:0 6px 22px rgba(28,25,23,0.18),inset 0 0 0 3px var(--gold);animation:planPulse 2s ease-in-out infinite;overflow:hidden}
+  .plan-trigger::before{content:"";position:absolute;inset:0;border-radius:99px;border:2px solid var(--accent);opacity:0;animation:planRing 2s ease-out infinite;pointer-events:none}
+  .plan-trigger::after{content:none}
   .plan-trigger:hover{background:var(--accent);animation:none}
   .plan-trigger:hover::before,.plan-trigger:hover::after{opacity:0}
   .plan-trigger:active{transform:scale(0.98)}
   .plan-trigger-text{font-family:var(--serif);font-style:italic;font-size:16px;font-weight:600}
   .plan-trigger-arrow{font-size:18px;font-weight:300;margin-left:8px;display:inline-block;animation:planArrow 2s ease-in-out infinite}
   @keyframes planPulse{
-    0%,100%{box-shadow:0 6px 22px rgba(28,25,23,0.18),0 0 0 3px var(--gold)}
-    50%{box-shadow:0 8px 28px rgba(122,31,31,0.35),0 0 0 5px var(--accent)}
+    0%,100%{box-shadow:0 6px 22px rgba(28,25,23,0.18),inset 0 0 0 3px var(--gold)}
+    50%{box-shadow:0 8px 28px rgba(122,31,31,0.35),inset 0 0 0 3px var(--accent)}
   }
   @keyframes planRing{
-    0%{opacity:0;transform:scale(1)}
-    25%{opacity:0.85}
-    100%{opacity:0;transform:scale(1.18)}
+    0%{opacity:0}
+    35%{opacity:0.6}
+    100%{opacity:0}
   }
   @keyframes planArrow{
     0%,60%,100%{transform:translateX(0)}
@@ -217,8 +218,15 @@
   .nav-icon{font-size:20px}
 
   /* Chat view (full-screen Kim Doryung) */
-  .chat-view{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100dvh;max-height:100vh;z-index:96;background:var(--bg);flex-direction:column;-webkit-overflow-scrolling:touch;overflow:hidden}
+  .chat-view{display:none;position:fixed;inset:0 auto 0 50%;transform:translateX(-50%);width:100%;max-width:480px;height:100dvh;max-height:100vh;z-index:200;background:var(--bg);flex-direction:column;-webkit-overflow-scrolling:touch;overflow:hidden}
   .chat-view.active{display:flex}
+  body.chat-open{overflow:hidden}
+  body.chat-open .header,body.chat-open .search-box,body.chat-open #tabs,body.chat-open .content{display:none !important}
+  /* Hide bottom nav when any full-screen overlay is active so input/CTAs stay reachable */
+  body:has(.chat-view.active) .bottom-nav,
+  body:has(.story-view.active) .bottom-nav,
+  body:has(.shop-view.active) .bottom-nav,
+  body:has(.plan-view.active) .bottom-nav{display:none !important}
   .chat-topbar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
   .chat-topbar img{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;object-fit:cover;flex-shrink:0;padding:1px}
   .chat-mast{flex:1;min-width:0}
@@ -1681,6 +1689,7 @@ function chatAddBubble(role,text){
 function openChatView(){
   const v=document.getElementById('chatView');if(!v)return;
   v.classList.add('active');
+  document.body.classList.add('chat-open');
   if(CHAT_HISTORY.length===0){
     chatAddBubble('bot',CHAT_GREETING);
     CHAT_HISTORY.push({role:'assistant',content:CHAT_GREETING});
@@ -1689,6 +1698,7 @@ function openChatView(){
 }
 function closeChatView(){
   const v=document.getElementById('chatView');if(v)v.classList.remove('active');
+  document.body.classList.remove('chat-open');
 }
 async function sendChatMsg(msg){
   msg=(msg||'').trim();if(!msg)return;
