@@ -1552,11 +1552,15 @@ function loadCheap(){
   c.innerHTML='<div class="loading">Finding budget-certified restaurants...</div>';
   loadCheapData(()=>{
     if(!cheapData||!cheapData.length){c.innerHTML='<div class="empty">Could not load budget restaurant data.</div>';return}
-    // 음식 관련 업종만 필터 (미용/세탁/숙박/목욕 제외)
-    const foodTypes=['한식','중식','일식','양식','요식'];
+    // 음식 관련 업종만 필터 (미용/세탁/숙박/목욕/PC방 등 제외)
+    const foodTypes=['한식','중식','일식','양식','요식','분식','패스트푸드','제과','제빵','카페','음식점','커피'];
+    const nonFoodNameKw=['헤어','미용','이용','펌','컷','네일','속눈썹','세탁','목욕','사우나','PC방','피시방','노래방','고시원','독서실','학원','문구','꽃집','약국','병원','치과','한의원','안경','미장원','이발','뷰티','왁싱','피부','마사지','발톱','맛사지'];
     let stores=cheapData.filter(s=>{
       const t=s.t||'';
-      return foodTypes.some(ft=>t.includes(ft));
+      const n=s.n||'';
+      if(!foodTypes.some(ft=>t.includes(ft)))return false;
+      if(nonFoodNameKw.some(kw=>n.includes(kw)))return false;
+      return true;
     });
     // 지역 필터
     if(myDistrict){
