@@ -59,11 +59,30 @@
   .search-box{padding:10px 20px 6px;background:var(--bg)}
   .search-input{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:99px;font-size:14px;font-family:inherit;outline:none;background:var(--surface);transition:border-color 0.15s,box-shadow 0.15s}
   .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(194,65,12,0.08)}
-  .plan-trigger{width:100%;padding:14px 18px;border:none;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:space-between;letter-spacing:0.01em;transition:transform 0.1s,background 0.15s,box-shadow 0.15s;box-shadow:0 4px 16px rgba(28,25,23,0.12)}
-  .plan-trigger:hover{background:var(--accent)}
+  .plan-trigger{position:relative;width:100%;padding:14px 18px;border:none;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:space-between;letter-spacing:0.01em;transition:transform 0.1s,background 0.15s,box-shadow 0.15s;box-shadow:0 4px 16px rgba(28,25,23,0.12);animation:planPulse 2.6s ease-in-out infinite;overflow:hidden}
+  .plan-trigger::before{content:"";position:absolute;inset:-2px;border-radius:99px;border:2px solid var(--accent);opacity:0;animation:planRing 2.6s ease-out infinite;pointer-events:none}
+  .plan-trigger:hover{background:var(--accent);animation:none}
+  .plan-trigger:hover::before{opacity:0}
   .plan-trigger:active{transform:scale(0.98)}
   .plan-trigger-text{font-family:var(--serif);font-style:italic;font-size:16px;font-weight:600}
-  .plan-trigger-arrow{font-size:18px;font-weight:300;margin-left:8px}
+  .plan-trigger-arrow{font-size:18px;font-weight:300;margin-left:8px;display:inline-block;animation:planArrow 2.6s ease-in-out infinite}
+  @keyframes planPulse{
+    0%,100%{box-shadow:0 4px 16px rgba(28,25,23,0.12),0 0 0 0 rgba(122,31,31,0.0)}
+    50%{box-shadow:0 6px 22px rgba(28,25,23,0.18),0 0 0 6px rgba(122,31,31,0.08)}
+  }
+  @keyframes planRing{
+    0%{opacity:0;transform:scale(1)}
+    25%{opacity:0.55}
+    100%{opacity:0;transform:scale(1.06)}
+  }
+  @keyframes planArrow{
+    0%,60%,100%{transform:translateX(0)}
+    72%{transform:translateX(6px)}
+    84%{transform:translateX(0)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .plan-trigger,.plan-trigger::before,.plan-trigger-arrow{animation:none}
+  }
 
   /* Plan view */
   .plan-view{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100%;z-index:97;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -181,6 +200,20 @@
   .nav-item.active{color:var(--accent)}
   .nav-icon{font-size:20px}
 
+  /* My location marker — Doryung face with subtle pulse */
+  .my-loc-doryung{position:relative;width:38px;height:38px;display:flex;align-items:center;justify-content:center}
+  .my-loc-doryung img{width:38px;height:38px;border-radius:50%;border:2px solid #fff;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.25);position:relative;z-index:2;animation:myLocBlink 2.6s ease-in-out infinite}
+  .my-loc-pulse{position:absolute;inset:-2px;border-radius:50%;background:rgba(122,31,31,0.35);z-index:1;animation:myLocPulse 2.6s ease-out infinite}
+  @keyframes myLocBlink{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:0.85;transform:scale(0.96)}
+  }
+  @keyframes myLocPulse{
+    0%{transform:scale(1);opacity:0.5}
+    70%{transform:scale(1.7);opacity:0}
+    100%{transform:scale(1.7);opacity:0}
+  }
+
   /* Map */
   .map-view{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:90;background:#f5f5f5}
   .map-view.active{display:flex;flex-direction:column}
@@ -258,6 +291,19 @@
   .quiz-score{text-align:center;padding:20px;font-size:14px;color:#1B3A5C}
   .quiz-score .score-num{font-size:48px;font-weight:800;color:#FFD700}
 
+  /* Editor (Doryung's columns) */
+  .editor-mast{display:flex;align-items:center;gap:10px;padding:6px 4px 14px;color:var(--ink-muted)}
+  .editor-col{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:var(--shadow);transition:transform 0.15s,box-shadow 0.15s}
+  .editor-col:active{transform:scale(0.99)}
+  .editor-col-img{position:relative;width:100%;aspect-ratio:16/9;background-size:cover;background-position:center;background-color:var(--line-soft)}
+  .editor-col-tag{position:absolute;top:10px;left:10px;background:var(--ink);color:var(--bg);font-family:var(--mono,'IBM Plex Mono',monospace);font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;border-radius:6px}
+  .editor-col-body{padding:14px 16px 16px}
+  .editor-col-kicker{font-family:var(--mono,'IBM Plex Mono',monospace);font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .editor-col-title{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ink);line-height:1.25;letter-spacing:-0.01em;margin-bottom:6px}
+  .editor-col-title em{font-style:italic;font-weight:600}
+  .editor-col-excerpt{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:8px}
+  .editor-col-cta{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:0.02em}
+
   /* Events — magazine index style (no thumb) */
   .events-mast{display:flex;align-items:center;gap:10px;padding:6px 4px 14px;color:var(--ink-muted)}
   .events-mast-rule{flex:1;height:1px;background:var(--line)}
@@ -331,8 +377,8 @@
   .shop-close{background:none;border:none;font-size:26px;line-height:1;color:var(--ink);cursor:pointer;padding:0 4px;font-family:inherit}
   .shop-body{padding:14px 16px 80px}
   .shop-featured{background:var(--surface);border:1px solid var(--line-soft);border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(28,25,23,0.08);margin-bottom:18px}
-  .shop-feat-eyebrow{padding:12px 16px 0;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
-  .shop-feat-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--line-soft);margin-top:10px}
+  .shop-feat-eyebrow{padding:20px 18px 16px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);line-height:1.3}
+  .shop-feat-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--line-soft)}
   .shop-feat-body{padding:14px 18px 18px}
   .shop-feat-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);line-height:1.2;letter-spacing:-0.01em;margin-bottom:4px}
   .shop-feat-tagline{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
@@ -443,7 +489,7 @@
   <button class="tab active" data-tab="home">Home</button>
   <button class="tab" data-tab="cheap">Cheap Eats</button>
   <button class="tab" data-tab="free">Free Spots</button>
-  <button class="tab" data-tab="events">Events</button>
+  <button class="tab" data-tab="events">Editor</button>
   <button class="tab" data-tab="tips">Travel Tips</button>
 </div>
 
@@ -497,9 +543,10 @@
     <div id="items-free"><div class="loading">Finding free attractions near you...</div></div>
   </div>
 
-  <!-- Events -->
+  <!-- Editor (was Events) -->
   <div class="section" id="sec-events">
-    <div id="items-events"><div class="skeleton"></div><div class="skeleton"></div></div>
+    <div class="editor-mast"><span class="events-mast-rule"></span><span class="events-mast-text">Doryung&rsquo;s Editorial &middot; Field Notes</span><span class="events-mast-rule"></span></div>
+    <div id="editor-grid"></div>
   </div>
 
   <!-- Travel Tips -->
@@ -1122,11 +1169,9 @@
   </div>
   <div class="map-container">
     <div class="map-cat-bar">
-      <button class="map-cat active" data-mcat="all">All</button>
-      <button class="map-cat" data-mcat="cheap">Cheap Eats</button>
+      <button class="map-cat active" data-mcat="cheap">Cheap Eats</button>
       <button class="map-cat" data-mcat="free">Free Spots</button>
       <button class="map-cat" data-mcat="kto">Attractions</button>
-      <button class="map-cat" data-mcat="festival">Festivals</button>
     </div>
     <div class="map-hood-bar" id="mapHoodBar">
       <button class="map-hood" data-lat="37.5636" data-lng="126.983">Myeongdong</button>
@@ -1359,7 +1404,7 @@ function onReady(){
       loadHome();
       loadCheap();
       loadFree();
-      loadEvents();
+      renderEditorial();
       loadFX();
     });
   });
@@ -1547,6 +1592,38 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(sp&&sv)sp.addEventListener('click',()=>{sv.style.display='block';document.body.style.overflow='hidden';window.scrollTo(0,0)});
   if(sc&&sv)sc.addEventListener('click',()=>{sv.style.display='none';document.body.style.overflow=''});
 });
+
+// ===== EDITORIAL COLUMNS (Doryung's own) =====
+const EDITORIAL_COLUMNS=[
+  {slug:'bukchon-hanok-village',type:'long',title:'The Slow Streets of Bukchon',kicker:'Editor\u2019s Notebook \u00b7 Jongno-gu',excerpt:'A six-hundred-year-old neighborhood in the heart of Seoul keeps its tiled rooftops, its hush, and its small ceremonies.',img:'https://images.unsplash.com/photo-1670735403682-0faa5ec7dd75?auto=format&fit=crop&w=900&q=80'},
+  {slug:'insadong-gil',type:'long',title:'The Slow Streets of Insadong-gil',kicker:'Editor\u2019s Notebook \u00b7 Jongno-gu',excerpt:'A pedestrian lane where ink, paper and tea outnumber phones, and where every shopkeeper still folds your purchase by hand.',img:'https://images.unsplash.com/photo-1742734703252-25ef2a605d33?auto=format&fit=crop&w=900&q=80'},
+  {slug:'cheonggyecheon',type:'long',title:'Cheonggyecheon \u2014 Where the City Comes Up for Air',kicker:'Editor\u2019s Notebook \u00b7 Jung-gu',excerpt:'A river was buried under a highway, then unburied by a city that decided it preferred the water. Take the stairs down.',img:'https://images.unsplash.com/photo-1687779176476-55920ac3f400?auto=format&fit=crop&w=900&q=80'},
+  {slug:'subway-five-steps',type:'short',title:'Five Steps to Survive the Seoul Subway',kicker:'Field Note \u00b7 Transit',excerpt:'A T-money card, two taps, and the calmest underground in Asia. Do not let Google Maps route you here.',img:'https://images.unsplash.com/photo-1679212843220-b36bf01ff859?auto=format&fit=crop&w=900&q=80'},
+  {slug:'gwangjang-bindaetteok',type:'short',title:'The Gwangjang Bindaetteok Gospel',kicker:'Field Note \u00b7 Eat',excerpt:'A market, a low table, an aunt who never lets you leave hungry, and ten thousand won between you and a story.',img:'https://images.unsplash.com/photo-1583224944844-5b268c057b72?auto=format&fit=crop&w=900&q=80'},
+  {slug:'banana-milk-hack',type:'short',title:'The Banana-Milk Hack: Korea\u2019s Viral Convenience-Store Coffee',kicker:'Field Note \u00b7 Trend',excerpt:'A noisy yellow bottle, an ice cup, and one shot of espresso. Three thousand won and you understand the country.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80'},
+  {slug:'hanbok-free-palace',type:'short',title:'Why Hanbok Is Free at the Palace',kicker:'Field Note \u00b7 Tradition',excerpt:'Korea offers entry to four royal palaces at no cost \u2014 if you arrive in hanbok. Almost no one outside Korea knows.',img:'https://images.unsplash.com/photo-1674154083287-c36a5b34050a?auto=format&fit=crop&w=900&q=80'},
+  {slug:'han-river-after-dark',type:'short',title:'Han River After Dark',kicker:'Field Note \u00b7 Outdoors',excerpt:'A mat, a chimaek, a slow bridge that changes color, and a city that, just for an evening, agrees to stop hurrying.',img:'https://images.unsplash.com/photo-1611410873756-63d72ad1b732?auto=format&fit=crop&w=900&q=80'},
+  {slug:'buamdong-painters',type:'short',title:'Buam-dong: Where the Painters Hid',kicker:'Field Note \u00b7 Walk',excerpt:'A steep, quiet hill behind the palace where painters and poets disappeared when the city below grew too loud.',img:'https://images.unsplash.com/photo-1773149660396-21c22230cd6c?auto=format&fit=crop&w=900&q=80'},
+  {slug:'ten-words',type:'short',title:'The Ten Words You Actually Need',kicker:'Field Note \u00b7 Language',excerpt:'A market vendor, a cab driver, and a pharmacist all want the same ten words from you. Here they are.',img:'https://images.unsplash.com/photo-1620041786470-616bc1224fb6?auto=format&fit=crop&w=900&q=80'}
+];
+function renderEditorial(){
+  const c=document.getElementById('editor-grid');
+  if(!c)return;
+  c.innerHTML=EDITORIAL_COLUMNS.map(col=>{
+    const tag=col.type==='long'?'Feature':'Field Note';
+    return `<a class="editor-col" href="columns/${col.slug}.html">
+      <div class="editor-col-img" style="background-image:url('${col.img}')">
+        <span class="editor-col-tag">${tag}</span>
+      </div>
+      <div class="editor-col-body">
+        <div class="editor-col-kicker">${col.kicker}</div>
+        <div class="editor-col-title"><em>${col.title}</em></div>
+        <div class="editor-col-excerpt">${col.excerpt}</div>
+        <div class="editor-col-cta">Read the column &rarr;</div>
+      </div>
+    </a>`;
+  }).join('');
+}
 
 // ===== EVENTS — keyword image mapping =====
 const KEYWORD_IMAGES=[
@@ -2405,7 +2482,7 @@ function openMap(){
   if(!kMap){waitKakao(()=>{
     const c=new kakao.maps.LatLng(myLat||DEFAULT_LAT,myLng||DEFAULT_LNG);
     kMap=new kakao.maps.Map(document.getElementById('kakaoMap'),{center:c,level:5});
-    showMyMkr();searchMap('all');
+    showMyMkr();searchMap('cheap');
     kakao.maps.event.addListener(kMap,'idle',()=>{
       if(document.getElementById('mapInfo').classList.contains('show'))return;
       clearTimeout(window._mst);window._mst=setTimeout(()=>{searchMap(document.querySelector('.map-cat.active').dataset.mcat)},500);
@@ -2419,7 +2496,7 @@ function openMap(){
         kMap.setCenter(new kakao.maps.LatLng(lat,lng));
         kMap.setLevel(4);
         const activeCat=document.querySelector('.map-cat.active');
-        searchMap(activeCat?activeCat.dataset.mcat:'all');
+        searchMap(activeCat?activeCat.dataset.mcat:'cheap');
       }
     })});
   })}else{kMap.relayout();if(myLat)kMap.setCenter(new kakao.maps.LatLng(myLat,myLng))}
@@ -2427,7 +2504,7 @@ function openMap(){
 
 function showMyMkr(){
   if(!myLat||!kMap)return;if(myMkr)myMkr.setMap(null);
-  myMkr=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(myLat,myLng),content:'<div style="width:16px;height:16px;background:#4285F4;border:3px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.3)"></div>',yAnchor:0.5,xAnchor:0.5});
+  myMkr=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(myLat,myLng),content:'<div class="my-loc-doryung"><div class="my-loc-pulse"></div><img src="face-doryung.png" alt="me" /></div>',yAnchor:0.5,xAnchor:0.5});
   myMkr.setMap(kMap);
 }
 
@@ -2507,20 +2584,17 @@ async function fetchKTO(lat,lng,radius,type){
 function searchMap(cat){
   kMarkers.forEach(m=>m.setMap(null));kMarkers=[];document.getElementById('mapInfo').classList.remove('show');
   showLandmarks();
-  // KTO category path (skip Kakao keywords)
-  if(cat==='kto' || cat==='festival'){
+  // KTO category path (Attractions only — festival category removed by spec)
+  if(cat==='kto'){
     const cn=kMap.getCenter();
-    const ktoType = cat==='festival' ? '15' : '12'; // 12=attractions, 15=festivals
     const radius=Math.min(Math.max(kMap.getLevel()*2000,1000),20000);
     document.getElementById('mapCount').textContent='Loading KTO data...';
-    fetchKTO(cn.getLat(),cn.getLng(),radius,ktoType).then(items=>{
+    fetchKTO(cn.getLat(),cn.getLng(),radius,'12').then(items=>{
       document.getElementById('mapCount').textContent=items.length+' spots';
-      const color = cat==='festival' ? '#9333EA' : '#0284C7';
-      const icon = cat==='festival' ? 'fas fa-music' : 'fas fa-landmark';
       items.forEach(it=>{
         if(!it.lat||!it.lng) return;
         const mk=document.createElement('div');mk.style.cssText='cursor:pointer';
-        mk.innerHTML=mkPin(color,icon);
+        mk.innerHTML=mkPin('#0284C7','fas fa-landmark');
         const ov=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(it.lat,it.lng),content:mk,yAnchor:1.2});
         ov.setMap(kMap);kMarkers.push(ov);
         mk.addEventListener('click',()=>{showMapInfoKTO(it);kMap.panTo(new kakao.maps.LatLng(it.lat,it.lng))});
@@ -2528,8 +2602,8 @@ function searchMap(cat){
     });
     return;
   }
-  const kwm={all:['착한가격업소','공원','도서관','박물관'],cheap:['착한가격업소','맛집'],free:['공원','도서관','박물관','무료']};
-  const kws=kwm[cat]||kwm.all;
+  const kwm={cheap:['착한가격업소','맛집'],free:['공원','도서관','박물관','무료']};
+  const kws=kwm[cat]||kwm.cheap;
   const cn=kMap.getCenter();const lv=kMap.getLevel();const r=Math.min(Math.max(lv*1500,1000),20000);
   let all=[];let done=0;
   document.getElementById('mapCount').textContent='Searching...';
@@ -2541,6 +2615,19 @@ function searchMap(cat){
         if(done===kws.length){
           const seen=new Set();all=all.filter(p=>{if(seen.has(p.id))return false;seen.add(p.id);return true});
           all=dedupeNearby(all);
+          // Filter: exclude irrelevant categories per spec
+          all=all.filter(p=>{
+            const cn=(p.category_name||'').toLowerCase();
+            const nm=(p.place_name||'').toLowerCase();
+            // Always exclude academies / hagwon / private institutes
+            if(cn.includes('학원')||cn.includes('교습소')||cn.includes('아카데미')||cn.includes('hagwon')||cn.includes('교육,학문')||cn.includes('학교'))return false;
+            if(nm.includes('학원')||nm.includes('아카데미')||nm.includes('교습소'))return false;
+            // For Free Spots — exclude any food/restaurant/cafe place
+            if(cat==='free'){
+              if(cn.includes('음식점')||cn.includes('카페')||cn.includes('맛집')||cn.includes('주점')||cn.includes('치킨')||cn.includes('분식')||cn.includes('한식')||cn.includes('일식')||cn.includes('중식')||cn.includes('양식')||cn.includes('레스토랑')||cn.includes('스시')||cn.includes('피자')||cn.includes('베이커리')||cn.includes('패스트푸드'))return false;
+            }
+            return true;
+          });
           document.getElementById('mapCount').textContent=all.length+' spots';
           all.forEach(p=>{
             const nc=((p.place_name||'')+(p.category_name||'')).toLowerCase();
