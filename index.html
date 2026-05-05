@@ -152,6 +152,34 @@
   .tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
   /* PR A: hide top tabs — entry cards in Home replace navigation */
   .tabs{display:none !important}
+  /* PR B — Doryung greeting (Home top) */
+  .doryung-greeting{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;padding:12px 14px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .doryung-greeting img{width:46px;height:46px;border-radius:50%;border:2px solid var(--ink-deep,#1B3A5C);object-fit:cover;background:#fff;flex-shrink:0;padding:1px}
+  .doryung-greeting-text{flex:1;min-width:0}
+  .doryung-greeting-name{font-family:var(--serif);font-size:13px;font-weight:700;font-style:italic;color:var(--ink);letter-spacing:-0.01em;margin-bottom:2px}
+  .doryung-greeting-line{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--ink-soft);line-height:1.45;letter-spacing:0}
+  /* PR B — Inline Doryung comment card (between list items) */
+  .doryung-comment{align-self:stretch;background:#FBF4E1;border-left:2px solid var(--ink-deep,#1B3A5C);border-radius:2px 12px 12px 12px;padding:10px 14px;margin:8px 0;font-family:var(--serif);font-style:italic;font-size:12.5px;line-height:1.55;color:var(--ink-line,#2C2A24);box-shadow:0 1px 4px rgba(28,25,23,0.05)}
+  .doryung-comment::before{content:"— Doryung";display:block;font-size:9.5px;font-style:normal;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-deep,#1B3A5C);margin-bottom:5px;opacity:0.75}
+  /* PR C — Onboarding overlay */
+  .onboarding-overlay{display:none;position:fixed;inset:0;background:#F4E8D2;background-image:radial-gradient(rgba(28,25,23,0.025) 1px,transparent 1px);background-size:18px 18px;z-index:1000;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+  .onboarding-overlay.active{display:flex}
+  .onboarding-step{display:none;max-width:340px;width:100%;animation:obFadeIn 0.4s ease}
+  .onboarding-step.active{display:block}
+  @keyframes obFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .onboarding-avatar{width:120px;height:120px;border-radius:50%;border:3px solid var(--ink-deep,#1B3A5C);object-fit:cover;background:#fff;padding:2px;margin-bottom:18px;box-shadow:0 6px 24px rgba(28,58,92,0.15)}
+  .onboarding-title{font-family:var(--serif);font-size:24px;font-weight:700;font-style:italic;color:var(--ink-deep,#1B3A5C);letter-spacing:-0.015em;line-height:1.2;margin-bottom:10px}
+  .onboarding-body{font-family:var(--serif);font-size:14.5px;line-height:1.6;color:var(--ink-line,#2C2A24);margin-bottom:22px;letter-spacing:-0.005em}
+  .onboarding-cta{background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border:none;padding:12px 28px;border-radius:24px;font-size:14px;font-weight:700;font-family:var(--serif);font-style:italic;letter-spacing:0.04em;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(28,58,92,0.18)}
+  .onboarding-cta:active{transform:scale(0.98)}
+  .onboarding-skip{display:block;margin-top:12px;background:none;border:none;color:var(--ink-soft);font-size:11.5px;font-family:var(--sans);cursor:pointer;letter-spacing:0.04em;padding:8px}
+  .onboarding-progress{display:flex;gap:6px;justify-content:center;margin-bottom:24px}
+  .onboarding-dot{width:7px;height:7px;border-radius:50%;background:rgba(28,58,92,0.2);transition:background 0.2s}
+  .onboarding-dot.active{background:var(--ink-deep,#1B3A5C)}
+  .onboarding-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+  .onboarding-option{padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;font-size:12.5px;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left;font-weight:600}
+  .onboarding-option:hover{border-color:var(--ink-deep,#1B3A5C)}
+  .onboarding-option.selected{background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border-color:var(--ink-deep,#1B3A5C)}
   /* Entry cards grid — Home navigation replacement */
   .entry-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
   .entry-card{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;padding:14px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform 0.12s,box-shadow 0.12s;cursor:pointer;font-family:inherit;text-align:left;width:100%}
@@ -632,6 +660,15 @@
 <div class="content">
   <!-- Home -->
   <div class="section active" id="sec-home">
+
+    <!-- Doryung's greeting (PR B · Q2C) -->
+    <div class="doryung-greeting" id="doryungGreeting">
+      <img src="face-doryung.png" alt="Kim Doryung" />
+      <div class="doryung-greeting-text">
+        <div class="doryung-greeting-name">Kim Doryung</div>
+        <div class="doryung-greeting-line" id="doryungGreetingLine">…</div>
+      </div>
+    </div>
 
     <!-- Today's Column -->
     <a class="column-card" href="bukchon-hanok-village.html" id="todayColumn" aria-label="Today's column">
@@ -1560,6 +1597,39 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Onboarding overlay (PR C · Q4A · first-visit only) -->
+<div class="onboarding-overlay" id="onboarding" role="dialog" aria-label="Welcome to K-Doryung">
+  <div class="onboarding-progress" id="obProgress">
+    <span class="onboarding-dot active"></span>
+    <span class="onboarding-dot"></span>
+    <span class="onboarding-dot"></span>
+  </div>
+  <!-- Step 1: Doryung self-intro -->
+  <div class="onboarding-step active" data-ob-step="1">
+    <img class="onboarding-avatar" src="face-doryung.png" alt="Kim Doryung" />
+    <div class="onboarding-title" id="obStep1Title">Annyeonghaseyo.</div>
+    <div class="onboarding-body" id="obStep1Body">
+      I am Kim Doryung. Born in Bukchon in 1836. I have walked Korea for 190 years with my white Jindo, Baekgu. Wherever you are going — cheap eats, hidden lanes, a small ritual for the day — we will walk it with you.
+    </div>
+    <button class="onboarding-cta" id="obStep1Next" type="button"><span id="obStep1NextLabel">Walk with me →</span></button>
+    <button class="onboarding-skip" id="obSkip" type="button"><span id="obSkipLabel">Skip introduction</span></button>
+  </div>
+  <!-- Step 2: Where + Language -->
+  <div class="onboarding-step" data-ob-step="2">
+    <div class="onboarding-title" id="obStep2Title">Where shall I take you?</div>
+    <div class="onboarding-body" id="obStep2Body">Pick a place to begin. You can change this any time from the location pin.</div>
+    <div class="onboarding-options" id="obDestList"></div>
+    <button class="onboarding-cta" id="obStep2Next" type="button" disabled><span id="obStep2NextLabel">Continue →</span></button>
+  </div>
+  <!-- Step 3: First hello -->
+  <div class="onboarding-step" data-ob-step="3">
+    <img class="onboarding-avatar" src="face-doryung.png" alt="Kim Doryung" />
+    <div class="onboarding-title" id="obStep3Title">Say hello.</div>
+    <div class="onboarding-body" id="obStep3Body">In Korea, a small greeting starts every walk. Tap below to begin our journey.</div>
+    <button class="onboarding-cta" id="obStep3Done" type="button"><span id="obStep3DoneLabel">안녕 — Begin</span></button>
+  </div>
+</div>
+
 <script>
 // ===== CONFIG =====
 const KAKAO_KEY='ce765ea76cec4f89f8af6f81c6e464c1';
@@ -1783,6 +1853,178 @@ document.addEventListener('DOMContentLoaded', () => {
     sel.addEventListener('change', e => setLang(e.target.value));
   }
   applyI18n();
+});
+
+// ===== PR B — Doryung's greeting + comment pools (static, no Gemini) =====
+const DORYUNG_GREETINGS = {
+  // Per time-of-day bucket. Subtle, slightly poetic, no exclamation marks.
+  morning: {
+    en: ['The lanterns are off. Baekgu and I are at Gwangjang for kalguksu.','Morning light is on Bugaksan. A good day for slow walking.','Tea steam rises in Insadong. Begin gently.'],
+    ko: ['초롱이 꺼졌습니다. 백구와 광장시장에서 칼국수 한 그릇.','아침 햇살이 북악산에 듭니다. 천천히 걷기 좋은 날입니다.','인사동 찻집에 김이 올라갑니다. 가볍게 시작하시지요.'],
+    ja: ['提灯は消えました。白狗と廣藏市場でカルグクスを。','朝日が北岳山に。ゆっくり歩くにはいい日です。','仁寺洞の茶店で湯気が立ちます。やさしく始めましょう。'],
+    zh: ['灯笼已熄。我和白狗在广藏市场吃刀削面。','晨光照在北岳山。是慢慢走的好日子。','仁寺洞茶馆升起茶烟。轻轻地开始吧。'],
+    vi: ['Đèn lồng đã tắt. Tôi và Baekgu đang ở chợ Gwangjang ăn kalguksu.','Nắng sớm trên núi Bugaksan. Một ngày đẹp để đi bộ chậm.','Trà bốc khói ở Insadong. Hãy bắt đầu nhẹ nhàng.'],
+    es: ['Las linternas se apagaron. Baekgu y yo desayunamos kalguksu en Gwangjang.','La luz mañanera toca Bugaksan. Buen día para caminar despacio.','El vapor del té sube en Insadong. Empieza con suavidad.'],
+    de: ['Die Laternen sind aus. Baekgu und ich essen Kalguksu in Gwangjang.','Morgenlicht auf dem Bugaksan. Ein guter Tag für langsame Schritte.','In Insadong steigt Teedampf auf. Beginne sanft.']
+  },
+  noon: {
+    en: ['Noon. A bowl of seolleongtang in Jongno is honest food.','Lunch hour. The market is loud — go anyway.','Bindaetteok at Gwangjang costs ₩6,500. Baekgu approves.'],
+    ko: ['정오입니다. 종로 설렁탕 한 그릇이 정직한 식사입니다.','점심 시간. 시장은 시끄럽지만 가도 좋습니다.','광장시장 빈대떡 6,500원. 백구가 좋아합니다.'],
+    ja: ['正午です。鍾路のソルロンタン一杯は正直な食事です。','昼時。市場は賑やかですが、行ってみましょう。','廣藏市場のビンデトック 6,500ウォン。白狗のお気に入り。'],
+    zh: ['中午了。钟路的雪浓汤是诚实的一餐。','午餐时间。市场吵闹，去看看也好。','广藏市场绿豆煎饼 6,500韩元。白狗喜欢。'],
+    vi: ['Đã trưa. Một bát seolleongtang ở Jongno là bữa ăn chân thật.','Giờ trưa. Chợ ồn nhưng đáng đến.','Bindaetteok ở Gwangjang giá ₩6,500. Baekgu thích.'],
+    es: ['Mediodía. Un seolleongtang en Jongno es comida honesta.','Hora del almuerzo. El mercado está ruidoso, pero ve igual.','Bindaetteok en Gwangjang cuesta ₩6,500. Baekgu lo aprueba.'],
+    de: ['Mittag. Eine Schale Seolleongtang in Jongno ist ehrliches Essen.','Mittagszeit. Der Markt ist laut — geh trotzdem.','Bindaetteok auf Gwangjang kostet ₩6,500. Baekgu mag es.']
+  },
+  afternoon: {
+    en: ['Afternoon light moves slow on the rooftops.','Walk a quiet alley. The city listens.','A small coffee in Ikseon-dong is enough now.'],
+    ko: ['오후 햇살이 기와 위로 천천히 흐릅니다.','조용한 골목 하나를 걸으세요. 도시가 듣고 있습니다.','지금은 익선동 작은 커피 한 잔이면 충분합니다.'],
+    ja: ['午後の光が瓦の上をゆっくり流れます。','静かな路地を一つ歩きましょう。街が耳を傾けます。','今は益善洞の小さなコーヒーで十分です。'],
+    zh: ['午后阳光在屋瓦上缓缓流动。','走一条安静的小巷。城市在听。','此刻益善洞一杯小咖啡就够了。'],
+    vi: ['Nắng chiều chậm trôi trên những mái ngói.','Đi qua một con hẻm yên tĩnh. Thành phố đang lắng nghe.','Một ly cà phê nhỏ ở Ikseon-dong là đủ lúc này.'],
+    es: ['La luz de la tarde fluye despacio sobre los tejados.','Camina un callejón silencioso. La ciudad escucha.','Un café pequeño en Ikseon-dong basta por ahora.'],
+    de: ['Nachmittagslicht zieht langsam über die Ziegel.','Geh eine stille Gasse. Die Stadt hört zu.','Ein kleiner Kaffee in Ikseon-dong genügt jetzt.']
+  },
+  evening: {
+    en: ['Sunset is gathering on the Han.','The pojangmacha lamps are coming on. The smell follows me.','Cherry trees and twilight — Bugaksan now.'],
+    ko: ['한강에 저녁 빛이 모입니다.','포장마차 등불이 켜집니다. 그 향이 따라옵니다.','벚나무와 황혼 — 지금 북악산입니다.'],
+    ja: ['漢江に夕方の光が集まります。','屋台の灯りが点きます。香りがついてきます。','桜と黄昏 — 今は北岳山です。'],
+    zh: ['汉江上聚拢着傍晚的光。','布帐马车的灯亮起。香气随我而行。','樱树与黄昏 — 此刻在北岳山。'],
+    vi: ['Ánh hoàng hôn tụ lại trên sông Hán.','Đèn của pojangmacha đang sáng lên. Mùi hương theo tôi.','Hoa anh đào và chạng vạng — Bugaksan lúc này.'],
+    es: ['El atardecer se reúne sobre el Han.','Las lámparas del pojangmacha se encienden. El aroma me sigue.','Cerezos y crepúsculo — Bugaksan ahora.'],
+    de: ['Über dem Han sammelt sich der Sonnenuntergang.','Die Lampen der Pojangmacha gehen an. Der Geruch folgt mir.','Kirschbäume und Dämmerung — jetzt am Bugaksan.']
+  },
+  night: {
+    en: ['Streetlamps are on. The city is gentler now.','Baekgu is asleep by the brazier.','Late hours. The lane is yours.'],
+    ko: ['가로등이 켜졌습니다. 도시가 한결 부드러워집니다.','백구는 화로 옆에 잠들었습니다.','늦은 시간입니다. 이 골목은 당신의 것입니다.'],
+    ja: ['街灯が灯りました。街が少しやわらかくなります。','白狗は火鉢のそばで眠っています。','遅い時間です。この路地はあなたのものです。'],
+    zh: ['路灯亮了。城市此刻更温柔。','白狗在火炉旁睡着了。','夜深了。这条小巷归你。'],
+    vi: ['Đèn đường đã sáng. Thành phố lúc này dịu hơn.','Baekgu đã ngủ bên lò sưởi.','Đêm khuya. Con hẻm này là của bạn.'],
+    es: ['Las farolas están encendidas. La ciudad es más amable ahora.','Baekgu duerme junto al brasero.','Hora tardía. La callejuela es tuya.'],
+    de: ['Die Straßenlaternen brennen. Die Stadt ist jetzt sanfter.','Baekgu schläft am Kohlenbecken.','Späte Stunde. Die Gasse gehört dir.']
+  }
+};
+const DORYUNG_COMMENTS_CHEAP = {
+  en: ['Bindaetteok at Gwangjang — ₩6,500. Baekgu calls it the bean coin.','The aunties at the back stall always pour extra broth. Sit at the back.','A government-certified place is honest by law. Trust the badge.'],
+  ko: ['광장시장 빈대떡 6,500원. 백구는 콩전이라고 부릅니다.','뒤쪽 노포 이모님들이 국물을 더 따라줍니다. 뒤쪽에 앉으세요.','정부 인증 가게는 법으로 정직합니다. 배지를 믿으세요.'],
+  ja: ['廣藏市場のビンデトック 6,500ウォン。白狗は「豆銭」と呼びます。','奥の屋台のおばちゃんは出汁を多めに注いでくれます。奥に座って。','政府認証の店は法律で正直です。バッジを信じて。'],
+  zh: ['广藏市场绿豆煎饼 6,500韩元。白狗叫它「豆币」。','后排小摊的阿姨总是多加汤。坐后面。','政府认证店在法律上是诚实的。请相信徽章。'],
+  vi: ['Bindaetteok ở Gwangjang — ₩6,500. Baekgu gọi nó là đồng đậu.','Các cô bán hàng phía sau luôn rót thêm nước canh. Hãy ngồi phía sau.','Quán được chính phủ chứng nhận thì trung thực theo luật. Hãy tin vào huy hiệu.'],
+  es: ['Bindaetteok en Gwangjang — ₩6,500. Baekgu lo llama la moneda de frijol.','Las señoras del puesto del fondo sirven más caldo. Siéntate al fondo.','Un lugar certificado por el gobierno es honesto por ley. Confía en la insignia.'],
+  de: ['Bindaetteok auf Gwangjang — ₩6,500. Baekgu nennt es die Bohnenmünze.','Die Tanten am hinteren Stand schenken mehr Brühe ein. Setz dich nach hinten.','Eine staatlich zertifizierte Adresse ist per Gesetz ehrlich. Glaub dem Abzeichen.']
+};
+const DORYUNG_COMMENTS_FREE = {
+  en: ['Every park has a story Baekgu has marked.','Free does not mean small. Some of these places are the heart of Seoul.','Bring water. The good ones take a long walk.'],
+  ko: ['공원마다 백구가 표시해 둔 이야기가 있습니다.','무료라고 작지 않습니다. 어떤 곳은 서울의 심장입니다.','물 한 통 챙기세요. 좋은 곳은 오래 걸어야 닿습니다.'],
+  ja: ['公園にはそれぞれ、白狗が印を残した物語があります。','無料だからといって小さくはありません。中にはソウルの心臓のような場所も。','水を持って。良い場所は長く歩きます。'],
+  zh: ['每个公园都有白狗留下的故事。','免费不等于小。有些地方是首尔的心脏。','带瓶水。好地方都要走很久。'],
+  vi: ['Mỗi công viên đều có một câu chuyện Baekgu đã đánh dấu.','Miễn phí không có nghĩa là nhỏ. Có nơi là trái tim của Seoul.','Mang theo nước. Những nơi đẹp đều phải đi bộ lâu.'],
+  es: ['Cada parque tiene una historia que Baekgu marcó.','Gratis no significa pequeño. Algunos son el corazón de Seúl.','Lleva agua. Los buenos requieren caminata larga.'],
+  de: ['Jeder Park hat eine Geschichte, die Baekgu markiert hat.','Gratis heißt nicht klein. Manche sind das Herz Seouls.','Nimm Wasser mit. Die guten brauchen einen langen Weg.']
+};
+function pickByTime(){
+  const h = new Date().getHours();
+  if (h < 6) return 'night';
+  if (h < 11) return 'morning';
+  if (h < 14) return 'noon';
+  if (h < 17) return 'afternoon';
+  if (h < 21) return 'evening';
+  return 'night';
+}
+function pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function setDoryungGreeting(){
+  const el = document.getElementById('doryungGreetingLine');
+  if (!el) return;
+  const slot = pickByTime();
+  const pool = (DORYUNG_GREETINGS[slot] || {})[CURRENT_LANG] || DORYUNG_GREETINGS[slot]?.en || DORYUNG_GREETINGS.morning.en;
+  el.textContent = pickRandom(pool);
+}
+function makeDoryungCommentNode(pool){
+  const text = pool[CURRENT_LANG] || pool.en;
+  const div = document.createElement('div');
+  div.className = 'doryung-comment';
+  div.textContent = pickRandom(text);
+  return div;
+}
+// Re-render greeting on lang change
+const _origSetLang = setLang;
+setLang = function(lang){_origSetLang(lang); setDoryungGreeting();};
+// Initial greeting on load
+document.addEventListener('DOMContentLoaded', setDoryungGreeting);
+
+// ===== PR C — Onboarding 3-step (first visit only) =====
+const ONBOARDING_KEY = 'kdoryung_onboarded';
+const OB_DESTINATIONS_FALLBACK = [
+  {key:'myeongdong',name:'Myeongdong',kr:'명동'},
+  {key:'gangnam',name:'Gangnam',kr:'강남'},
+  {key:'hongdae',name:'Hongdae',kr:'홍대'},
+  {key:'jongno',name:'Jongno',kr:'종로'},
+  {key:'bukchon',name:'Bukchon',kr:'북촌'},
+  {key:'haeundae',name:'Haeundae · Busan',kr:'해운대'}
+];
+let _obStep = 1;
+let _obSelectedDest = null;
+function obShowStep(n){
+  _obStep = n;
+  document.querySelectorAll('.onboarding-step').forEach(el => {
+    el.classList.toggle('active', Number(el.dataset.obStep) === n);
+  });
+  document.querySelectorAll('#obProgress .onboarding-dot').forEach((d,i)=>{
+    d.classList.toggle('active', i < n);
+  });
+}
+function obFinish(applyFirstHello){
+  localStorage.setItem(ONBOARDING_KEY, '1');
+  const ov = document.getElementById('onboarding');
+  if (ov) ov.classList.remove('active');
+  if (applyFirstHello && typeof openChatView === 'function' && typeof sendChatMsg === 'function') {
+    // Trigger a friendly first hello via the chatbot (gives Lv1 messageCount bump)
+    setTimeout(()=>{
+      try { openChatView(); setTimeout(()=>sendChatMsg('Hi'), 400); } catch(_){}
+    }, 200);
+  }
+}
+function obRenderDestinations(){
+  const list = document.getElementById('obDestList');
+  if (!list) return;
+  const arr = (typeof LOC_DESTINATIONS !== 'undefined' && Array.isArray(LOC_DESTINATIONS)) ? LOC_DESTINATIONS.slice(0,6) : OB_DESTINATIONS_FALLBACK;
+  list.innerHTML = arr.map(d => `<button class="onboarding-option" data-ob-dest="${d.key}" type="button">${d.name}<br><span style="font-size:10px;color:var(--ink-muted);font-weight:500">${d.kr}</span></button>`).join('');
+  list.querySelectorAll('.onboarding-option').forEach(b => {
+    b.addEventListener('click', () => {
+      list.querySelectorAll('.onboarding-option').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      _obSelectedDest = b.dataset.obDest;
+      const next = document.getElementById('obStep2Next');
+      if (next) next.disabled = false;
+    });
+  });
+}
+function obStartIfFirstVisit(){
+  try {
+    if (localStorage.getItem(ONBOARDING_KEY) === '1') return; // already onboarded
+  } catch(_){ return; }
+  const ov = document.getElementById('onboarding');
+  if (!ov) return;
+  obRenderDestinations();
+  obShowStep(1);
+  ov.classList.add('active');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const next1 = document.getElementById('obStep1Next');
+  const skip = document.getElementById('obSkip');
+  const next2 = document.getElementById('obStep2Next');
+  const done = document.getElementById('obStep3Done');
+  if (next1) next1.addEventListener('click', () => obShowStep(2));
+  if (skip)  skip.addEventListener('click',  () => obFinish(false));
+  if (next2) next2.addEventListener('click', () => {
+    if (_obSelectedDest && typeof setLocation === 'function') {
+      try { setLocation(_obSelectedDest); } catch(_){}
+    }
+    obShowStep(3);
+  });
+  if (done)  done.addEventListener('click',  () => obFinish(true));
+  // Defer slightly so splash plays first
+  setTimeout(obStartIfFirstVisit, 1500);
 });
 
 // ===== UTILS =====
@@ -2489,6 +2731,15 @@ function renderCards(container,places,type){
       </div>
     </div>`;
   }).join('');
+  // PR B: insert one Doryung comment after the 5th item in cheap/free lists
+  if ((type === 'cheap' || type === 'free') && typeof makeDoryungCommentNode === 'function') {
+    const cardsAll = container.querySelectorAll('.card');
+    if (cardsAll.length > 5) {
+      const pool = type === 'cheap' ? DORYUNG_COMMENTS_CHEAP : DORYUNG_COMMENTS_FREE;
+      const node = makeDoryungCommentNode(pool);
+      cardsAll[4].after(node);
+    }
+  }
   // Ads
   const cards=container.querySelectorAll('.card');
   [2,6,11].forEach(i=>{if(cards[i]){const ad=document.createElement('a');ad.className='ad-hanatour';ad.href='https://www.hanatour.com/';ad.target='_blank';ad.rel='noopener sponsored';ad.setAttribute('aria-label','Hanatour Korea travel booking');ad.innerHTML='<img class="hb-logo" src="hanatour-logo.jpg" alt="Hanatour" loading="lazy" /><span class="hb-text"><span class="hb-title" data-i18n="ad.hanatour.title">Book your Korea trip with Hanatour</span><span class="hb-sub" data-i18n="ad.hanatour.sub">Tours · hotels · transfers</span></span><span class="hb-cta" data-i18n="ad.hanatour.cta">Book →</span>';if(typeof applyI18n==='function')applyI18n();cards[i].after(ad)}});
