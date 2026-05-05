@@ -262,21 +262,21 @@
   .ad-hanatour .hb-sub{font-size:10.5px;font-style:italic;color:#7A4FA8;margin-top:2px}
   .ad-hanatour .hb-cta{flex:0 0 auto;font-size:11px;font-weight:700;background:#5B2A86;color:#FFF;border-radius:99px;padding:6px 12px;letter-spacing:0.04em;white-space:nowrap}
   /* Thread — paper journal */
-  .chat-thread{flex:1;overflow-y:auto;padding:20px 18px 12px;display:flex;flex-direction:column;gap:14px;-webkit-overflow-scrolling:touch}
+  .chat-thread{flex:1;overflow-y:auto;padding:14px 16px 10px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
   .chat-thread::before{content:"";display:block;text-align:center;color:rgba(28,25,23,0.35);font-family:var(--serif);font-style:italic;font-size:11px;letter-spacing:0.15em}
   /* Ink-stroke divider between conversation groups */
   .chat-divider{align-self:center;width:60%;height:1px;background:linear-gradient(90deg,transparent,rgba(28,25,23,0.22) 30%,rgba(28,25,23,0.22) 70%,transparent);margin:8px 0;flex-shrink:0}
   .chat-divider::before{content:"·";position:relative;display:block;text-align:center;color:rgba(28,25,23,0.35);font-size:14px;line-height:0;top:-1px}
-  .chat-bubble{max-width:84%;padding:12px 16px;font-size:14.5px;line-height:1.7;animation:bubbleIn 0.25s ease;word-break:break-word;white-space:pre-wrap;letter-spacing:-0.005em}
+  .chat-bubble{max-width:82%;padding:8px 12px;font-size:13.5px;line-height:1.45;animation:bubbleIn 0.25s ease;word-break:break-word;white-space:pre-wrap;letter-spacing:-0.005em}
   /* Bot — hanji notebook page with left ink stroke */
-  .chat-bubble.bot{align-self:flex-start;background:#FBF4E1;color:var(--ink-line);border-radius:2px 14px 14px 14px;border-left:2px solid var(--ink-deep);box-shadow:var(--paper-shadow);font-family:var(--serif);position:relative;padding-left:18px}
+  .chat-bubble.bot{align-self:flex-start;background:#FBF4E1;color:var(--ink-line);border-radius:2px 12px 12px 12px;border-left:2px solid var(--ink-deep);box-shadow:var(--paper-shadow);font-family:var(--serif);position:relative;padding-left:14px}
   .chat-bubble.bot.thinking{font-style:italic;color:var(--ink-soft);background:transparent;border-left-color:rgba(28,58,92,0.35);box-shadow:none}
   .chat-bubble.bot.thinking::after{content:"꒘";display:inline-block;margin-left:4px;animation:quillPulse 1.2s ease-in-out infinite;color:var(--ink-deep)}
   @keyframes quillPulse{0%,100%{opacity:0.3}50%{opacity:1}}
   /* Long bot signature removed per user feedback (2026-05-05) */
   .chat-bubble.bot.signed::after{content:none}
   /* User — slate blue (조선 먹색) */
-  .chat-bubble.user{align-self:flex-end;background:var(--ink-deep);color:#FBF4E1;border-radius:14px 2px 14px 14px;box-shadow:0 2px 6px rgba(28,58,92,0.18);font-family:var(--sans);font-size:14px;letter-spacing:-0.005em}
+  .chat-bubble.user{align-self:flex-end;background:var(--ink-deep);color:#FBF4E1;border-radius:12px 2px 12px 12px;box-shadow:0 2px 6px rgba(28,58,92,0.18);font-family:var(--sans);font-size:13.5px;letter-spacing:-0.005em;line-height:1.4}
   @keyframes bubbleIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   /* Input bar — quill on parchment */
   .chat-input-bar{display:flex;gap:10px;align-items:center;padding:14px 18px calc(16px + env(safe-area-inset-bottom));border-top:1px solid rgba(28,25,23,0.12);background:var(--hanji);flex-shrink:0;position:relative}
@@ -470,9 +470,8 @@
   .shop-h-title{font-family:var(--serif);font-size:20px;font-weight:700;font-style:italic;color:var(--ink);letter-spacing:-0.01em}
   .shop-close{background:none;border:none;font-size:26px;line-height:1;color:var(--ink);cursor:pointer;padding:0 4px;font-family:inherit}
   .shop-body{padding:14px 16px 80px}
-  .shop-featured{background:var(--surface);border:1px solid var(--line-soft);border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(28,25,23,0.08);margin-bottom:18px}
-  .shop-featured{padding-top:6px}
-  .shop-feat-eyebrow{padding:28px 18px 18px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);line-height:1.4}
+  .shop-featured{background:var(--surface);border:1px solid var(--line-soft);border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(28,25,23,0.08);margin-bottom:18px;padding-top:0}
+  .shop-feat-eyebrow{padding:18px 18px 14px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);line-height:1.5;background:var(--surface)}
   .shop-feat-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--line-soft)}
   .shop-feat-body{padding:14px 18px 18px}
   .shop-feat-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);line-height:1.2;letter-spacing:-0.01em;margin-bottom:4px}
@@ -1436,19 +1435,19 @@
 <!-- Shop View (Doryung's Counter) -->
 <div class="shop-view" id="shopView">
   <div class="shop-header">
-    <div class="shop-h-title">Doryung&rsquo;s Counter</div>
+    <div class="shop-h-title" data-i18n="shop.headerTitle">Doryung&rsquo;s Counter</div>
     <button class="shop-close" id="shopClose" aria-label="Close">&times;</button>
   </div>
   <div class="shop-body">
 
     <!-- Featured: Hanok Bokjumeoni NFC Keyring -->
     <div class="shop-featured" id="featuredBokjumeoni">
-      <div class="shop-feat-eyebrow">★ Doryung&rsquo;s Recommendation</div>
+      <div class="shop-feat-eyebrow"><span data-i18n="shop.featEyebrow">★ Doryung&rsquo;s Recommendation</span></div>
       <div class="shop-feat-img" style="background-image:url('bokjumeoni-hero.jpg')"></div>
       <div class="shop-feat-body">
-        <div class="shop-feat-title">Hanok Bokjumeoni NFC Keyring</div>
-        <div class="shop-feat-tagline">A pocket-sized blessing, woven by hanok hands.</div>
-        <div class="shop-feat-story">
+        <div class="shop-feat-title" data-i18n="shop.featTitle">Hanok Bokjumeoni NFC Keyring</div>
+        <div class="shop-feat-tagline" data-i18n="shop.featTagline">A pocket-sized blessing, woven by hanok hands.</div>
+        <div class="shop-feat-story" data-i18n-html="shop.featStory">
           <p><b>The fabric.</b> Sewn from leftover hanbok cloth at a small hanok shop deep in Bukchon — the off-cuts that traditional tailors usually fold away. Each pouch carries a different scrap of silk or ramie, so no two are alike.</p>
           <p><b>The filling.</b> A handful of red beans (<i>pat</i>), tucked inside the way Korean grandmothers used to sew them into children&rsquo;s pouches to ward off bad luck.</p>
           <p><b>The chip.</b> A tiny NFC tag is sewn in beside the beans. Tap your phone against the bokjumeoni and Doryung will whisper one short ritual for the day &mdash; one small thing to do, one small thing to avoid, one direction to walk.</p>
@@ -1456,33 +1455,33 @@
         </div>
         <div class="shop-feat-row">
           <div class="shop-feat-price">&#8361;14,900</div>
-          <button class="shop-feat-buy" id="buyBokjumeoni">Buy</button>
+          <button class="shop-feat-buy" id="buyBokjumeoni" data-i18n="shop.buy">Buy</button>
         </div>
       </div>
     </div>
 
     <!-- Hana Tour · Strongly Recommended -->
     <div class="shop-hanatour">
-      <div class="shop-hanatour-eyebrow">&#9733;&#9733; Hana Tour &middot; Strongly Recommended</div>
-      <div class="shop-hanatour-title">Inbound Korea day-trips</div>
-      <div class="shop-hanatour-sub">Curated by Doryung in partnership with Hana Tour ITC. Foreign-tourist friendly.</div>
+      <div class="shop-hanatour-eyebrow" data-i18n="shop.hanaEyebrow">&#9733;&#9733; Hana Tour &middot; Strongly Recommended</div>
+      <div class="shop-hanatour-title" data-i18n="shop.hanaTitle">Inbound Korea day-trips</div>
+      <div class="shop-hanatour-sub" data-i18n="shop.hanaSub">Curated by Doryung in partnership with Hana Tour ITC. Foreign-tourist friendly.</div>
       <div class="shop-tour-list" id="shopTourList"></div>
     </div>
 
     <!-- Categories -->
     <div class="shop-cats" id="shopCats">
-      <button class="shop-cat active" data-shop-cat="all">All</button>
-      <button class="shop-cat" data-shop-cat="skincare">Skincare</button>
-      <button class="shop-cat" data-shop-cat="makeup">Makeup</button>
-      <button class="shop-cat" data-shop-cat="hair">Hair</button>
-      <button class="shop-cat" data-shop-cat="body">Body</button>
-      <button class="shop-cat" data-shop-cat="sets">Sets</button>
+      <button class="shop-cat active" data-shop-cat="all" data-i18n="shop.cat.all">All</button>
+      <button class="shop-cat" data-shop-cat="skincare" data-i18n="shop.cat.skincare">Skincare</button>
+      <button class="shop-cat" data-shop-cat="makeup" data-i18n="shop.cat.makeup">Makeup</button>
+      <button class="shop-cat" data-shop-cat="hair" data-i18n="shop.cat.hair">Hair</button>
+      <button class="shop-cat" data-shop-cat="body" data-i18n="shop.cat.body">Body</button>
+      <button class="shop-cat" data-shop-cat="sets" data-i18n="shop.cat.sets">Sets</button>
     </div>
 
     <!-- Grid -->
     <div class="shop-grid" id="shopGrid"></div>
 
-    <div class="shop-foot">
+    <div class="shop-foot" data-i18n="shop.foot">
       Curated by Doryung. Authentic K-beauty &middot; only official retailers.
     </div>
 
@@ -1539,7 +1538,12 @@ const I18N = {
     'btn.directions': 'Directions', 'btn.reviews': 'Reviews', 'btn.share': 'Share',
     'loading.cheap': 'Finding budget restaurants near you...', 'loading.free': 'Finding free attractions near you...', 'loading.events': 'Loading...',
     'empty.cheap': 'No budget restaurants found in this area.', 'empty.free': 'No free attractions found in this area.',
-    'ad.hanatour.title': 'Book your Korea trip with Hanatour', 'ad.hanatour.sub': 'Tours · hotels · transfers · K-experiences', 'ad.hanatour.cta': 'Book →'
+    'ad.hanatour.title': 'Book your Korea trip with Hanatour', 'ad.hanatour.sub': 'Tours · hotels · transfers · K-experiences', 'ad.hanatour.cta': 'Book →',
+    'shop.headerTitle': "Doryung's Counter", 'shop.featEyebrow': "★ Doryung's Recommendation", 'shop.featTitle': 'Hanok Bokjumeoni NFC Keyring', 'shop.featTagline': 'A pocket-sized blessing, woven by hanok hands.',
+    'shop.featStory': "<p><b>The fabric.</b> Sewn from leftover hanbok cloth at a small hanok shop deep in Bukchon — the off-cuts that traditional tailors usually fold away. Each pouch carries a different scrap of silk or ramie, so no two are alike.</p><p><b>The filling.</b> A handful of red beans (<i>pat</i>), tucked inside the way Korean grandmothers used to sew them into children's pouches to ward off bad luck.</p><p><b>The chip.</b> A tiny NFC tag is sewn in beside the beans. Tap your phone against the bokjumeoni and Doryung will whisper one short ritual for the day — one small thing to do, one small thing to avoid, one direction to walk.</p><p><b>The size.</b> 6 cm × 7 cm, with a brass keyring loop. Slips onto a bag, a belt loop, or a hotel-room key.</p>",
+    'shop.buy': 'Buy', 'shop.hanaEyebrow': '★★ Hana Tour · Strongly Recommended', 'shop.hanaTitle': 'Inbound Korea day-trips', 'shop.hanaSub': 'Curated by Doryung in partnership with Hana Tour ITC. Foreign-tourist friendly.',
+    'shop.cat.all': 'All', 'shop.cat.skincare': 'Skincare', 'shop.cat.makeup': 'Makeup', 'shop.cat.hair': 'Hair', 'shop.cat.body': 'Body', 'shop.cat.sets': 'Sets',
+    'shop.foot': 'Curated by Doryung. Authentic K-beauty · only official retailers.'
   },
   ko: {
     'header.title': '한국 알뜰 여행', 'header.subtitle': '김도령과 함께 · AI 여행 가이드', 'header.locating': '위치 확인 중...',
@@ -1551,7 +1555,12 @@ const I18N = {
     'btn.directions': '길찾기', 'btn.reviews': '리뷰', 'btn.share': '공유',
     'loading.cheap': '주변 알뜰 식당 찾는 중...', 'loading.free': '주변 무료 명소 찾는 중...', 'loading.events': '불러오는 중...',
     'empty.cheap': '주변에 알뜰 식당이 없습니다.', 'empty.free': '주변에 무료 명소가 없습니다.',
-    'ad.hanatour.title': '하나투어로 한국 여행 예약하기', 'ad.hanatour.sub': '투어·호텔·픽업·K-체험', 'ad.hanatour.cta': '예약 →'
+    'ad.hanatour.title': '하나투어로 한국 여행 예약하기', 'ad.hanatour.sub': '투어·호텔·픽업·K-체험', 'ad.hanatour.cta': '예약 →',
+    'shop.headerTitle': '도령의 가게', 'shop.featEyebrow': '★ 도령의 추천', 'shop.featTitle': '한복 복주머니 NFC 키링', 'shop.featTagline': '한복 장인의 손길로 짠 작은 축복.',
+    'shop.featStory': '<p><b>천.</b> 북촌 골목 한 한복집의 자투리 천에서 잘라 만들었습니다. 옛 재단사들이 한쪽에 접어두던 조각들 — 비단이나 모시 한 조각씩 들어가 있어 같은 것이 하나도 없습니다.</p><p><b>속.</b> 옛 할머니들이 아이 주머니에 넣어 액운을 막던 그대로, 붉은 팥 한 줌이 담겼습니다.</p><p><b>칩.</b> 팥 옆에 작은 NFC 태그가 들어 있습니다. 휴대폰을 복주머니에 갖다 대면 도령이 오늘의 짧은 의식을 속삭여 줍니다 — 오늘 할 일 하나, 피할 일 하나, 걸어갈 방향 하나.</p><p><b>크기.</b> 6 cm × 7 cm, 황동 키링 고리. 가방·벨트·호텔 키에 걸 수 있습니다.</p>',
+    'shop.buy': '구매', 'shop.hanaEyebrow': '★★ 하나투어 · 강력 추천', 'shop.hanaTitle': '한국 인바운드 당일 투어', 'shop.hanaSub': '도령이 하나투어 ITC와 함께 큐레이션. 외국 여행자에게 친화적입니다.',
+    'shop.cat.all': '전체', 'shop.cat.skincare': '스킨케어', 'shop.cat.makeup': '메이크업', 'shop.cat.hair': '헤어', 'shop.cat.body': '바디', 'shop.cat.sets': '세트',
+    'shop.foot': '도령 큐레이션. 정품 K-뷰티 · 공식 판매처만.'
   },
   zh: {
     'header.title': '韩国低价旅行指南', 'header.subtitle': '与金道令同行 · AI 旅行', 'header.locating': '定位中...',
@@ -1563,7 +1572,12 @@ const I18N = {
     'btn.directions': '路线', 'btn.reviews': '评价', 'btn.share': '分享',
     'loading.cheap': '正在寻找附近的平价餐厅...', 'loading.free': '正在寻找附近的免费景点...', 'loading.events': '加载中...',
     'empty.cheap': '附近没有平价餐厅。', 'empty.free': '附近没有免费景点。',
-    'ad.hanatour.title': '通过 Hanatour 预订韩国之旅', 'ad.hanatour.sub': '行程·酒店·接送·K体验', 'ad.hanatour.cta': '预订 →'
+    'ad.hanatour.title': '通过 Hanatour 预订韩国之旅', 'ad.hanatour.sub': '行程·酒店·接送·K体验', 'ad.hanatour.cta': '预订 →',
+    'shop.headerTitle': '道令的小店', 'shop.featEyebrow': '★ 道令推荐', 'shop.featTitle': '韩屋福袋 NFC 钥匙扣', 'shop.featTagline': '韩屋手工编织的小小祝福。',
+    'shop.featStory': '<p><b>布料。</b>来自北村深处一家小韩屋店的韩服边角料 — 老裁缝通常折起来收着的剩布。每个福袋都有一片不同的丝绸或苎麻，没有两个是相同的。</p><p><b>填充。</b>一把红豆，按韩国奶奶们当年缝在孩子福袋里驱邪的方式放入其中。</p><p><b>芯片。</b>红豆旁边缝有微型 NFC 标签。把手机靠近福袋，道令会低声告诉您今天的一个小仪式 — 一件该做的事、一件该避免的事、一个方向。</p><p><b>尺寸。</b>6 cm × 7 cm，配黄铜钥匙环。可挂在包、腰带或酒店钥匙上。</p>',
+    'shop.buy': '购买', 'shop.hanaEyebrow': '★★ 韩亚旅行社 · 强烈推荐', 'shop.hanaTitle': '韩国一日游', 'shop.hanaSub': '由道令与 Hana Tour ITC 联合策划。外国游客友好。',
+    'shop.cat.all': '全部', 'shop.cat.skincare': '护肤', 'shop.cat.makeup': '彩妆', 'shop.cat.hair': '美发', 'shop.cat.body': '身体护理', 'shop.cat.sets': '套装',
+    'shop.foot': '由道令精选。正品 K-美妆 · 仅限官方零售商。'
   },
   ja: {
     'header.title': '韓国お得旅行ガイド', 'header.subtitle': '金道令と · AI 旅行', 'header.locating': '位置を確認中...',
@@ -1575,7 +1589,12 @@ const I18N = {
     'btn.directions': '道順', 'btn.reviews': 'レビュー', 'btn.share': 'シェア',
     'loading.cheap': '近くの安い食堂を探しています...', 'loading.free': '近くの無料スポットを探しています...', 'loading.events': '読み込み中...',
     'empty.cheap': '近くに安い食堂がありません。', 'empty.free': '近くに無料スポットがありません。',
-    'ad.hanatour.title': 'Hanatourで韓国旅行を予約', 'ad.hanatour.sub': 'ツアー・ホテル・送迎・K体験', 'ad.hanatour.cta': '予約 →'
+    'ad.hanatour.title': 'Hanatourで韓国旅行を予約', 'ad.hanatour.sub': 'ツアー・ホテル・送迎・K体験', 'ad.hanatour.cta': '予約 →',
+    'shop.headerTitle': '道令の店', 'shop.featEyebrow': '★ 道令のおすすめ', 'shop.featTitle': '韓屋ポクチュモニ NFC キーリング', 'shop.featTagline': '韓屋の職人の手で編まれた小さな祝福。',
+    'shop.featStory': '<p><b>生地。</b>北村の小さな韓屋工房で出る韓服の端切れ — 仕立て屋がしまっていた残布から。絹や麻の一片ずつ入っていて、同じものはひとつもありません。</p><p><b>中身。</b>韓国のおばあさんが昔、子どもの守り袋に縫い込んだように、赤い小豆をひと握り。</p><p><b>チップ。</b>小豆のそばに小さなNFCタグが縫い込まれています。スマホをかざすと、道令が今日のささやかな儀式をささやきます — するべきこと一つ、避けるべきこと一つ、歩むべき方向ひとつ。</p><p><b>サイズ。</b>6 cm × 7 cm、真鍮のキーリング付き。バッグ・ベルトループ・ホテルキーに。</p>',
+    'shop.buy': '購入', 'shop.hanaEyebrow': '★★ Hana Tour · 強くおすすめ', 'shop.hanaTitle': '韓国インバウンド日帰りツアー', 'shop.hanaSub': '道令とHana Tour ITCの共同キュレーション。外国人旅行者向け。',
+    'shop.cat.all': 'すべて', 'shop.cat.skincare': 'スキンケア', 'shop.cat.makeup': 'メイク', 'shop.cat.hair': 'ヘア', 'shop.cat.body': 'ボディ', 'shop.cat.sets': 'セット',
+    'shop.foot': '道令キュレーション。本物のK-ビューティー · 公式販売店のみ。'
   },
   vi: {
     'header.title': 'Du lịch Hàn Quốc tiết kiệm', 'header.subtitle': 'cùng K-Doryung · Du lịch AI', 'header.locating': 'Đang định vị...',
@@ -1587,7 +1606,12 @@ const I18N = {
     'btn.directions': 'Chỉ đường', 'btn.reviews': 'Đánh giá', 'btn.share': 'Chia sẻ',
     'loading.cheap': 'Đang tìm quán ăn rẻ gần đây...', 'loading.free': 'Đang tìm điểm tham quan miễn phí...', 'loading.events': 'Đang tải...',
     'empty.cheap': 'Không có quán ăn rẻ gần đây.', 'empty.free': 'Không có điểm miễn phí gần đây.',
-    'ad.hanatour.title': 'Đặt tour Hàn Quốc với Hanatour', 'ad.hanatour.sub': 'Tour · khách sạn · đưa đón · trải nghiệm K', 'ad.hanatour.cta': 'Đặt →'
+    'ad.hanatour.title': 'Đặt tour Hàn Quốc với Hanatour', 'ad.hanatour.sub': 'Tour · khách sạn · đưa đón · trải nghiệm K', 'ad.hanatour.cta': 'Đặt →',
+    'shop.headerTitle': 'Quầy của Doryung', 'shop.featEyebrow': '★ Doryung đề xuất', 'shop.featTitle': 'Móc khóa NFC Hanok Bokjumeoni', 'shop.featTagline': 'Một lời chúc nhỏ, dệt bởi đôi bàn tay hanok.',
+    'shop.featStory': '<p><b>Vải.</b> Khâu từ vải hanbok thừa ở một xưởng hanok nhỏ trong Bukchon — những mảnh vải mà thợ may truyền thống thường gấp lại cất đi. Mỗi túi mang một mảnh lụa hoặc vải gai khác nhau, không có hai chiếc giống nhau.</p><p><b>Bên trong.</b> Một nắm đậu đỏ (<i>pat</i>), nhét vào theo cách các bà ngoại Hàn Quốc xưa khâu vào túi của trẻ em để xua đuổi vận xui.</p><p><b>Chip.</b> Một thẻ NFC nhỏ được khâu cạnh đậu. Chạm điện thoại vào bokjumeoni và Doryung sẽ thì thầm một nghi thức ngắn cho ngày hôm nay — một việc nên làm, một điều nên tránh, một hướng để đi.</p><p><b>Kích thước.</b> 6 cm × 7 cm, có khoen móc chìa khóa bằng đồng. Móc vào túi, vòng thắt lưng hoặc chìa khóa khách sạn.</p>',
+    'shop.buy': 'Mua', 'shop.hanaEyebrow': '★★ Hana Tour · Đặc biệt khuyên dùng', 'shop.hanaTitle': 'Tour trong ngày khám phá Hàn Quốc', 'shop.hanaSub': 'Được Doryung tuyển chọn cùng Hana Tour ITC. Thân thiện với khách du lịch nước ngoài.',
+    'shop.cat.all': 'Tất cả', 'shop.cat.skincare': 'Chăm sóc da', 'shop.cat.makeup': 'Trang điểm', 'shop.cat.hair': 'Tóc', 'shop.cat.body': 'Cơ thể', 'shop.cat.sets': 'Bộ sản phẩm',
+    'shop.foot': 'Doryung tuyển chọn. K-beauty chính hãng · chỉ từ nhà bán lẻ chính thức.'
   },
   es: {
     'header.title': 'Guía económica de Corea', 'header.subtitle': 'con K-Doryung · Viaje IA', 'header.locating': 'Localizando...',
@@ -1599,7 +1623,12 @@ const I18N = {
     'btn.directions': 'Cómo llegar', 'btn.reviews': 'Reseñas', 'btn.share': 'Compartir',
     'loading.cheap': 'Buscando restaurantes económicos cerca...', 'loading.free': 'Buscando atracciones gratis cerca...', 'loading.events': 'Cargando...',
     'empty.cheap': 'No hay restaurantes económicos cerca.', 'empty.free': 'No hay atracciones gratis cerca.',
-    'ad.hanatour.title': 'Reserva tu viaje a Corea con Hanatour', 'ad.hanatour.sub': 'Tours · hoteles · traslados · experiencias K', 'ad.hanatour.cta': 'Reservar →'
+    'ad.hanatour.title': 'Reserva tu viaje a Corea con Hanatour', 'ad.hanatour.sub': 'Tours · hoteles · traslados · experiencias K', 'ad.hanatour.cta': 'Reservar →',
+    'shop.headerTitle': 'Tienda de Doryung', 'shop.featEyebrow': '★ Recomendación de Doryung', 'shop.featTitle': 'Llavero NFC Hanok Bokjumeoni', 'shop.featTagline': 'Una bendición de bolsillo, tejida por manos hanok.',
+    'shop.featStory': '<p><b>El tejido.</b> Cosido con retales de hanbok de un pequeño taller hanok en Bukchon — los recortes que los sastres tradicionales suelen guardar. Cada bolsita lleva un trozo distinto de seda o ramio, así que no hay dos iguales.</p><p><b>El relleno.</b> Un puñado de frijoles rojos (<i>pat</i>), tal como las abuelas coreanas los cosían en los bolsillos de los niños para alejar la mala suerte.</p><p><b>El chip.</b> Una pequeña etiqueta NFC va cosida junto a los frijoles. Acerca el teléfono al bokjumeoni y Doryung te susurrará un breve ritual del día — una cosa que hacer, una que evitar, una dirección a seguir.</p><p><b>El tamaño.</b> 6 cm × 7 cm, con anilla de latón. Se engancha al bolso, al cinturón o a la llave del hotel.</p>',
+    'shop.buy': 'Comprar', 'shop.hanaEyebrow': '★★ Hana Tour · Muy recomendado', 'shop.hanaTitle': 'Excursiones de un día por Corea', 'shop.hanaSub': 'Curado por Doryung en colaboración con Hana Tour ITC. Pensado para turistas extranjeros.',
+    'shop.cat.all': 'Todo', 'shop.cat.skincare': 'Cuidado de piel', 'shop.cat.makeup': 'Maquillaje', 'shop.cat.hair': 'Cabello', 'shop.cat.body': 'Cuerpo', 'shop.cat.sets': 'Sets',
+    'shop.foot': 'Curado por Doryung. K-beauty auténtica · solo distribuidores oficiales.'
   },
   de: {
     'header.title': 'Korea Budget Reiseführer', 'header.subtitle': 'mit K-Doryung · KI-Reise', 'header.locating': 'Standort wird ermittelt...',
@@ -1611,7 +1640,12 @@ const I18N = {
     'btn.directions': 'Wegbeschreibung', 'btn.reviews': 'Bewertungen', 'btn.share': 'Teilen',
     'loading.cheap': 'Suche günstige Restaurants in der Nähe...', 'loading.free': 'Suche kostenlose Attraktionen...', 'loading.events': 'Lädt...',
     'empty.cheap': 'Keine günstigen Restaurants in der Nähe.', 'empty.free': 'Keine kostenlosen Attraktionen in der Nähe.',
-    'ad.hanatour.title': 'Buche deine Korea-Reise mit Hanatour', 'ad.hanatour.sub': 'Touren · Hotels · Transfers · K-Erlebnisse', 'ad.hanatour.cta': 'Buchen →'
+    'ad.hanatour.title': 'Buche deine Korea-Reise mit Hanatour', 'ad.hanatour.sub': 'Touren · Hotels · Transfers · K-Erlebnisse', 'ad.hanatour.cta': 'Buchen →',
+    'shop.headerTitle': 'Doryungs Laden', 'shop.featEyebrow': '★ Doryungs Empfehlung', 'shop.featTitle': 'Hanok Bokjumeoni NFC Schlüsselanhänger', 'shop.featTagline': 'Ein Segen für die Tasche, von Hanok-Händen gewebt.',
+    'shop.featStory': '<p><b>Der Stoff.</b> Aus Resten von Hanbok-Stoff einer kleinen Hanok-Werkstatt in Bukchon — die Abschnitte, die traditionelle Schneider sonst beiseitelegen. Jedes Säckchen trägt ein anderes Stück Seide oder Ramie, kein Stück gleicht dem anderen.</p><p><b>Die Füllung.</b> Eine Handvoll roter Bohnen (<i>pat</i>), wie es koreanische Großmütter früher in Kindersäckchen einnähten, um Unglück fernzuhalten.</p><p><b>Der Chip.</b> Ein winziger NFC-Tag liegt neben den Bohnen. Halte das Handy an das Bokjumeoni und Doryung flüstert dir ein kurzes Ritual für den Tag zu — eine Sache, die du tun solltest, eine, die du meiden solltest, eine Richtung, in die du gehen solltest.</p><p><b>Die Größe.</b> 6 cm × 7 cm, mit Messing-Schlüsselring. Passt an Tasche, Gürtelschlaufe oder Hotelschlüssel.</p>',
+    'shop.buy': 'Kaufen', 'shop.hanaEyebrow': '★★ Hana Tour · Sehr empfohlen', 'shop.hanaTitle': 'Korea-Tagesausflüge', 'shop.hanaSub': 'Von Doryung in Zusammenarbeit mit Hana Tour ITC kuratiert. Tourist-freundlich.',
+    'shop.cat.all': 'Alle', 'shop.cat.skincare': 'Hautpflege', 'shop.cat.makeup': 'Make-up', 'shop.cat.hair': 'Haar', 'shop.cat.body': 'Körper', 'shop.cat.sets': 'Sets',
+    'shop.foot': 'Von Doryung kuratiert. Echte K-Beauty · nur offizielle Händler.'
   }
 };
 
@@ -1637,6 +1671,12 @@ function applyI18n(){
     const k = el.getAttribute('data-i18n');
     const v = t(k);
     if (v != null) el.textContent = v;
+  });
+  // Rich-text content (paragraphs, bold, italic) — uses innerHTML
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const k = el.getAttribute('data-i18n-html');
+    const v = t(k);
+    if (v != null) el.innerHTML = v;
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const k = el.getAttribute('data-i18n-placeholder');
