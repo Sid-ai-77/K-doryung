@@ -1961,7 +1961,7 @@ function loadCheap(){
         <div class="card-actions"><button class="btn btn-primary" onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(s.n+' '+s.a)}','_blank')"><i class="fas fa-directions"></i> Google Maps</button><button class="btn btn-review" onclick="window.open('https://map.kakao.com/link/search/${encodeURIComponent(s.n)}','_blank')"><i class="fas fa-star"></i> Reviews</button><button class="btn btn-share" onclick="sharePlace('${(s.n||'').replace(/'/g,'')}','${(s.a||'').replace(/'/g,'')}','cheap')"><i class="fas fa-share-alt"></i> Share</button></div>`;
       c.appendChild(div);
       // Ads
-      if(i===2||i===7||i===13){const ad=document.createElement('a');ad.className='ad-hanatour';ad.href='https://www.hanatour.com/';ad.target='_blank';ad.rel='noopener sponsored';ad.setAttribute('aria-label','Hanatour Korea travel booking');ad.innerHTML='<img class="hb-logo" src="hanatour-logo.jpg" alt="Hanatour" loading="lazy" /><span class="hb-text"><span class="hb-title">Book your Korea trip with Hanatour</span><span class="hb-sub">Tours · hotels · transfers</span></span><span class="hb-cta">Book →</span>';c.appendChild(ad)}
+      if(i===2||i===7||i===13){const ad=document.createElement('a');ad.className='ad-hanatour';ad.href='https://www.hanatour.com/';ad.target='_blank';ad.rel='noopener sponsored';ad.setAttribute('aria-label','Hanatour Korea travel booking');ad.innerHTML='<img class="hb-logo" src="hanatour-logo.jpg" alt="Hanatour" loading="lazy" /><span class="hb-text"><span class="hb-title" data-i18n="ad.hanatour.title">Book your Korea trip with Hanatour</span><span class="hb-sub" data-i18n="ad.hanatour.sub">Tours · hotels · transfers</span></span><span class="hb-cta" data-i18n="ad.hanatour.cta">Book →</span>';if(typeof applyI18n==='function')applyI18n();c.appendChild(ad)}
     });
   });
 }
@@ -2368,7 +2368,7 @@ function renderCards(container,places,type){
   }).join('');
   // Ads
   const cards=container.querySelectorAll('.card');
-  [2,6,11].forEach(i=>{if(cards[i]){const ad=document.createElement('a');ad.className='ad-hanatour';ad.href='https://www.hanatour.com/';ad.target='_blank';ad.rel='noopener sponsored';ad.setAttribute('aria-label','Hanatour Korea travel booking');ad.innerHTML='<img class="hb-logo" src="hanatour-logo.jpg" alt="Hanatour" loading="lazy" /><span class="hb-text"><span class="hb-title">Book your Korea trip with Hanatour</span><span class="hb-sub">Tours · hotels · transfers</span></span><span class="hb-cta">Book →</span>';cards[i].after(ad)}});
+  [2,6,11].forEach(i=>{if(cards[i]){const ad=document.createElement('a');ad.className='ad-hanatour';ad.href='https://www.hanatour.com/';ad.target='_blank';ad.rel='noopener sponsored';ad.setAttribute('aria-label','Hanatour Korea travel booking');ad.innerHTML='<img class="hb-logo" src="hanatour-logo.jpg" alt="Hanatour" loading="lazy" /><span class="hb-text"><span class="hb-title" data-i18n="ad.hanatour.title">Book your Korea trip with Hanatour</span><span class="hb-sub" data-i18n="ad.hanatour.sub">Tours · hotels · transfers</span></span><span class="hb-cta" data-i18n="ad.hanatour.cta">Book →</span>';if(typeof applyI18n==='function')applyI18n();cards[i].after(ad)}});
 }
 
 function getLabel(p,type){
