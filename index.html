@@ -373,9 +373,11 @@
   @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
   /* Story (vertical scroll · Hanyang Times) */
-  .story-view{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100%;z-index:95;background:#0F0D0B;color:#EDE3CF;overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .story-view.active{display:block}
-  .story-topbar{position:sticky;top:0;z-index:96;background:rgba(15,13,11,0.96);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(237,227,207,0.15)}
+  /* Story view — flex column so header always pins to viewport top, only the body scrolls */
+  .story-view{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100dvh;max-height:100vh;z-index:95;background:#0F0D0B;color:#EDE3CF;flex-direction:column;overflow:hidden;-webkit-overflow-scrolling:touch}
+  .story-view.active{display:flex}
+  .story-topbar{flex:0 0 auto;background:rgba(15,13,11,0.96);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(237,227,207,0.15)}
+  .story-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
   .story-mast{font-family:var(--serif);font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:#EDE3CF;font-weight:600}
   .story-close{background:none;border:none;color:#EDE3CF;font-size:22px;cursor:pointer;padding:0 4px;line-height:1;font-family:inherit}
   .story-scroll{padding:0 0 80px}
@@ -504,12 +506,13 @@
   .tips-why{margin-top:6px;margin-bottom:4px}
 
   /* Shop view (Doryung's Counter) */
-  .shop-view{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100%;z-index:95;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .shop-view.active{display:block}
-  .shop-header{position:sticky;top:0;z-index:96;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line)}
+  /* Shop view — flex column so X always sits at viewport top, only the inner body scrolls */
+  .shop-view{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100dvh;max-height:100vh;z-index:95;background:var(--bg);flex-direction:column;overflow:hidden;-webkit-overflow-scrolling:touch}
+  .shop-view.active{display:flex}
+  .shop-header{flex:0 0 auto;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line)}
   .shop-h-title{font-family:var(--serif);font-size:20px;font-weight:700;font-style:italic;color:var(--ink);letter-spacing:-0.01em}
   .shop-close{background:none;border:none;font-size:26px;line-height:1;color:var(--ink);cursor:pointer;padding:0 4px;font-family:inherit}
-  .shop-body{padding:14px 16px 80px}
+  .shop-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px 80px}
   .shop-featured{background:var(--surface);border:1px solid var(--line-soft);border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(28,25,23,0.08);margin-bottom:18px;padding-top:0}
   .shop-feat-eyebrow{padding:18px 18px 14px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);line-height:1.5;background:var(--surface)}
   .shop-feat-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--line-soft)}
@@ -605,18 +608,20 @@
 </div>
 
 <!-- Header -->
-<div class="header" style="flex-direction:column;align-items:center;gap:6px;padding-bottom:14px">
+<div class="header" style="flex-direction:column;align-items:center;gap:6px;padding-bottom:12px">
   <h1 style="line-height:1.2;text-align:center"><span style="font-size:16px;font-weight:700" data-i18n="header.title">Korea Budget Guide</span><br><span style="font-size:11px;color:#6B6B6B;font-weight:500;letter-spacing:0.04em" data-i18n="header.subtitle">with K-Doryung &middot; AI Travel</span></h1>
-  <button class="loc-pill" id="locPill" type="button" aria-label="Change location" style="display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 10px;font-size:11.5px;font-family:inherit;color:var(--ink);cursor:pointer;line-height:1.2"><i class="fas fa-map-pin" style="font-size:10px;color:var(--accent)"></i><span id="locText" data-i18n="header.locating">Locating...</span><span style="font-size:9px;color:var(--ink-muted);margin-left:2px">▾</span></button>
-  <select id="langSelect" aria-label="Language" style="font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);cursor:pointer;font-family:inherit;outline:none">
-    <option value="en">English</option>
-    <option value="ko">한국어</option>
-    <option value="zh">中文</option>
-    <option value="ja">日本語</option>
-    <option value="vi">Tiếng Việt</option>
-    <option value="es">Español</option>
-    <option value="de">Deutsch</option>
-  </select>
+  <div class="header-controls" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px">
+    <button class="loc-pill" id="locPill" type="button" aria-label="Change location" style="display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 10px;font-size:11.5px;font-family:inherit;color:var(--ink);cursor:pointer;line-height:1.2"><i class="fas fa-map-pin" style="font-size:10px;color:var(--accent)"></i><span id="locText" data-i18n="header.locating">Locating...</span><span style="font-size:9px;color:var(--ink-muted);margin-left:2px">▾</span></button>
+    <select id="langSelect" aria-label="Language" style="font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);cursor:pointer;font-family:inherit;outline:none">
+      <option value="en">English</option>
+      <option value="ko">한국어</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+      <option value="vi">Tiếng Việt</option>
+      <option value="es">Español</option>
+      <option value="de">Deutsch</option>
+    </select>
+  </div>
 </div>
 
 <!-- Location picker modal -->
