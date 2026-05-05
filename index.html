@@ -2015,8 +2015,51 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 // ===== CHAT (Kim Doryung full-screen, Gemini-backed) =====
 const CHAT_PROXY='https://kdoryung-chat-proxy.ptodak.workers.dev/chat';
+const USER_STATE_API='https://kdoryung-chat-proxy.ptodak.workers.dev/user/state';
+const USER_DIARY_API='https://kdoryung-chat-proxy.ptodak.workers.dev/user/diary';
 const CHAT_HISTORY=[];
 const CHAT_GREETING='Annyeonghaseyo. I am Kim Doryung. In a hundred and ninety years I have walked every alley in Seoul. Tell me what you want — cheap eats, hidden lanes, the subway, a small ritual for the day. Baekgu is here too. He votes for food.';
+
+// ===== Friendship system — UUID + level state (Phase 1) =====
+function ensureUserId(){
+  let id = localStorage.getItem('kdoryung_uid');
+  if (id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return id;
+  // Generate UUID v4 (RFC 4122)
+  id = (typeof crypto !== 'undefined' && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+      });
+  localStorage.setItem('kdoryung_uid', id);
+  return id;
+}
+const USER_ID = ensureUserId();
+let USER_LEVEL = { level: 1, levelLabel: 'A traveler', name: null, messageCount: 0, daysActive: 0 };
+function applyUserLevel(s){
+  if (!s) return;
+  USER_LEVEL = Object.assign(USER_LEVEL, s);
+  const head = document.getElementById('chatMastLevel');
+  if (head) head.textContent = `Lv ${s.level} · ${s.levelLabel}`;
+}
+function showLevelUp(info){
+  if (!info) return;
+  // Toast + small celebratory animation in chat thread
+  const t = _chatThread();
+  if (!t) return;
+  const card = document.createElement('div');
+  card.style.cssText = 'align-self:center;background:#FBF4E1;border:1px solid #1B3A5C;border-radius:10px;padding:10px 14px;margin:6px 0;font-family:var(--serif);font-style:italic;font-size:12.5px;color:#1B3A5C;text-align:center;box-shadow:0 2px 6px rgba(28,58,92,0.12)';
+  card.innerHTML = `★ Friendship deepened — <b>${info.label}</b><br><span style="font-size:10.5px;font-style:normal;color:#57534E">Doryung now sees you as ${info.label}.</span>`;
+  t.appendChild(card);
+  t.scrollTop = t.scrollHeight;
+}
+async function fetchUserState(){
+  try {
+    const r = await fetch(`${USER_STATE_API}?id=${encodeURIComponent(USER_ID)}`);
+    const j = await r.json();
+    if (j && j.exists) applyUserLevel(j);
+  } catch (_) { /* ignore */ }
+}
 function _chatThread(){return document.getElementById('chatThread')}
 function chatAddBubble(role,text){
   const t=_chatThread();if(!t)return null;
@@ -2037,6 +2080,8 @@ function openChatView(){
   const v=document.getElementById('chatView');if(!v)return;
   v.classList.add('active');
   document.body.classList.add('chat-open');
+  // Refresh friendship level from backend (returning users see Lv badge immediately)
+  fetchUserState();
   if(CHAT_HISTORY.length===0){
     chatAddBubble('bot',CHAT_GREETING);
     CHAT_HISTORY.push({role:'assistant',content:CHAT_GREETING});
@@ -2057,10 +2102,11 @@ async function sendChatMsg(msg){
   thinking.textContent='Doryung is writing';
   t.appendChild(thinking);t.scrollTop=t.scrollHeight;
   try{
+    const langGuess = (typeof CURRENT_LANG !== 'undefined' && CURRENT_LANG) ? CURRENT_LANG : 'en';
     const r=await fetch(CHAT_PROXY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:CHAT_HISTORY})
+      body:JSON.stringify({messages:CHAT_HISTORY, userId: USER_ID, lang: langGuess})
     });
     const j=await r.json();
     thinking.remove();
@@ -2068,6 +2114,9 @@ async function sendChatMsg(msg){
       chatAddBubble('bot',j.text);
       CHAT_HISTORY.push({role:'assistant',content:j.text});
       chatAddDivider();
+      // Friendship: apply updated level + show level-up celebration
+      if (j.userState) applyUserLevel(j.userState);
+      if (j.levelUp) showLevelUp(j.levelUp);
     }else{
       chatAddBubble('bot',"Baekgu and I are catching our breath. Please ask me once more — I will answer.");
     }
