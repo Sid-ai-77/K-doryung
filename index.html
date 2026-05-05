@@ -3157,8 +3157,10 @@ function _pushOverlayHash(name){
     history.pushState({ kdoryungOverlay: name }, '', '#' + name);
   } catch(_){}
 }
-function _popOverlayHashIfPushed(){
+function _popOverlayHashIfPushed(expectedName){
   if (!history.state || !history.state.kdoryungOverlay) return;
+  // Scope cleanup to the overlay that actually closed — avoids popping a sibling overlay's hash
+  if (expectedName && history.state.kdoryungOverlay !== expectedName) return;
   _suppressPopstate = true;
   try { history.back(); } catch(_){}
   setTimeout(() => { _suppressPopstate = false; }, 80);
@@ -3198,10 +3200,10 @@ const _overlayObserver = new MutationObserver(muts => {
       if (t.classList.contains('active')) {
         _pushOverlayHash(name);
       } else {
-        // Deactivate detected — clean up stale hash if it matches this overlay
+        // Deactivate detected — clean up stale hash only if it matches THIS overlay
         if (history.state && history.state.kdoryungOverlay === name) {
           // Defer one tick to let any same-frame transitions settle
-          setTimeout(_popOverlayHashIfPushed, 0);
+          setTimeout(() => _popOverlayHashIfPushed(name), 0);
         }
       }
     }
@@ -3212,12 +3214,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(id);
     if (el) _overlayObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
   });
-  // X-button intercepts: after the original close handler runs, pop the pushed hash so URL stays clean
-  Object.values(_OVERLAY_CLOSE_BTN).forEach(btnId => {
+  // X-button intercepts: after the original close handler runs, pop the pushed hash for the SPECIFIC overlay
+  Object.entries(_OVERLAY_CLOSE_BTN).forEach(([name, btnId]) => {
     if (!btnId) return;
     const btn = document.getElementById(btnId);
     if (btn) {
-      btn.addEventListener('click', () => { setTimeout(_popOverlayHashIfPushed, 0); });
+      btn.addEventListener('click', () => { setTimeout(() => _popOverlayHashIfPushed(name), 0); });
     }
   });
 });
