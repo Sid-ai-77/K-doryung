@@ -2997,12 +2997,18 @@ function showLearnPage(){
   document.getElementById('tabs').style.display='none';
   document.getElementById('mapView').classList.remove('active');document.body.classList.remove('map-open');
   let lp=document.getElementById('learnPage');
+  const justCreated = !lp;
   if(!lp){
     lp=document.createElement('div');lp.id='learnPage';lp.className='learn-page';
     document.getElementById('mainContent')||document.querySelector('.content').parentNode;
     document.querySelector('.content').after(lp);
   }
   lp.classList.add('active');
+  // History API: lazily-created learnPage needs the observer attached on first creation
+  if (justCreated && typeof _overlayObserver !== 'undefined') {
+    try { _overlayObserver.observe(lp, { attributes: true, attributeFilter: ['class'] }); } catch(_){}
+    if (typeof _pushOverlayHash === 'function') _pushOverlayHash('learn');
+  }
   renderLearnPage();
 }
 
@@ -3168,19 +3174,35 @@ window.addEventListener('popstate', () => {
     btn.click();
     setTimeout(() => { _suppressPopstate = false; }, 80);
   } else {
-    // learn page has no X — fallback: drop active class + return to home
+    // learn page has no X — fallback: drop active class + restore main SPA shell
     const el = document.getElementById(_OVERLAY_VIEWS[active]);
     if (el) el.classList.remove('active');
+    if (active === 'learn') {
+      const content = document.querySelector('.content'); if (content) content.style.display='';
+      const tabs = document.getElementById('tabs'); if (tabs) tabs.style.display='';
+      // Reset bottom nav active to Home
+      document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+      const homeNav = document.querySelector('.nav-item[data-nav="home"]'); if (homeNav) homeNav.classList.add('active');
+    }
     document.body.classList.remove('chat-open','map-open');
   }
 });
+// Observer fires on BOTH activate and deactivate. On activate → push hash.
+// On deactivate (e.g., openStory() removes mapView.active without going through the X button), pop the stale hash.
 const _overlayObserver = new MutationObserver(muts => {
   muts.forEach(m => {
     if (m.attributeName !== 'class') return;
     const t = m.target;
     for (const [name, id] of Object.entries(_OVERLAY_VIEWS)) {
-      if (t.id === id && t.classList.contains('active')) {
+      if (t.id !== id) continue;
+      if (t.classList.contains('active')) {
         _pushOverlayHash(name);
+      } else {
+        // Deactivate detected — clean up stale hash if it matches this overlay
+        if (history.state && history.state.kdoryungOverlay === name) {
+          // Defer one tick to let any same-frame transitions settle
+          setTimeout(_popOverlayHashIfPushed, 0);
+        }
       }
     }
   });
