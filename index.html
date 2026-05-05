@@ -3153,9 +3153,20 @@ function _findActiveOverlay(){
 }
 function _pushOverlayHash(name){
   try {
-    if (history.state && history.state.kdoryungOverlay === name) return;
-    history.pushState({ kdoryungOverlay: name }, '', '#' + name);
+    const current = history.state && history.state.kdoryungOverlay;
+    if (current === name) return;
+    // If the existing state already belongs to an overlay that has just been deactivated
+    // (i.e., we're chaining map → story or similar), replace instead of stacking another entry.
+    // This keeps the stack at one overlay deep and prevents Back from revealing dead hashes.
+    const currentEl = current ? document.getElementById(_OVERLAY_VIEWS[current]) : null;
+    const method = current && currentEl && !currentEl.classList.contains('active') ? 'replaceState' : 'pushState';
+    history[method]({ kdoryungOverlay: name }, '', '#' + name);
   } catch(_){}
+}
+function _restoreHomeNav(){
+  document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+  const homeNav = document.querySelector('.nav-item[data-nav="home"]');
+  if (homeNav) homeNav.classList.add('active');
 }
 function _popOverlayHashIfPushed(expectedName){
   if (!history.state || !history.state.kdoryungOverlay) return;
@@ -3174,7 +3185,8 @@ window.addEventListener('popstate', () => {
   if (btn) {
     _suppressPopstate = true;
     btn.click();
-    setTimeout(() => { _suppressPopstate = false; }, 80);
+    // After the overlay's own close handler runs, also reset the bottom nav so Home is highlighted again
+    setTimeout(() => { _restoreHomeNav(); _suppressPopstate = false; }, 80);
   } else {
     // learn page has no X — fallback: drop active class + restore main SPA shell
     const el = document.getElementById(_OVERLAY_VIEWS[active]);
@@ -3182,10 +3194,8 @@ window.addEventListener('popstate', () => {
     if (active === 'learn') {
       const content = document.querySelector('.content'); if (content) content.style.display='';
       const tabs = document.getElementById('tabs'); if (tabs) tabs.style.display='';
-      // Reset bottom nav active to Home
-      document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-      const homeNav = document.querySelector('.nav-item[data-nav="home"]'); if (homeNav) homeNav.classList.add('active');
     }
+    _restoreHomeNav();
     document.body.classList.remove('chat-open','map-open');
   }
 });
