@@ -3134,6 +3134,72 @@ document.querySelectorAll('.entry-card').forEach(card=>{
   card.addEventListener('click',()=>activateSection(card.dataset.entry));
 });
 
+// ===== HISTORY API — browser back closes overlays instead of leaving the app (5/5) =====
+const _OVERLAY_VIEWS = { chat: 'chatView', story: 'storyView', shop: 'shopView', map: 'mapView', plan: 'planView', learn: 'learnPage' };
+const _OVERLAY_CLOSE_BTN = { chat: 'chatViewClose', story: 'storyClose', shop: 'shopClose', map: 'mapClose', plan: 'planClose' };
+let _suppressPopstate = false;
+function _findActiveOverlay(){
+  for (const [name, id] of Object.entries(_OVERLAY_VIEWS)) {
+    const el = document.getElementById(id);
+    if (el && el.classList.contains('active')) return name;
+  }
+  return null;
+}
+function _pushOverlayHash(name){
+  try {
+    if (history.state && history.state.kdoryungOverlay === name) return;
+    history.pushState({ kdoryungOverlay: name }, '', '#' + name);
+  } catch(_){}
+}
+function _popOverlayHashIfPushed(){
+  if (!history.state || !history.state.kdoryungOverlay) return;
+  _suppressPopstate = true;
+  try { history.back(); } catch(_){}
+  setTimeout(() => { _suppressPopstate = false; }, 80);
+}
+window.addEventListener('popstate', () => {
+  if (_suppressPopstate) return;
+  const active = _findActiveOverlay();
+  if (!active) return;
+  const btnId = _OVERLAY_CLOSE_BTN[active];
+  const btn = btnId ? document.getElementById(btnId) : null;
+  if (btn) {
+    _suppressPopstate = true;
+    btn.click();
+    setTimeout(() => { _suppressPopstate = false; }, 80);
+  } else {
+    // learn page has no X — fallback: drop active class + return to home
+    const el = document.getElementById(_OVERLAY_VIEWS[active]);
+    if (el) el.classList.remove('active');
+    document.body.classList.remove('chat-open','map-open');
+  }
+});
+const _overlayObserver = new MutationObserver(muts => {
+  muts.forEach(m => {
+    if (m.attributeName !== 'class') return;
+    const t = m.target;
+    for (const [name, id] of Object.entries(_OVERLAY_VIEWS)) {
+      if (t.id === id && t.classList.contains('active')) {
+        _pushOverlayHash(name);
+      }
+    }
+  });
+});
+document.addEventListener('DOMContentLoaded', () => {
+  Object.values(_OVERLAY_VIEWS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) _overlayObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+  });
+  // X-button intercepts: after the original close handler runs, pop the pushed hash so URL stays clean
+  Object.values(_OVERLAY_CLOSE_BTN).forEach(btnId => {
+    if (!btnId) return;
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.addEventListener('click', () => { setTimeout(_popOverlayHashIfPushed, 0); });
+    }
+  });
+});
+
 // ===== NAV =====
 document.querySelectorAll('.nav-item').forEach(n=>{n.addEventListener('click',()=>{
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
