@@ -180,6 +180,7 @@
   .onboarding-option{padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;font-size:12.5px;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left;font-weight:600}
   .onboarding-option:hover{border-color:var(--ink-deep,#1B3A5C)}
   .onboarding-option.selected{background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border-color:var(--ink-deep,#1B3A5C)}
+  .onboarding-option.selected span{color:rgba(251,244,225,0.78) !important}
   /* Entry cards grid — Home navigation replacement */
   .entry-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
   .entry-card{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;padding:14px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform 0.12s,box-shadow 0.12s;cursor:pointer;font-family:inherit;text-align:left;width:100%}
@@ -1994,6 +1995,8 @@ function obRenderDestinations(){
       list.querySelectorAll('.onboarding-option').forEach(x => x.classList.remove('selected'));
       b.classList.add('selected');
       _obSelectedDest = b.dataset.obDest;
+      // Persist immediately so Cheap/Free/etc. start loading the picked area while onboarding finishes
+      if (typeof setLocation === 'function') { try { setLocation(_obSelectedDest); } catch(_){} }
       const next = document.getElementById('obStep2Next');
       if (next) next.disabled = false;
     });
@@ -2017,14 +2020,31 @@ document.addEventListener('DOMContentLoaded', () => {
   if (next1) next1.addEventListener('click', () => obShowStep(2));
   if (skip)  skip.addEventListener('click',  () => obFinish(false));
   if (next2) next2.addEventListener('click', () => {
-    if (_obSelectedDest && typeof setLocation === 'function') {
-      try { setLocation(_obSelectedDest); } catch(_){}
-    }
+    // setLocation already ran on chip click; re-running is harmless but skip the redundant call
     obShowStep(3);
   });
   if (done)  done.addEventListener('click',  () => obFinish(true));
-  // Defer slightly so splash plays first
-  setTimeout(obStartIfFirstVisit, 1500);
+  // Defer until the splash is dismissed (CodeRabbit feedback). The splash CSS animation is ~1s
+  // and tryCloseSplash() removes it after the video ends; observe its DOM removal to fire the overlay.
+  function startOnboardingAfterSplash(){
+    const splash = document.getElementById('splash');
+    if (!splash || splash.classList.contains('hide') || !document.body.contains(splash)) {
+      // Splash already gone — fire next tick
+      setTimeout(obStartIfFirstVisit, 50);
+      return;
+    }
+    const obs = new MutationObserver(() => {
+      if (splash.classList.contains('hide') || !document.body.contains(splash)) {
+        obs.disconnect();
+        setTimeout(obStartIfFirstVisit, 200);
+      }
+    });
+    obs.observe(splash, { attributes: true, attributeFilter: ['class'] });
+    obs.observe(document.body, { childList: true });
+    // Hard fallback in case splash never dismisses (e.g., video error)
+    setTimeout(() => { try { obs.disconnect(); } catch(_){}; obStartIfFirstVisit(); }, 6000);
+  }
+  startOnboardingAfterSplash();
 });
 
 // ===== UTILS =====
@@ -2734,7 +2754,7 @@ function renderCards(container,places,type){
   // PR B: insert one Doryung comment after the 5th item in cheap/free lists
   if ((type === 'cheap' || type === 'free') && typeof makeDoryungCommentNode === 'function') {
     const cardsAll = container.querySelectorAll('.card');
-    if (cardsAll.length > 5) {
+    if (cardsAll.length >= 5) {
       const pool = type === 'cheap' ? DORYUNG_COMMENTS_CHEAP : DORYUNG_COMMENTS_FREE;
       const node = makeDoryungCommentNode(pool);
       cardsAll[4].after(node);
