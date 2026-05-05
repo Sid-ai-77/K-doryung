@@ -553,10 +553,10 @@
 </div>
 
 <!-- Header -->
-<div class="header" style="flex-direction:column;align-items:center;gap:4px;padding-bottom:14px">
+<div class="header" style="flex-direction:column;align-items:center;gap:6px;padding-bottom:14px">
   <h1 style="line-height:1.2;text-align:center"><span style="font-size:16px;font-weight:700" data-i18n="header.title">Korea Budget Guide</span><br><span style="font-size:11px;color:#6B6B6B;font-weight:500;letter-spacing:0.04em" data-i18n="header.subtitle">with K-Doryung &middot; AI Travel</span></h1>
-  <div class="loc" id="locText" data-i18n="header.locating" style="text-align:center;margin-top:2px">Locating...</div>
-  <select id="langSelect" aria-label="Language" style="margin-top:4px;font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);cursor:pointer;font-family:inherit;outline:none">
+  <button class="loc-pill" id="locPill" type="button" aria-label="Change location" style="display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 10px;font-size:11.5px;font-family:inherit;color:var(--ink);cursor:pointer;line-height:1.2"><i class="fas fa-map-pin" style="font-size:10px;color:var(--accent)"></i><span id="locText" data-i18n="header.locating">Locating...</span><span style="font-size:9px;color:var(--ink-muted);margin-left:2px">▾</span></button>
+  <select id="langSelect" aria-label="Language" style="font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);cursor:pointer;font-family:inherit;outline:none">
     <option value="en">English</option>
     <option value="ko">한국어</option>
     <option value="zh">中文</option>
@@ -565,6 +565,19 @@
     <option value="es">Español</option>
     <option value="de">Deutsch</option>
   </select>
+</div>
+
+<!-- Location picker modal -->
+<div id="locModal" style="display:none;position:fixed;inset:0;background:rgba(28,25,23,0.55);z-index:300;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeLocModal()">
+  <div style="background:var(--bg);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom));max-height:80dvh;overflow-y:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-family:var(--serif);font-size:18px;font-weight:700;font-style:italic">Where are you?</div>
+      <button onclick="closeLocModal()" style="background:none;border:none;font-size:22px;color:var(--ink);cursor:pointer;padding:4px 8px;line-height:1">×</button>
+    </div>
+    <div style="font-size:11px;color:var(--ink-muted);margin-bottom:12px">Pick the area you want to explore. Doryung will guide you from there.</div>
+    <button id="locUseGPS" type="button" style="width:100%;padding:10px 14px;background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border:none;border-radius:12px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px"><i class="fas fa-location-arrow"></i> Use my GPS location</button>
+    <div id="locDestList" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"></div>
+  </div>
 </div>
 
 <!-- Plan Your Trip -->
@@ -1609,6 +1622,16 @@ function fmtDist(k){if(k<0.1)return Math.round(k*1000)+'m';if(k<1)return(k*1000)
 let myLat=null,myLng=null,myCity='',myDistrict='';
 
 function initGPS(){
+  // Honor saved manual location override (set via location pill)
+  try{
+    const saved=JSON.parse(localStorage.getItem('kdoryung_loc')||'null');
+    if(saved&&saved.lat&&saved.lng){
+      myLat=saved.lat;myLng=saved.lng;myCity=saved.city||'';myDistrict=saved.district||'';
+      onReady();
+      const lt=document.getElementById('locText');if(lt){lt.removeAttribute('data-i18n');lt.textContent=saved.name||(myCity+' '+translateDistrict(myDistrict)).trim()}
+      return;
+    }
+  }catch(_){}
   if(!navigator.geolocation){useDefault();return}
   navigator.geolocation.getCurrentPosition(p=>{
     myLat=p.coords.latitude;myLng=p.coords.longitude;
@@ -1637,6 +1660,78 @@ function tryCloseSplash(){
 
 // Korean→English city mapping
 const cityEN={'서울특별시':'Seoul','부산광역시':'Busan','대구광역시':'Daegu','인천광역시':'Incheon','광주광역시':'Gwangju','대전광역시':'Daejeon','울산광역시':'Ulsan','세종특별자치시':'Sejong','경기도':'Gyeonggi','강원특별자치도':'Gangwon','충청북도':'Chungbuk','충청남도':'Chungnam','전북특별자치도':'Jeonbuk','전라남도':'Jeonnam','경상북도':'Gyeongbuk','경상남도':'Gyeongnam','제주특별자치도':'Jeju'};
+// Translate composite district like "안양시 동안구" -> "Anyang Dongan-gu"
+function translateDistrict(d){
+  if(!d)return '';
+  if(distEN[d])return distEN[d];
+  if(d.includes(' ')){
+    return d.split(' ').map(p=>distEN[p]||p).join(' ');
+  }
+  return d;
+}
+
+// === Manual location override (fixes inaccurate desktop IP geolocation) ===
+const LOC_DESTINATIONS=[
+  {key:'myeongdong',name:'Myeongdong',kr:'명동',lat:37.5636,lng:126.9869,city:'Seoul',district:'Jung-gu'},
+  {key:'jongno',name:'Jongno',kr:'종로',lat:37.5729,lng:126.9794,city:'Seoul',district:'Jongno-gu'},
+  {key:'hongdae',name:'Hongdae',kr:'홍대',lat:37.5563,lng:126.9236,city:'Seoul',district:'Mapo-gu'},
+  {key:'gangnam',name:'Gangnam',kr:'강남',lat:37.4979,lng:127.0276,city:'Seoul',district:'Gangnam-gu'},
+  {key:'itaewon',name:'Itaewon',kr:'이태원',lat:37.5346,lng:126.9947,city:'Seoul',district:'Yongsan-gu'},
+  {key:'seongsu',name:'Seongsu',kr:'성수',lat:37.5447,lng:127.0557,city:'Seoul',district:'Seongdong-gu'},
+  {key:'bukchon',name:'Bukchon',kr:'북촌',lat:37.5826,lng:126.9838,city:'Seoul',district:'Jongno-gu'},
+  {key:'jamsil',name:'Jamsil',kr:'잠실',lat:37.5133,lng:127.1000,city:'Seoul',district:'Songpa-gu'},
+  {key:'suji',name:'Suji-gu, Yongin',kr:'수지구',lat:37.3217,lng:127.0967,city:'Gyeonggi',district:'Yongin Suji-gu'},
+  {key:'bundang',name:'Bundang',kr:'분당',lat:37.3520,lng:127.1086,city:'Gyeonggi',district:'Seongnam Bundang-gu'},
+  {key:'haeundae',name:'Haeundae, Busan',kr:'해운대',lat:35.1631,lng:129.1638,city:'Busan',district:'Haeundae-gu'},
+  {key:'jeju',name:'Jeju City',kr:'제주시',lat:33.4996,lng:126.5312,city:'Jeju',district:'Jeju City'},
+  {key:'gyeongju',name:'Gyeongju',kr:'경주',lat:35.8562,lng:129.2247,city:'Gyeongbuk',district:'Gyeongju'},
+  {key:'incheon-airport',name:'Incheon Airport',kr:'인천공항',lat:37.4602,lng:126.4407,city:'Incheon',district:'Jung-gu'}
+];
+function openLocModal(){
+  const m=document.getElementById('locModal');if(!m)return;
+  const list=document.getElementById('locDestList');
+  list.innerHTML=LOC_DESTINATIONS.map(d=>`<button onclick="setLocation('${d.key}')" type="button" style="padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;font-size:12.5px;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left;line-height:1.35"><div style="font-weight:700">${d.name}</div><div style="font-size:10px;color:var(--ink-muted);margin-top:2px">${d.kr}</div></button>`).join('');
+  m.style.display='flex';
+}
+function closeLocModal(){const m=document.getElementById('locModal');if(m)m.style.display='none'}
+function setLocation(key){
+  const d=LOC_DESTINATIONS.find(x=>x.key===key);if(!d)return;
+  myLat=d.lat;myLng=d.lng;myCity=d.city;myDistrict=d.district;
+  localStorage.setItem('kdoryung_loc',JSON.stringify({key,lat:d.lat,lng:d.lng,city:d.city,district:d.district,name:d.name}));
+  const lt=document.getElementById('locText');if(lt){lt.removeAttribute('data-i18n');lt.textContent=d.name}
+  closeLocModal();
+  // Re-fetch data with new coordinates
+  if(typeof loadHome==='function')loadHome();
+  if(typeof loadCheap==='function')loadCheap();
+  if(typeof loadFree==='function')loadFree();
+  if(typeof renderEditorPicks==='function')renderEditorPicks();
+  if(typeof toast==='function')toast('Location: '+d.name);
+}
+function useGPS(){
+  localStorage.removeItem('kdoryung_loc');
+  closeLocModal();
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(p=>{
+      myLat=p.coords.latitude;myLng=p.coords.longitude;
+      // Re-trigger reverse geocoding + reload
+      if(typeof onReady==='function')onReady();
+    },()=>{toast('GPS unavailable. Pick a destination instead.')},{enableHighAccuracy:true,timeout:8000});
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const pill=document.getElementById('locPill');
+  if(pill)pill.addEventListener('click',openLocModal);
+  const gpsBtn=document.getElementById('locUseGPS');
+  if(gpsBtn)gpsBtn.addEventListener('click',useGPS);
+  // Apply saved manual location override on load
+  try{
+    const saved=JSON.parse(localStorage.getItem('kdoryung_loc')||'null');
+    if(saved&&saved.lat&&saved.lng){
+      myLat=saved.lat;myLng=saved.lng;myCity=saved.city||'';myDistrict=saved.district||'';
+      const lt=document.getElementById('locText');if(lt){lt.removeAttribute('data-i18n');lt.textContent=saved.name||'(saved)'}
+    }
+  }catch(_){}
+});
 const distEN={'수지구':'Suji','기흥구':'Giheung','처인구':'Cheoin','분당구':'Bundang','수정구':'Sujeong','중원구':'Jungwon','강남구':'Gangnam','서초구':'Seocho','송파구':'Songpa','마포구':'Mapo','영등포구':'Yeongdeungpo','종로구':'Jongno','중구':'Jung-gu','용산구':'Yongsan','성동구':'Seongdong','동대문구':'Dongdaemun','성북구':'Seongbuk','강북구':'Gangbuk','도봉구':'Dobong','노원구':'Nowon','은평구':'Eunpyeong','서대문구':'Seodaemun','광진구':'Gwangjin','동작구':'Dongjak','관악구':'Gwanak','강서구':'Gangseo','양천구':'Yangcheon','구로구':'Guro','금천구':'Geumcheon','강동구':'Gangdong','중랑구':'Jungnang','동안구':'Dongan','만안구':'Manan','수원시':'Suwon','성남시':'Seongnam','용인시':'Yongin','고양시':'Goyang','화성시':'Hwaseong','안양시':'Anyang','평택시':'Pyeongtaek','안산시':'Ansan','남양주시':'Namyangju','해운대구':'Haeundae','수영구':'Suyeong','부산진구':'Busanjin','연수구':'Yeonsu','남동구':'Namdong','명동':'Myeongdong','홍대':'Hongdae','강남':'Gangnam','이태원':'Itaewon','신촌':'Sinchon','동대문':'Dongdaemun','잠실':'Jamsil'};
 
 function onReady(){
@@ -1650,8 +1745,8 @@ function onReady(){
         myCity=r[0].region_1depth_name||'Seoul';
         myDistrict=r[0].region_2depth_name||'';
         const cityE=cityEN[myCity]||myCity;
-        const distE=distEN[myDistrict]||myDistrict;
-        const loc=document.getElementById('locText'); if(loc){loc.removeAttribute('data-i18n');loc.textContent=cityE+' '+distE;}
+        const distE=translateDistrict(myDistrict);
+        const loc=document.getElementById('locText'); if(loc){loc.removeAttribute('data-i18n');loc.textContent=(cityE+' '+distE).trim();}
       }
       hideSplash();
       loadHome();
