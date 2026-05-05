@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kdoryung-v3';
+const CACHE_NAME = 'kdoryung-v4';
 const STATIC_ASSETS = [
   '/k-doryung/',
   '/k-doryung/index.html',
