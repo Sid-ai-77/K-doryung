@@ -275,6 +275,12 @@
   body:has(.story-view.active) .bottom-nav,
   body:has(.shop-view.active) .bottom-nav,
   body:has(.plan-view.active) .bottom-nav{display:none !important}
+  /* Hide sticky header when full-screen overlay is active so its X button is reachable */
+  body:has(.story-view.active) .header,
+  body:has(.shop-view.active) .header,
+  body:has(.plan-view.active) .header,
+  body:has(.map-view.active) .header,
+  body:has(.learn-page.active) .header{display:none !important}
   /* Topbar — wood-and-ink scholar's masthead */
   .chat-topbar{display:flex;align-items:center;gap:12px;padding:14px 18px 12px;border-bottom:1px solid rgba(28,25,23,0.12);background:var(--hanji);position:relative}
   .chat-topbar::after{content:"";position:absolute;left:18px;right:18px;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(28,25,23,0.25) 20%,rgba(28,25,23,0.25) 80%,transparent)}
