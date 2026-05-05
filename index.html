@@ -150,6 +150,17 @@
   .tabs::-webkit-scrollbar{display:none}
   .tab{padding:8px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-family:inherit;transition:all 0.15s;letter-spacing:0.01em}
   .tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  /* PR A: hide top tabs — entry cards in Home replace navigation */
+  .tabs{display:none !important}
+  /* Entry cards grid — Home navigation replacement */
+  .entry-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .entry-card{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;padding:14px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform 0.12s,box-shadow 0.12s;cursor:pointer;font-family:inherit;text-align:left;width:100%}
+  .entry-card:active{transform:scale(0.98)}
+  .entry-card:hover{box-shadow:0 6px 24px rgba(28,25,23,0.08)}
+  .entry-card-icon{font-size:22px;color:var(--accent);margin-bottom:8px;line-height:1}
+  .entry-card-title{font-family:var(--serif);font-size:15px;font-weight:700;font-style:italic;color:var(--ink);letter-spacing:-0.01em;margin-bottom:3px;line-height:1.25}
+  .entry-card-sub{font-size:11px;color:var(--ink-soft);line-height:1.45;margin-bottom:8px}
+  .entry-card-cta{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
   .tab:not(.active):hover{border-color:var(--ink-soft)}
 
   /* Content */
@@ -643,6 +654,34 @@
         <input class="chat-input" id="chatInput" placeholder="Ask Doryung anything..." autocomplete="off">
         <button class="chat-send" id="chatSend">Ask</button>
       </div>
+    </div>
+
+    <!-- Entry cards — replaces top tabs (Q1 A, 5/5) -->
+    <div class="entry-cards" id="entryCards">
+      <button type="button" class="entry-card" data-entry="cheap">
+        <div class="entry-card-icon"><i class="fas fa-utensils"></i></div>
+        <div class="entry-card-title" data-i18n="entry.cheap.title">Cheap Eats</div>
+        <div class="entry-card-sub" data-i18n="entry.cheap.sub">Government-certified budget restaurants near you</div>
+        <div class="entry-card-cta" data-i18n="entry.cta">Open →</div>
+      </button>
+      <button type="button" class="entry-card" data-entry="free">
+        <div class="entry-card-icon"><i class="fas fa-tree"></i></div>
+        <div class="entry-card-title" data-i18n="entry.free.title">Free Spots</div>
+        <div class="entry-card-sub" data-i18n="entry.free.sub">Parks, museums, libraries — no won required</div>
+        <div class="entry-card-cta" data-i18n="entry.cta">Open →</div>
+      </button>
+      <button type="button" class="entry-card" data-entry="events">
+        <div class="entry-card-icon"><i class="fas fa-feather-pointed"></i></div>
+        <div class="entry-card-title" data-i18n="entry.editor.title">Editor's Notebook</div>
+        <div class="entry-card-sub" data-i18n="entry.editor.sub">Doryung's own field notes on Korea</div>
+        <div class="entry-card-cta" data-i18n="entry.cta">Open →</div>
+      </button>
+      <button type="button" class="entry-card" data-entry="tips">
+        <div class="entry-card-icon"><i class="fas fa-lightbulb"></i></div>
+        <div class="entry-card-title" data-i18n="entry.tips.title">Travel Tips</div>
+        <div class="entry-card-sub" data-i18n="entry.tips.sub">FX, subway, hanbok, han river — what locals know</div>
+        <div class="entry-card-cta" data-i18n="entry.cta">Open →</div>
+      </button>
     </div>
 
     <!-- Emergency -->
@@ -1544,7 +1583,12 @@ const I18N = {
     'shop.buy': 'Buy', 'shop.hanaEyebrow': '★★ Hana Tour · Strongly Recommended', 'shop.hanaTitle': 'Inbound Korea day-trips', 'shop.hanaSub': 'Curated by Doryung in partnership with Hana Tour ITC. Foreign-tourist friendly.',
     'shop.cat.all': 'All', 'shop.cat.skincare': 'Skincare', 'shop.cat.makeup': 'Makeup', 'shop.cat.hair': 'Hair', 'shop.cat.body': 'Body', 'shop.cat.sets': 'Sets',
     'shop.foot': 'Curated by Doryung. Authentic K-beauty · only official retailers.',
-    'tour.inquire': 'Inquire', 'tour.alertSoon': 'This Hana Tour package is coming soon — Doryung is signing the partnership scrolls.'
+    'tour.inquire': 'Inquire', 'tour.alertSoon': 'This Hana Tour package is coming soon — Doryung is signing the partnership scrolls.',
+    'entry.cta': 'Open →',
+    'entry.cheap.title': 'Cheap Eats', 'entry.cheap.sub': 'Government-certified budget restaurants near you',
+    'entry.free.title': 'Free Spots', 'entry.free.sub': 'Parks, museums, libraries — no won required',
+    'entry.editor.title': "Editor's Notebook", 'entry.editor.sub': "Doryung's own field notes on Korea",
+    'entry.tips.title': 'Travel Tips', 'entry.tips.sub': 'FX, subway, hanbok, han river — what locals know'
   },
   ko: {
     'header.title': '한국 알뜰 여행', 'header.subtitle': '김도령과 함께 · AI 여행 가이드', 'header.locating': '위치 확인 중...',
@@ -1562,7 +1606,12 @@ const I18N = {
     'shop.buy': '구매', 'shop.hanaEyebrow': '★★ 하나투어 · 강력 추천', 'shop.hanaTitle': '한국 인바운드 당일 투어', 'shop.hanaSub': '도령이 하나투어 ITC와 함께 큐레이션. 외국 여행자에게 친화적입니다.',
     'shop.cat.all': '전체', 'shop.cat.skincare': '스킨케어', 'shop.cat.makeup': '메이크업', 'shop.cat.hair': '헤어', 'shop.cat.body': '바디', 'shop.cat.sets': '세트',
     'shop.foot': '도령 큐레이션. 정품 K-뷰티 · 공식 판매처만.',
-    'tour.inquire': '문의', 'tour.alertSoon': '하나투어 패키지 곧 정식 오픈 예정입니다 — 도령이 제휴 두루마리에 서명 중입니다.'
+    'tour.inquire': '문의', 'tour.alertSoon': '하나투어 패키지 곧 정식 오픈 예정입니다 — 도령이 제휴 두루마리에 서명 중입니다.',
+    'entry.cta': '들어가기 →',
+    'entry.cheap.title': '알뜰 식당', 'entry.cheap.sub': '정부 인증 알뜰 식당, 내 주변 검색',
+    'entry.free.title': '무료 명소', 'entry.free.sub': '공원·박물관·도서관 — 입장료 0원',
+    'entry.editor.title': "도령의 노트", 'entry.editor.sub': '도령이 직접 쓴 한국 여행 칼럼',
+    'entry.tips.title': '여행 팁', 'entry.tips.sub': '환율·지하철·한복·한강 — 현지인의 노하우'
   },
   zh: {
     'header.title': '韩国低价旅行指南', 'header.subtitle': '与金道令同行 · AI 旅行', 'header.locating': '定位中...',
@@ -1580,7 +1629,12 @@ const I18N = {
     'shop.buy': '购买', 'shop.hanaEyebrow': '★★ 韩亚旅行社 · 强烈推荐', 'shop.hanaTitle': '韩国一日游', 'shop.hanaSub': '由道令与 Hana Tour ITC 联合策划。外国游客友好。',
     'shop.cat.all': '全部', 'shop.cat.skincare': '护肤', 'shop.cat.makeup': '彩妆', 'shop.cat.hair': '美发', 'shop.cat.body': '身体护理', 'shop.cat.sets': '套装',
     'shop.foot': '由道令精选。正品 K-美妆 · 仅限官方零售商。',
-    'tour.inquire': '咨询', 'tour.alertSoon': '此 Hana Tour 套餐即将上线 — 道令正在签署合作文书。'
+    'tour.inquire': '咨询', 'tour.alertSoon': '此 Hana Tour 套餐即将上线 — 道令正在签署合作文书。',
+    'entry.cta': '进入 →',
+    'entry.cheap.title': '平价美食', 'entry.cheap.sub': '政府认证平价餐厅，附近搜索',
+    'entry.free.title': '免费景点', 'entry.free.sub': '公园·博物馆·图书馆 — 无需门票',
+    'entry.editor.title': '道令笔记', 'entry.editor.sub': '道令亲笔写的韩国旅行专栏',
+    'entry.tips.title': '旅行小贴士', 'entry.tips.sub': '汇率·地铁·韩服·汉江 — 本地人才知道的'
   },
   ja: {
     'header.title': '韓国お得旅行ガイド', 'header.subtitle': '金道令と · AI 旅行', 'header.locating': '位置を確認中...',
@@ -1598,7 +1652,12 @@ const I18N = {
     'shop.buy': '購入', 'shop.hanaEyebrow': '★★ Hana Tour · 強くおすすめ', 'shop.hanaTitle': '韓国インバウンド日帰りツアー', 'shop.hanaSub': '道令とHana Tour ITCの共同キュレーション。外国人旅行者向け。',
     'shop.cat.all': 'すべて', 'shop.cat.skincare': 'スキンケア', 'shop.cat.makeup': 'メイク', 'shop.cat.hair': 'ヘア', 'shop.cat.body': 'ボディ', 'shop.cat.sets': 'セット',
     'shop.foot': '道令キュレーション。本物のK-ビューティー · 公式販売店のみ。',
-    'tour.inquire': 'お問い合わせ', 'tour.alertSoon': 'このHana Tourパッケージは間もなく登場します — 道令が提携の巻物にサインしているところです。'
+    'tour.inquire': 'お問い合わせ', 'tour.alertSoon': 'このHana Tourパッケージは間もなく登場します — 道令が提携の巻物にサインしているところです。',
+    'entry.cta': '開く →',
+    'entry.cheap.title': '安い食事', 'entry.cheap.sub': '政府認定の安食堂・近くから検索',
+    'entry.free.title': '無料スポット', 'entry.free.sub': '公園・博物館・図書館 — 入場無料',
+    'entry.editor.title': '道令のノート', 'entry.editor.sub': '道令が自ら綴った韓国旅行のフィールドノート',
+    'entry.tips.title': '旅のコツ', 'entry.tips.sub': '為替・地下鉄・韓服・漢江 — 地元の知恵'
   },
   vi: {
     'header.title': 'Du lịch Hàn Quốc tiết kiệm', 'header.subtitle': 'cùng K-Doryung · Du lịch AI', 'header.locating': 'Đang định vị...',
@@ -1616,7 +1675,12 @@ const I18N = {
     'shop.buy': 'Mua', 'shop.hanaEyebrow': '★★ Hana Tour · Đặc biệt khuyên dùng', 'shop.hanaTitle': 'Tour trong ngày khám phá Hàn Quốc', 'shop.hanaSub': 'Được Doryung tuyển chọn cùng Hana Tour ITC. Thân thiện với khách du lịch nước ngoài.',
     'shop.cat.all': 'Tất cả', 'shop.cat.skincare': 'Chăm sóc da', 'shop.cat.makeup': 'Trang điểm', 'shop.cat.hair': 'Tóc', 'shop.cat.body': 'Cơ thể', 'shop.cat.sets': 'Bộ sản phẩm',
     'shop.foot': 'Doryung tuyển chọn. K-beauty chính hãng · chỉ từ nhà bán lẻ chính thức.',
-    'tour.inquire': 'Liên hệ', 'tour.alertSoon': 'Gói Hana Tour này sắp ra mắt — Doryung đang ký các văn bản hợp tác.'
+    'tour.inquire': 'Liên hệ', 'tour.alertSoon': 'Gói Hana Tour này sắp ra mắt — Doryung đang ký các văn bản hợp tác.',
+    'entry.cta': 'Mở →',
+    'entry.cheap.title': 'Đồ ăn rẻ', 'entry.cheap.sub': 'Quán ăn rẻ được chính phủ chứng nhận, gần bạn',
+    'entry.free.title': 'Điểm miễn phí', 'entry.free.sub': 'Công viên · bảo tàng · thư viện — không tốn won',
+    'entry.editor.title': 'Sổ tay Doryung', 'entry.editor.sub': 'Ghi chép thực địa Doryung tự viết về Hàn Quốc',
+    'entry.tips.title': 'Mẹo du lịch', 'entry.tips.sub': 'Tỷ giá · tàu điện · hanbok · sông Hán — người địa phương biết'
   },
   es: {
     'header.title': 'Guía económica de Corea', 'header.subtitle': 'con K-Doryung · Viaje IA', 'header.locating': 'Localizando...',
@@ -1634,7 +1698,12 @@ const I18N = {
     'shop.buy': 'Comprar', 'shop.hanaEyebrow': '★★ Hana Tour · Muy recomendado', 'shop.hanaTitle': 'Excursiones de un día por Corea', 'shop.hanaSub': 'Curado por Doryung en colaboración con Hana Tour ITC. Pensado para turistas extranjeros.',
     'shop.cat.all': 'Todo', 'shop.cat.skincare': 'Cuidado de piel', 'shop.cat.makeup': 'Maquillaje', 'shop.cat.hair': 'Cabello', 'shop.cat.body': 'Cuerpo', 'shop.cat.sets': 'Sets',
     'shop.foot': 'Curado por Doryung. K-beauty auténtica · solo distribuidores oficiales.',
-    'tour.inquire': 'Consultar', 'tour.alertSoon': 'Este paquete Hana Tour estará disponible pronto — Doryung está firmando los acuerdos.'
+    'tour.inquire': 'Consultar', 'tour.alertSoon': 'Este paquete Hana Tour estará disponible pronto — Doryung está firmando los acuerdos.',
+    'entry.cta': 'Abrir →',
+    'entry.cheap.title': 'Comida barata', 'entry.cheap.sub': 'Restaurantes económicos certificados cerca de ti',
+    'entry.free.title': 'Lugares gratis', 'entry.free.sub': 'Parques · museos · bibliotecas — sin won',
+    'entry.editor.title': 'Cuaderno de Doryung', 'entry.editor.sub': 'Notas de campo escritas por Doryung sobre Corea',
+    'entry.tips.title': 'Consejos de viaje', 'entry.tips.sub': 'Cambio · metro · hanbok · río Han — lo que saben los locales'
   },
   de: {
     'header.title': 'Korea Budget Reiseführer', 'header.subtitle': 'mit K-Doryung · KI-Reise', 'header.locating': 'Standort wird ermittelt...',
@@ -1652,7 +1721,12 @@ const I18N = {
     'shop.buy': 'Kaufen', 'shop.hanaEyebrow': '★★ Hana Tour · Sehr empfohlen', 'shop.hanaTitle': 'Korea-Tagesausflüge', 'shop.hanaSub': 'Von Doryung in Zusammenarbeit mit Hana Tour ITC kuratiert. Tourist-freundlich.',
     'shop.cat.all': 'Alle', 'shop.cat.skincare': 'Hautpflege', 'shop.cat.makeup': 'Make-up', 'shop.cat.hair': 'Haar', 'shop.cat.body': 'Körper', 'shop.cat.sets': 'Sets',
     'shop.foot': 'Von Doryung kuratiert. Echte K-Beauty · nur offizielle Händler.',
-    'tour.inquire': 'Anfragen', 'tour.alertSoon': 'Dieses Hana Tour-Paket kommt bald — Doryung unterzeichnet gerade die Partnerschaftsverträge.'
+    'tour.inquire': 'Anfragen', 'tour.alertSoon': 'Dieses Hana Tour-Paket kommt bald — Doryung unterzeichnet gerade die Partnerschaftsverträge.',
+    'entry.cta': 'Öffnen →',
+    'entry.cheap.title': 'Günstig essen', 'entry.cheap.sub': 'Staatlich zertifizierte günstige Restaurants in deiner Nähe',
+    'entry.free.title': 'Gratis Spots', 'entry.free.sub': 'Parks · Museen · Bibliotheken — keine Won nötig',
+    'entry.editor.title': 'Doryungs Notizbuch', 'entry.editor.sub': 'Doryungs eigene Feldnotizen zu Korea',
+    'entry.tips.title': 'Reisetipps', 'entry.tips.sub': 'Wechselkurs · U-Bahn · Hanbok · Han-Fluss — was Einheimische wissen'
   }
 };
 
@@ -2767,12 +2841,22 @@ if(_searchEl){
   });
 }
 
-// ===== TABS =====
+// ===== TABS (kept for legacy; tabs are hidden via CSS in PR A) =====
 document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
   t.classList.add('active');document.getElementById('sec-'+t.dataset.tab).classList.add('active');
 })});
+
+// ===== ENTRY CARDS — replaces top tabs in Home (PR A · 5/5) =====
+function activateSection(sectionKey){
+  // Drives the same tab activation logic but invoked from Home cards
+  const tabBtn=document.querySelector('.tab[data-tab="'+sectionKey+'"]');
+  if(tabBtn){tabBtn.click();window.scrollTo({top:0,behavior:'smooth'});}
+}
+document.querySelectorAll('.entry-card').forEach(card=>{
+  card.addEventListener('click',()=>activateSection(card.dataset.entry));
+});
 
 // ===== NAV =====
 document.querySelectorAll('.nav-item').forEach(n=>{n.addEventListener('click',()=>{
@@ -2784,7 +2868,13 @@ document.querySelectorAll('.nav-item').forEach(n=>{n.addEventListener('click',()
   else if(v==='story'){openStory()}
   else if(v==='learn'){showLearnPage()}
   else if(v==='shop'){openShop()}
-  else{document.getElementById('mapView').classList.remove('active');document.body.classList.remove('map-open');document.getElementById('storyView').classList.remove('active');document.getElementById('shopView').classList.remove('active');document.querySelector('.content').style.display='';document.getElementById('tabs').style.display='';const lp=document.getElementById('learnPage');if(lp)lp.classList.remove('active')}
+  else{document.getElementById('mapView').classList.remove('active');document.body.classList.remove('map-open');document.getElementById('storyView').classList.remove('active');document.getElementById('shopView').classList.remove('active');document.querySelector('.content').style.display='';const tabsEl=document.getElementById('tabs');if(tabsEl)tabsEl.style.display='';const lp=document.getElementById('learnPage');if(lp)lp.classList.remove('active');
+    // PR A: bottom-nav Home should reset to sec-home (not stay on whatever section was active)
+    document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+    const homeSec=document.getElementById('sec-home');if(homeSec)homeSec.classList.add('active');
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    const homeTabBtn=document.querySelector('.tab[data-tab="home"]');if(homeTabBtn)homeTabBtn.classList.add('active');
+  }
 })});
 
 // ===== PC hint visibility — home view only =====
