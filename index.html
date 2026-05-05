@@ -3031,9 +3031,13 @@ function pickLang(obj){return (obj && (obj[CURRENT_LANG] || obj.en)) || ''}
 function fmtTourPrice(won){
   const lang=CURRENT_LANG||'en';
   const fromMap={en:'From',ko:'부터',zh:'起',ja:'〜',vi:'từ',es:'Desde',de:'ab'};
+  const localeMap={en:'en-US',ko:'ko-KR',zh:'zh-CN',ja:'ja-JP',vi:'vi-VN',es:'es-ES',de:'de-DE'};
   const prefix=fromMap[lang]||'From';
-  const wonStr='₩'+Number(won).toLocaleString();
-  // Korean/Chinese put 부터/起 after, others before
+  const num=Number(won)||0;
+  let wonStr;
+  try{wonStr='₩'+new Intl.NumberFormat(localeMap[lang]||'en-US').format(num);}
+  catch(_){wonStr='₩'+num.toLocaleString();}
+  // Korean/Chinese/Japanese put 부터/起/〜 after, others before
   if(lang==='ko'||lang==='zh'||lang==='ja')return wonStr+' '+prefix;
   return prefix+' '+wonStr;
 }
