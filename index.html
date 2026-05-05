@@ -575,7 +575,16 @@
       <button onclick="closeLocModal()" style="background:none;border:none;font-size:22px;color:var(--ink);cursor:pointer;padding:4px 8px;line-height:1">×</button>
     </div>
     <div style="font-size:11px;color:var(--ink-muted);margin-bottom:12px">Pick the area you want to explore. Doryung will guide you from there.</div>
-    <button id="locUseGPS" type="button" style="width:100%;padding:10px 14px;background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border:none;border-radius:12px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px"><i class="fas fa-location-arrow"></i> Use my GPS location</button>
+    <div id="locDesktopHint" style="display:none;font-size:11px;color:#B45309;background:#FEF3C7;border:1px solid #FCD34D;padding:8px 10px;border-radius:8px;margin-bottom:10px;line-height:1.5"><i class="fas fa-info-circle"></i> On laptop or desktop, browser GPS uses your ISP location and may be off by several kilometers. Manual selection below is more accurate.</div>
+    <button id="locUseGPS" type="button" style="width:100%;padding:10px 14px;background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border:none;border-radius:12px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px"><i class="fas fa-location-arrow"></i> <span>Use my GPS location</span></button>
+    <div id="locConfirm" style="display:none;background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12.5px;line-height:1.55">
+      <div>Detected: <b id="locConfirmText"></b></div>
+      <div style="font-size:11px;color:var(--ink-muted);margin-top:4px">Is this correct?</div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button onclick="confirmGPSLoc()" type="button" style="flex:1;padding:8px;background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer">Yes, use this</button>
+        <button onclick="rejectGPSLoc()" type="button" style="flex:1;padding:8px;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer">No, pick below</button>
+      </div>
+    </div>
     <div id="locDestList" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"></div>
   </div>
 </div>
@@ -1691,6 +1700,12 @@ function openLocModal(){
   const m=document.getElementById('locModal');if(!m)return;
   const list=document.getElementById('locDestList');
   list.innerHTML=LOC_DESTINATIONS.map(d=>`<button onclick="setLocation('${d.key}')" type="button" style="padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;font-size:12.5px;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left;line-height:1.35"><div style="font-weight:700">${d.name}</div><div style="font-size:10px;color:var(--ink-muted);margin-top:2px">${d.kr}</div></button>`).join('');
+  // Show desktop hint when likely on laptop/desktop (no touch + width >= 1024 OR pointer:fine)
+  const isDesktop = (window.matchMedia && window.matchMedia('(pointer:fine) and (min-width:768px)').matches) || (!('ontouchstart' in window) && window.innerWidth >= 768);
+  const hint = document.getElementById('locDesktopHint');
+  if (hint) hint.style.display = isDesktop ? 'block' : 'none';
+  // Hide confirm prompt by default on each open
+  const c = document.getElementById('locConfirm'); if (c) c.style.display = 'none';
   m.style.display='flex';
 }
 function closeLocModal(){const m=document.getElementById('locModal');if(m)m.style.display='none'}
@@ -1707,16 +1722,63 @@ function setLocation(key){
   if(typeof renderEditorPicks==='function')renderEditorPicks();
   if(typeof toast==='function')toast('Location: '+d.name);
 }
+// Pending GPS result awaiting user confirmation
+let _pendingGPS = null;
 function useGPS(){
-  localStorage.removeItem('kdoryung_loc');
+  if(!navigator.geolocation){toast('GPS not available on this browser.');return;}
+  const btn = document.getElementById('locUseGPS');
+  const span = btn ? btn.querySelector('span') : null;
+  const orig = span ? span.textContent : 'Use my GPS location';
+  if (span) span.textContent = 'Detecting...';
+  navigator.geolocation.getCurrentPosition(p=>{
+    if (span) span.textContent = orig;
+    const lat = p.coords.latitude, lng = p.coords.longitude;
+    if (lat<33||lat>39||lng<124||lng>132) {
+      toast('GPS is outside Korea. Please pick a destination below.');
+      return;
+    }
+    // Reverse geocode for human-readable label
+    waitKakao(()=>{
+      const gc = new kakao.maps.services.Geocoder();
+      gc.coord2RegionCode(lng, lat, (r, st)=>{
+        let label = lat.toFixed(3)+', '+lng.toFixed(3);
+        let cityKR='', distKR='';
+        if (st === kakao.maps.services.Status.OK && r[0]) {
+          cityKR = r[0].region_1depth_name || '';
+          distKR = r[0].region_2depth_name || '';
+          const cityE = cityEN[cityKR] || cityKR;
+          const distE = translateDistrict(distKR);
+          label = (cityE+' '+distE).trim() || label;
+        }
+        _pendingGPS = { lat, lng, cityKR, distKR, label };
+        const c = document.getElementById('locConfirm');
+        const txt = document.getElementById('locConfirmText');
+        if (txt) txt.textContent = label;
+        if (c) c.style.display = 'block';
+      });
+    });
+  }, ()=>{
+    if (span) span.textContent = orig;
+    toast('GPS unavailable. Pick a destination instead.');
+  }, {enableHighAccuracy:true,timeout:8000});
+}
+function confirmGPSLoc(){
+  if (!_pendingGPS) return;
+  const g = _pendingGPS; _pendingGPS = null;
+  myLat = g.lat; myLng = g.lng; myCity = g.cityKR; myDistrict = g.distKR;
+  localStorage.removeItem('kdoryung_loc'); // GPS mode = no manual override saved
+  const lt = document.getElementById('locText'); if (lt) { lt.removeAttribute('data-i18n'); lt.textContent = g.label; }
   closeLocModal();
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(p=>{
-      myLat=p.coords.latitude;myLng=p.coords.longitude;
-      // Re-trigger reverse geocoding + reload
-      if(typeof onReady==='function')onReady();
-    },()=>{toast('GPS unavailable. Pick a destination instead.')},{enableHighAccuracy:true,timeout:8000});
-  }
+  if (typeof loadHome === 'function') loadHome();
+  if (typeof loadCheap === 'function') loadCheap();
+  if (typeof loadFree === 'function') loadFree();
+  if (typeof renderEditorPicks === 'function') renderEditorPicks();
+  if (typeof toast === 'function') toast('Location: '+g.label);
+}
+function rejectGPSLoc(){
+  _pendingGPS = null;
+  const c = document.getElementById('locConfirm'); if (c) c.style.display = 'none';
+  if (typeof toast === 'function') toast('Pick a destination below.');
 }
 document.addEventListener('DOMContentLoaded',()=>{
   const pill=document.getElementById('locPill');
