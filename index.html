@@ -2997,12 +2997,18 @@ function showLearnPage(){
   document.getElementById('tabs').style.display='none';
   document.getElementById('mapView').classList.remove('active');document.body.classList.remove('map-open');
   let lp=document.getElementById('learnPage');
+  const justCreated = !lp;
   if(!lp){
     lp=document.createElement('div');lp.id='learnPage';lp.className='learn-page';
     document.getElementById('mainContent')||document.querySelector('.content').parentNode;
     document.querySelector('.content').after(lp);
   }
   lp.classList.add('active');
+  // History API: lazily-created learnPage needs the observer attached on first creation
+  if (justCreated && typeof _overlayObserver !== 'undefined') {
+    try { _overlayObserver.observe(lp, { attributes: true, attributeFilter: ['class'] }); } catch(_){}
+    if (typeof _pushOverlayHash === 'function') _pushOverlayHash('learn');
+  }
   renderLearnPage();
 }
 
@@ -3132,6 +3138,100 @@ function activateSection(sectionKey){
 }
 document.querySelectorAll('.entry-card').forEach(card=>{
   card.addEventListener('click',()=>activateSection(card.dataset.entry));
+});
+
+// ===== HISTORY API — browser back closes overlays instead of leaving the app (5/5) =====
+const _OVERLAY_VIEWS = { chat: 'chatView', story: 'storyView', shop: 'shopView', map: 'mapView', plan: 'planView', learn: 'learnPage' };
+const _OVERLAY_CLOSE_BTN = { chat: 'chatViewClose', story: 'storyClose', shop: 'shopClose', map: 'mapClose', plan: 'planClose' };
+let _suppressPopstate = false;
+function _findActiveOverlay(){
+  for (const [name, id] of Object.entries(_OVERLAY_VIEWS)) {
+    const el = document.getElementById(id);
+    if (el && el.classList.contains('active')) return name;
+  }
+  return null;
+}
+function _pushOverlayHash(name){
+  try {
+    const current = history.state && history.state.kdoryungOverlay;
+    if (current === name) return;
+    // If the existing state already belongs to an overlay that has just been deactivated
+    // (i.e., we're chaining map → story or similar), replace instead of stacking another entry.
+    // This keeps the stack at one overlay deep and prevents Back from revealing dead hashes.
+    const currentEl = current ? document.getElementById(_OVERLAY_VIEWS[current]) : null;
+    const method = current && currentEl && !currentEl.classList.contains('active') ? 'replaceState' : 'pushState';
+    history[method]({ kdoryungOverlay: name }, '', '#' + name);
+  } catch(_){}
+}
+function _restoreHomeNav(){
+  document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+  const homeNav = document.querySelector('.nav-item[data-nav="home"]');
+  if (homeNav) homeNav.classList.add('active');
+}
+function _popOverlayHashIfPushed(expectedName){
+  if (!history.state || !history.state.kdoryungOverlay) return;
+  // Scope cleanup to the overlay that actually closed — avoids popping a sibling overlay's hash
+  if (expectedName && history.state.kdoryungOverlay !== expectedName) return;
+  _suppressPopstate = true;
+  try { history.back(); } catch(_){}
+  setTimeout(() => { _suppressPopstate = false; }, 80);
+}
+window.addEventListener('popstate', () => {
+  if (_suppressPopstate) return;
+  const active = _findActiveOverlay();
+  if (!active) return;
+  const btnId = _OVERLAY_CLOSE_BTN[active];
+  const btn = btnId ? document.getElementById(btnId) : null;
+  if (btn) {
+    _suppressPopstate = true;
+    btn.click();
+    // After the overlay's own close handler runs, also reset the bottom nav so Home is highlighted again
+    setTimeout(() => { _restoreHomeNav(); _suppressPopstate = false; }, 80);
+  } else {
+    // learn page has no X — fallback: drop active class + restore main SPA shell
+    const el = document.getElementById(_OVERLAY_VIEWS[active]);
+    if (el) el.classList.remove('active');
+    if (active === 'learn') {
+      const content = document.querySelector('.content'); if (content) content.style.display='';
+      const tabs = document.getElementById('tabs'); if (tabs) tabs.style.display='';
+    }
+    _restoreHomeNav();
+    document.body.classList.remove('chat-open','map-open');
+  }
+});
+// Observer fires on BOTH activate and deactivate. On activate → push hash.
+// On deactivate (e.g., openStory() removes mapView.active without going through the X button), pop the stale hash.
+const _overlayObserver = new MutationObserver(muts => {
+  muts.forEach(m => {
+    if (m.attributeName !== 'class') return;
+    const t = m.target;
+    for (const [name, id] of Object.entries(_OVERLAY_VIEWS)) {
+      if (t.id !== id) continue;
+      if (t.classList.contains('active')) {
+        _pushOverlayHash(name);
+      } else {
+        // Deactivate detected — clean up stale hash only if it matches THIS overlay
+        if (history.state && history.state.kdoryungOverlay === name) {
+          // Defer one tick to let any same-frame transitions settle
+          setTimeout(() => _popOverlayHashIfPushed(name), 0);
+        }
+      }
+    }
+  });
+});
+document.addEventListener('DOMContentLoaded', () => {
+  Object.values(_OVERLAY_VIEWS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) _overlayObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+  });
+  // X-button intercepts: after the original close handler runs, pop the pushed hash for the SPECIFIC overlay
+  Object.entries(_OVERLAY_CLOSE_BTN).forEach(([name, btnId]) => {
+    if (!btnId) return;
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.addEventListener('click', () => { setTimeout(() => _popOverlayHashIfPushed(name), 0); });
+    }
+  });
 });
 
 // ===== NAV =====
