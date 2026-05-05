@@ -1,13 +1,13 @@
-const CACHE_NAME = 'kdoryung-v5';
+const CACHE_NAME = 'kdoryung-v6';
 const STATIC_ASSETS = [
-  '/k-doryung/',
-  '/k-doryung/index.html',
-  '/k-doryung/icon-192.png',
-  '/k-doryung/icon-512.png',
-  '/k-doryung/marker-doryung.png',
-  '/k-doryung/marker-baekgu.png',
-  '/k-doryung/manifest.json',
-  '/k-doryung/cheap-data.json',
+  './',
+  './index.html',
+  './icon-192.png',
+  './icon-512.png',
+  './marker-doryung.png',
+  './marker-baekgu.png',
+  './manifest.json',
+  './cheap-data.json',
 ];
 
 self.addEventListener('install', e => {
