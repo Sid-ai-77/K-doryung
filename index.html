@@ -207,6 +207,9 @@
   .badge-culture{background:#FEF3C7;color:#92400E}
   .badge-event{background:#FCE7F3;color:#9D174D}
   .card-name{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.25;letter-spacing:-0.01em}
+  .card-name-en{font-family:var(--serif);font-size:18px;font-weight:800;color:var(--ink);line-height:1.18;letter-spacing:-0.012em;display:block}
+  .card-name-en .type{font-family:var(--mono,'IBM Plex Mono',monospace);font-size:10.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent,#E65100);margin-left:8px;vertical-align:middle;border:1px solid var(--accent,#E65100);padding:2px 7px;border-radius:99px}
+  .card-name-ko{font-size:13px;font-weight:500;color:#6B6B6B;line-height:1.3;letter-spacing:0;display:block;margin-top:3px}
   .card-price{font-size:13px;font-weight:700;color:var(--accent);margin:6px 0;letter-spacing:-0.01em}
   .card-desc{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:6px}
   .card-addr{font-size:11px;color:var(--ink-muted);letter-spacing:0.02em}
@@ -238,8 +241,10 @@
   .column-cta{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:0.02em}
 
   /* Chat */
-  .chat-section{background:var(--surface);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--line-soft)}
-  .chat-title{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em;font-style:italic}
+  .chat-section{background:#FFF8DD;border-radius:16px;padding:18px;margin-bottom:14px;border:3px solid var(--ink-deep,#1B3A5C);box-shadow:6px 6px 0 0 #FFC107,0 0 0 1px rgba(255,193,7,0.3);position:relative;overflow:hidden}
+  .chat-section::before{content:"NEW · AI";position:absolute;top:10px;right:12px;font-family:var(--mono,'IBM Plex Mono',monospace);font-size:9px;font-weight:800;letter-spacing:0.18em;background:#FFC107;color:var(--ink-deep,#1B3A5C);padding:3px 8px;border-radius:99px;border:1.5px solid var(--ink-deep,#1B3A5C);letter-spacing:0.14em}
+  .chat-title{font-family:var(--serif);font-size:22px;font-weight:800;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:10px;letter-spacing:-0.015em;font-style:italic}
+  .chat-title::before{content:"";display:inline-block;width:38px;height:38px;border-radius:50%;background:url('face-doryung.png') center/cover no-repeat,#fff;border:2px solid var(--ink-deep,#1B3A5C);flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
   .chat-messages{max-height:220px;overflow-y:auto;margin-bottom:12px}
   .chat-msg{margin-bottom:10px;font-size:13px;line-height:1.55}
   .chat-msg.bot{color:var(--ink);background:var(--line-soft);padding:10px 12px;border-radius:12px;border-top-left-radius:3px;animation:fadeInLeft 0.3s ease}
@@ -248,7 +253,9 @@
   .chat-input-row{display:flex;gap:8px}
   .chat-input{flex:1;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:13px;font-family:inherit;outline:none;background:var(--bg)}
   .chat-input:focus{border-color:var(--accent)}
-  .chat-send{background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
+  .chat-send{background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s,transform 0.15s,box-shadow 0.15s;animation:chatPulse 2.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(230,81,0,0.7)}
+  .chat-send:hover{animation:none;transform:translateY(-1px);box-shadow:0 4px 8px rgba(230,81,0,0.3)}
+  @keyframes chatPulse{0%,100%{box-shadow:0 0 0 0 rgba(230,81,0,0.55)}50%{box-shadow:0 0 0 10px rgba(230,81,0,0)}}
   .chat-send:hover{background:var(--accent-hover)}
 
   /* Bottom Nav */
@@ -303,9 +310,9 @@
   /* Hanatour banner reused in main content (slightly larger) */
   .ad-hanatour{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#FFFFFF;color:#5B2A86;text-decoration:none;border-radius:10px;margin:12px 0;font-family:var(--sans);line-height:1.3;border:1px solid rgba(91,42,134,0.18);box-shadow:0 1px 3px rgba(91,42,134,0.06)}
   .ad-hanatour .hb-logo{flex:0 0 auto;height:30px;width:auto;object-fit:contain}
-  .ad-hanatour .hb-text{flex:1;min-width:0}
-  .ad-hanatour .hb-title{font-size:13px;font-weight:700;letter-spacing:-0.01em;color:#5B2A86}
-  .ad-hanatour .hb-sub{font-size:10.5px;font-style:italic;color:#7A4FA8;margin-top:2px}
+  .ad-hanatour .hb-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .ad-hanatour .hb-title{display:block;font-size:13px;font-weight:700;letter-spacing:-0.01em;color:#5B2A86;line-height:1.3}
+  .ad-hanatour .hb-sub{display:block;font-size:10.5px;font-style:italic;color:#7A4FA8;line-height:1.35}
   .ad-hanatour .hb-cta{flex:0 0 auto;font-size:11px;font-weight:700;background:#5B2A86;color:#FFF;border-radius:99px;padding:6px 12px;letter-spacing:0.04em;white-space:nowrap}
   /* Thread — paper journal */
   .chat-thread{flex:1;overflow-y:auto;padding:14px 16px 10px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
@@ -533,9 +540,14 @@
   .shop-feat-buy:hover{background:var(--accent-hover)}
   .shop-feat-buy:active{transform:scale(0.97)}
   /* Hana Tour Strongly Recommended block */
-  .shop-hanatour{margin:6px 0 18px;padding:16px;background:linear-gradient(135deg,#FFF8EA,#F4E5C2);border:1px solid #E2CFA9;border-radius:16px;box-shadow:0 4px 16px rgba(122,31,31,0.06)}
-  .shop-hanatour-eyebrow{font-family:var(--mono,'IBM Plex Mono',monospace);font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-  .shop-hanatour-title{font-family:var(--serif);font-style:italic;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;margin-bottom:4px}
+  .shop-hanatour{margin:6px 0 22px;padding:18px;background:#FFFFFF;border:3px solid #5B2A86;border-radius:16px;box-shadow:0 6px 20px rgba(91,42,134,0.18);position:relative}
+  .shop-hanatour-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:12px;border-bottom:2px solid rgba(91,42,134,0.15)}
+  .shop-hanatour-header img{height:30px;width:auto;object-fit:contain;flex-shrink:0}
+  .shop-hanatour-headtxt{flex:1;min-width:0}
+  .shop-hanatour-headtxt .label{font-family:var(--mono,'IBM Plex Mono',monospace);font-size:9.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#5B2A86;display:block;margin-bottom:2px}
+  .shop-hanatour-headtxt .name{font-family:var(--serif);font-size:18px;font-weight:800;color:#5B2A86;letter-spacing:-0.012em;line-height:1.2;display:block}
+  .shop-hanatour-eyebrow{display:none}
+  .shop-hanatour-title{font-family:var(--serif);font-style:italic;font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;margin-bottom:4px}
   .shop-hanatour-sub{font-size:11px;color:var(--ink-soft);line-height:1.5;margin-bottom:12px}
   .shop-tour-list{display:flex;flex-direction:column;gap:10px}
   .shop-tour-card{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;align-items:stretch}
@@ -1550,7 +1562,13 @@
 
     <!-- Hana Tour · Strongly Recommended -->
     <div class="shop-hanatour">
-      <div class="shop-hanatour-eyebrow" data-i18n="shop.hanaEyebrow">&#9733;&#9733; Hana Tour &middot; Strongly Recommended</div>
+      <div class="shop-hanatour-header">
+        <img src="hanatour-logo.jpg" alt="Hanatour" />
+        <div class="shop-hanatour-headtxt">
+          <span class="label" data-i18n="shop.hanaPartner">Official Partner</span>
+          <span class="name" data-i18n="shop.hanaName">Hanatour Korea Travel</span>
+        </div>
+      </div>
       <div class="shop-hanatour-title" data-i18n="shop.hanaTitle">Inbound Korea day-trips</div>
       <div class="shop-hanatour-sub" data-i18n="shop.hanaSub">Curated by Doryung in partnership with Hana Tour ITC. Foreign-tourist friendly.</div>
       <div class="shop-tour-list" id="shopTourList"></div>
@@ -1662,7 +1680,7 @@ const I18N = {
     'ad.hanatour.title': 'Book your Korea trip with Hanatour', 'ad.hanatour.sub': 'Tours · hotels · transfers · K-experiences', 'ad.hanatour.cta': 'Book →',
     'shop.headerTitle': "Doryung's Counter", 'shop.featEyebrow': "★ Doryung's Recommendation", 'shop.featTitle': 'Hanok Bokjumeoni NFC Keyring', 'shop.featTagline': 'A pocket-sized blessing, woven by hanok hands.',
     'shop.featStory': "<p><b>The fabric.</b> Sewn from leftover hanbok cloth at a small hanok shop deep in Bukchon — the off-cuts that traditional tailors usually fold away. Each pouch carries a different scrap of silk or ramie, so no two are alike.</p><p><b>The filling.</b> A handful of red beans (<i>pat</i>), tucked inside the way Korean grandmothers used to sew them into children's pouches to ward off bad luck.</p><p><b>The chip.</b> A tiny NFC tag is sewn in beside the beans. Tap your phone against the bokjumeoni and Doryung will whisper one short ritual for the day — one small thing to do, one small thing to avoid, one direction to walk.</p><p><b>The size.</b> 6 cm × 7 cm, with a brass keyring loop. Slips onto a bag, a belt loop, or a hotel-room key.</p>",
-    'shop.buy': 'Buy', 'shop.hanaEyebrow': '★★ Hana Tour · Strongly Recommended', 'shop.hanaTitle': 'Inbound Korea day-trips', 'shop.hanaSub': 'Curated by Doryung in partnership with Hana Tour ITC. Foreign-tourist friendly.',
+    'shop.buy': 'Buy', 'shop.hanaPartner': 'Official Partner', 'shop.hanaName': 'Hanatour Korea Travel', 'shop.hanaEyebrow': '★★ Hana Tour · Strongly Recommended', 'shop.hanaTitle': 'Inbound Korea day-trips', 'shop.hanaSub': 'Curated by Doryung in partnership with Hana Tour ITC. Foreign-tourist friendly.',
     'shop.cat.all': 'All', 'shop.cat.skincare': 'Skincare', 'shop.cat.makeup': 'Makeup', 'shop.cat.hair': 'Hair', 'shop.cat.body': 'Body', 'shop.cat.sets': 'Sets',
     'shop.foot': 'Curated by Doryung. Authentic K-beauty · only official retailers.',
     'tour.inquire': 'Inquire', 'tour.alertSoon': 'This Hana Tour package is coming soon — Doryung is signing the partnership scrolls.',
@@ -1685,7 +1703,7 @@ const I18N = {
     'ad.hanatour.title': '하나투어로 한국 여행 예약하기', 'ad.hanatour.sub': '투어·호텔·픽업·K-체험', 'ad.hanatour.cta': '예약 →',
     'shop.headerTitle': '도령의 가게', 'shop.featEyebrow': '★ 도령의 추천', 'shop.featTitle': '한복 복주머니 NFC 키링', 'shop.featTagline': '한복 장인의 손길로 짠 작은 축복.',
     'shop.featStory': '<p><b>천.</b> 북촌 골목 한 한복집의 자투리 천에서 잘라 만들었습니다. 옛 재단사들이 한쪽에 접어두던 조각들 — 비단이나 모시 한 조각씩 들어가 있어 같은 것이 하나도 없습니다.</p><p><b>속.</b> 옛 할머니들이 아이 주머니에 넣어 액운을 막던 그대로, 붉은 팥 한 줌이 담겼습니다.</p><p><b>칩.</b> 팥 옆에 작은 NFC 태그가 들어 있습니다. 휴대폰을 복주머니에 갖다 대면 도령이 오늘의 짧은 의식을 속삭여 줍니다 — 오늘 할 일 하나, 피할 일 하나, 걸어갈 방향 하나.</p><p><b>크기.</b> 6 cm × 7 cm, 황동 키링 고리. 가방·벨트·호텔 키에 걸 수 있습니다.</p>',
-    'shop.buy': '구매', 'shop.hanaEyebrow': '★★ 하나투어 · 강력 추천', 'shop.hanaTitle': '한국 인바운드 당일 투어', 'shop.hanaSub': '도령이 하나투어 ITC와 함께 큐레이션. 외국 여행자에게 친화적입니다.',
+    'shop.buy': '구매', 'shop.hanaPartner': '공식 파트너', 'shop.hanaName': '하나투어 한국여행상품', 'shop.hanaEyebrow': '★★ 하나투어 · 강력 추천', 'shop.hanaTitle': '한국 인바운드 당일 투어', 'shop.hanaSub': '도령이 하나투어 ITC와 함께 큐레이션. 외국 여행자에게 친화적입니다.',
     'shop.cat.all': '전체', 'shop.cat.skincare': '스킨케어', 'shop.cat.makeup': '메이크업', 'shop.cat.hair': '헤어', 'shop.cat.body': '바디', 'shop.cat.sets': '세트',
     'shop.foot': '도령 큐레이션. 정품 K-뷰티 · 공식 판매처만.',
     'tour.inquire': '문의', 'tour.alertSoon': '하나투어 패키지 곧 정식 오픈 예정입니다 — 도령이 제휴 두루마리에 서명 중입니다.',
@@ -1708,7 +1726,7 @@ const I18N = {
     'ad.hanatour.title': '通过 Hanatour 预订韩国之旅', 'ad.hanatour.sub': '行程·酒店·接送·K体验', 'ad.hanatour.cta': '预订 →',
     'shop.headerTitle': '道令的小店', 'shop.featEyebrow': '★ 道令推荐', 'shop.featTitle': '韩屋福袋 NFC 钥匙扣', 'shop.featTagline': '韩屋手工编织的小小祝福。',
     'shop.featStory': '<p><b>布料。</b>来自北村深处一家小韩屋店的韩服边角料 — 老裁缝通常折起来收着的剩布。每个福袋都有一片不同的丝绸或苎麻，没有两个是相同的。</p><p><b>填充。</b>一把红豆，按韩国奶奶们当年缝在孩子福袋里驱邪的方式放入其中。</p><p><b>芯片。</b>红豆旁边缝有微型 NFC 标签。把手机靠近福袋，道令会低声告诉您今天的一个小仪式 — 一件该做的事、一件该避免的事、一个方向。</p><p><b>尺寸。</b>6 cm × 7 cm，配黄铜钥匙环。可挂在包、腰带或酒店钥匙上。</p>',
-    'shop.buy': '购买', 'shop.hanaEyebrow': '★★ 韩亚旅行社 · 强烈推荐', 'shop.hanaTitle': '韩国一日游', 'shop.hanaSub': '由道令与 Hana Tour ITC 联合策划。外国游客友好。',
+    'shop.buy': '购买', 'shop.hanaPartner': '官方合作伙伴', 'shop.hanaName': '韩亚旅行社·韩国旅游产品', 'shop.hanaEyebrow': '★★ 韩亚旅行社 · 强烈推荐', 'shop.hanaTitle': '韩国一日游', 'shop.hanaSub': '由道令与 Hana Tour ITC 联合策划。外国游客友好。',
     'shop.cat.all': '全部', 'shop.cat.skincare': '护肤', 'shop.cat.makeup': '彩妆', 'shop.cat.hair': '美发', 'shop.cat.body': '身体护理', 'shop.cat.sets': '套装',
     'shop.foot': '由道令精选。正品 K-美妆 · 仅限官方零售商。',
     'tour.inquire': '咨询', 'tour.alertSoon': '此 Hana Tour 套餐即将上线 — 道令正在签署合作文书。',
@@ -1731,7 +1749,7 @@ const I18N = {
     'ad.hanatour.title': 'Hanatourで韓国旅行を予約', 'ad.hanatour.sub': 'ツアー・ホテル・送迎・K体験', 'ad.hanatour.cta': '予約 →',
     'shop.headerTitle': '道令の店', 'shop.featEyebrow': '★ 道令のおすすめ', 'shop.featTitle': '韓屋ポクチュモニ NFC キーリング', 'shop.featTagline': '韓屋の職人の手で編まれた小さな祝福。',
     'shop.featStory': '<p><b>生地。</b>北村の小さな韓屋工房で出る韓服の端切れ — 仕立て屋がしまっていた残布から。絹や麻の一片ずつ入っていて、同じものはひとつもありません。</p><p><b>中身。</b>韓国のおばあさんが昔、子どもの守り袋に縫い込んだように、赤い小豆をひと握り。</p><p><b>チップ。</b>小豆のそばに小さなNFCタグが縫い込まれています。スマホをかざすと、道令が今日のささやかな儀式をささやきます — するべきこと一つ、避けるべきこと一つ、歩むべき方向ひとつ。</p><p><b>サイズ。</b>6 cm × 7 cm、真鍮のキーリング付き。バッグ・ベルトループ・ホテルキーに。</p>',
-    'shop.buy': '購入', 'shop.hanaEyebrow': '★★ Hana Tour · 強くおすすめ', 'shop.hanaTitle': '韓国インバウンド日帰りツアー', 'shop.hanaSub': '道令とHana Tour ITCの共同キュレーション。外国人旅行者向け。',
+    'shop.buy': '購入', 'shop.hanaPartner': '公式パートナー', 'shop.hanaName': 'Hanatour 韓国旅行商品', 'shop.hanaEyebrow': '★★ Hana Tour · 強くおすすめ', 'shop.hanaTitle': '韓国インバウンド日帰りツアー', 'shop.hanaSub': '道令とHana Tour ITCの共同キュレーション。外国人旅行者向け。',
     'shop.cat.all': 'すべて', 'shop.cat.skincare': 'スキンケア', 'shop.cat.makeup': 'メイク', 'shop.cat.hair': 'ヘア', 'shop.cat.body': 'ボディ', 'shop.cat.sets': 'セット',
     'shop.foot': '道令キュレーション。本物のK-ビューティー · 公式販売店のみ。',
     'tour.inquire': 'お問い合わせ', 'tour.alertSoon': 'このHana Tourパッケージは間もなく登場します — 道令が提携の巻物にサインしているところです。',
@@ -1754,7 +1772,7 @@ const I18N = {
     'ad.hanatour.title': 'Đặt tour Hàn Quốc với Hanatour', 'ad.hanatour.sub': 'Tour · khách sạn · đưa đón · trải nghiệm K', 'ad.hanatour.cta': 'Đặt →',
     'shop.headerTitle': 'Quầy của Doryung', 'shop.featEyebrow': '★ Doryung đề xuất', 'shop.featTitle': 'Móc khóa NFC Hanok Bokjumeoni', 'shop.featTagline': 'Một lời chúc nhỏ, dệt bởi đôi bàn tay hanok.',
     'shop.featStory': '<p><b>Vải.</b> Khâu từ vải hanbok thừa ở một xưởng hanok nhỏ trong Bukchon — những mảnh vải mà thợ may truyền thống thường gấp lại cất đi. Mỗi túi mang một mảnh lụa hoặc vải gai khác nhau, không có hai chiếc giống nhau.</p><p><b>Bên trong.</b> Một nắm đậu đỏ (<i>pat</i>), nhét vào theo cách các bà ngoại Hàn Quốc xưa khâu vào túi của trẻ em để xua đuổi vận xui.</p><p><b>Chip.</b> Một thẻ NFC nhỏ được khâu cạnh đậu. Chạm điện thoại vào bokjumeoni và Doryung sẽ thì thầm một nghi thức ngắn cho ngày hôm nay — một việc nên làm, một điều nên tránh, một hướng để đi.</p><p><b>Kích thước.</b> 6 cm × 7 cm, có khoen móc chìa khóa bằng đồng. Móc vào túi, vòng thắt lưng hoặc chìa khóa khách sạn.</p>',
-    'shop.buy': 'Mua', 'shop.hanaEyebrow': '★★ Hana Tour · Đặc biệt khuyên dùng', 'shop.hanaTitle': 'Tour trong ngày khám phá Hàn Quốc', 'shop.hanaSub': 'Được Doryung tuyển chọn cùng Hana Tour ITC. Thân thiện với khách du lịch nước ngoài.',
+    'shop.buy': 'Mua', 'shop.hanaPartner': 'Đối tác chính thức', 'shop.hanaName': 'Hanatour · Sản phẩm du lịch Hàn Quốc', 'shop.hanaEyebrow': '★★ Hana Tour · Đặc biệt khuyên dùng', 'shop.hanaTitle': 'Tour trong ngày khám phá Hàn Quốc', 'shop.hanaSub': 'Được Doryung tuyển chọn cùng Hana Tour ITC. Thân thiện với khách du lịch nước ngoài.',
     'shop.cat.all': 'Tất cả', 'shop.cat.skincare': 'Chăm sóc da', 'shop.cat.makeup': 'Trang điểm', 'shop.cat.hair': 'Tóc', 'shop.cat.body': 'Cơ thể', 'shop.cat.sets': 'Bộ sản phẩm',
     'shop.foot': 'Doryung tuyển chọn. K-beauty chính hãng · chỉ từ nhà bán lẻ chính thức.',
     'tour.inquire': 'Liên hệ', 'tour.alertSoon': 'Gói Hana Tour này sắp ra mắt — Doryung đang ký các văn bản hợp tác.',
@@ -1777,7 +1795,7 @@ const I18N = {
     'ad.hanatour.title': 'Reserva tu viaje a Corea con Hanatour', 'ad.hanatour.sub': 'Tours · hoteles · traslados · experiencias K', 'ad.hanatour.cta': 'Reservar →',
     'shop.headerTitle': 'Tienda de Doryung', 'shop.featEyebrow': '★ Recomendación de Doryung', 'shop.featTitle': 'Llavero NFC Hanok Bokjumeoni', 'shop.featTagline': 'Una bendición de bolsillo, tejida por manos hanok.',
     'shop.featStory': '<p><b>El tejido.</b> Cosido con retales de hanbok de un pequeño taller hanok en Bukchon — los recortes que los sastres tradicionales suelen guardar. Cada bolsita lleva un trozo distinto de seda o ramio, así que no hay dos iguales.</p><p><b>El relleno.</b> Un puñado de frijoles rojos (<i>pat</i>), tal como las abuelas coreanas los cosían en los bolsillos de los niños para alejar la mala suerte.</p><p><b>El chip.</b> Una pequeña etiqueta NFC va cosida junto a los frijoles. Acerca el teléfono al bokjumeoni y Doryung te susurrará un breve ritual del día — una cosa que hacer, una que evitar, una dirección a seguir.</p><p><b>El tamaño.</b> 6 cm × 7 cm, con anilla de latón. Se engancha al bolso, al cinturón o a la llave del hotel.</p>',
-    'shop.buy': 'Comprar', 'shop.hanaEyebrow': '★★ Hana Tour · Muy recomendado', 'shop.hanaTitle': 'Excursiones de un día por Corea', 'shop.hanaSub': 'Curado por Doryung en colaboración con Hana Tour ITC. Pensado para turistas extranjeros.',
+    'shop.buy': 'Comprar', 'shop.hanaPartner': 'Socio oficial', 'shop.hanaName': 'Hanatour · Viajes a Corea', 'shop.hanaEyebrow': '★★ Hana Tour · Muy recomendado', 'shop.hanaTitle': 'Excursiones de un día por Corea', 'shop.hanaSub': 'Curado por Doryung en colaboración con Hana Tour ITC. Pensado para turistas extranjeros.',
     'shop.cat.all': 'Todo', 'shop.cat.skincare': 'Cuidado de piel', 'shop.cat.makeup': 'Maquillaje', 'shop.cat.hair': 'Cabello', 'shop.cat.body': 'Cuerpo', 'shop.cat.sets': 'Sets',
     'shop.foot': 'Curado por Doryung. K-beauty auténtica · solo distribuidores oficiales.',
     'tour.inquire': 'Consultar', 'tour.alertSoon': 'Este paquete Hana Tour estará disponible pronto — Doryung está firmando los acuerdos.',
@@ -1800,7 +1818,7 @@ const I18N = {
     'ad.hanatour.title': 'Buche deine Korea-Reise mit Hanatour', 'ad.hanatour.sub': 'Touren · Hotels · Transfers · K-Erlebnisse', 'ad.hanatour.cta': 'Buchen →',
     'shop.headerTitle': 'Doryungs Laden', 'shop.featEyebrow': '★ Doryungs Empfehlung', 'shop.featTitle': 'Hanok Bokjumeoni NFC Schlüsselanhänger', 'shop.featTagline': 'Ein Segen für die Tasche, von Hanok-Händen gewebt.',
     'shop.featStory': '<p><b>Der Stoff.</b> Aus Resten von Hanbok-Stoff einer kleinen Hanok-Werkstatt in Bukchon — die Abschnitte, die traditionelle Schneider sonst beiseitelegen. Jedes Säckchen trägt ein anderes Stück Seide oder Ramie, kein Stück gleicht dem anderen.</p><p><b>Die Füllung.</b> Eine Handvoll roter Bohnen (<i>pat</i>), wie es koreanische Großmütter früher in Kindersäckchen einnähten, um Unglück fernzuhalten.</p><p><b>Der Chip.</b> Ein winziger NFC-Tag liegt neben den Bohnen. Halte das Handy an das Bokjumeoni und Doryung flüstert dir ein kurzes Ritual für den Tag zu — eine Sache, die du tun solltest, eine, die du meiden solltest, eine Richtung, in die du gehen solltest.</p><p><b>Die Größe.</b> 6 cm × 7 cm, mit Messing-Schlüsselring. Passt an Tasche, Gürtelschlaufe oder Hotelschlüssel.</p>',
-    'shop.buy': 'Kaufen', 'shop.hanaEyebrow': '★★ Hana Tour · Sehr empfohlen', 'shop.hanaTitle': 'Korea-Tagesausflüge', 'shop.hanaSub': 'Von Doryung in Zusammenarbeit mit Hana Tour ITC kuratiert. Tourist-freundlich.',
+    'shop.buy': 'Kaufen', 'shop.hanaPartner': 'Offizieller Partner', 'shop.hanaName': 'Hanatour · Korea-Reisen', 'shop.hanaEyebrow': '★★ Hana Tour · Sehr empfohlen', 'shop.hanaTitle': 'Korea-Tagesausflüge', 'shop.hanaSub': 'Von Doryung in Zusammenarbeit mit Hana Tour ITC kuratiert. Tourist-freundlich.',
     'shop.cat.all': 'Alle', 'shop.cat.skincare': 'Hautpflege', 'shop.cat.makeup': 'Make-up', 'shop.cat.hair': 'Haar', 'shop.cat.body': 'Körper', 'shop.cat.sets': 'Sets',
     'shop.foot': 'Von Doryung kuratiert. Echte K-Beauty · nur offizielle Händler.',
     'tour.inquire': 'Anfragen', 'tour.alertSoon': 'Dieses Hana Tour-Paket kommt bald — Doryung unterzeichnet gerade die Partnerschaftsverträge.',
@@ -2309,6 +2327,54 @@ function loadHome(){
   });
 }
 
+// ===== Korean → Latin romanizer (Revised Romanization, simplified) =====
+const HANGUL_INITIAL = ['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+const HANGUL_MEDIAL = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+const HANGUL_FINAL = ['','k','k','k','n','n','n','t','l','k','m','b','l','l','p','l','m','p','p','t','t','ng','t','t','k','t','p','h'];
+function romanizeKorean(s){
+  if(!s) return '';
+  let out='';
+  for(let i=0;i<s.length;i++){
+    const ch=s[i];const code=ch.charCodeAt(0);
+    if(code>=0xAC00&&code<=0xD7A3){
+      const idx=code-0xAC00;
+      const ini=Math.floor(idx/(21*28));
+      const med=Math.floor((idx%(21*28))/28);
+      const fin=idx%28;
+      out+=HANGUL_INITIAL[ini]+HANGUL_MEDIAL[med]+HANGUL_FINAL[fin];
+    } else {
+      out+=ch;
+    }
+  }
+  // Title case each word
+  return out.replace(/\b\w/g,c=>c.toUpperCase()).trim();
+}
+
+// Map raw Korean type code (한식/중식/일식/양식/카페/분식/...) to clean English label for foreigners
+const TYPE_EN_MAP = {
+  '한식':'Korean','중식':'Chinese','일식':'Japanese','양식':'Western','분식':'Snack',
+  '카페':'Cafe','커피':'Coffee','제과':'Bakery','제빵':'Bakery',
+  '음식점':'Restaurant','요식':'Restaurant','패스트푸드':'Fast Food',
+  '횟집':'Sashimi','치킨':'Chicken','피자':'Pizza','면':'Noodles','국수':'Noodles','분식점':'Snack'
+};
+function typeLabelEn(rawType){
+  if(!rawType) return 'Restaurant';
+  for(const k of Object.keys(TYPE_EN_MAP)){
+    if(rawType.includes(k)) return TYPE_EN_MAP[k];
+  }
+  return rawType;
+}
+function storeNameHtml(s){
+  // English name top + type label / Korean name below
+  const enName = (s.n_en && s.n_en.trim()) || romanizeKorean(s.n||'');
+  const typeLabel = typeLabelEn(s.te||s.t||'');
+  const koName = s.n||'';
+  return `<div class="card-name">
+    <span class="card-name-en">${enName||koName}<span class="type">${typeLabel}</span></span>
+    ${enName && enName!==koName ? `<span class="card-name-ko">${koName}</span>` : ''}
+  </div>`;
+}
+
 // ===== CHEAP =====
 function loadCheap(){
   const c=document.getElementById('items-cheap');
@@ -2344,13 +2410,11 @@ function loadCheap(){
       if(m1Label&&s.p1)m.push(m1Label+' '+fmtPrice(s.p1));
       if(m2Label&&s.p2)m.push(m2Label+' '+fmtPrice(s.p2));
       const div=document.createElement('div');div.className='card';
-      const nameHtml=s.n_en
-        ? `<div class="card-name">${s.n_en} <span style="font-size:13px;font-weight:500;color:#6B6B6B;letter-spacing:0">(${s.n||''})</span></div>`
-        : `<div class="card-name">${s.n||''}</div>`;
+      const nameHtml=storeNameHtml(s);
       const addrHtml=s.a_en
         ? `<div class="card-addr">${s.a_en}</div><div class="card-addr" style="opacity:0.6;font-size:10.5px">${s.a||''}</div>`
         : `<div class="card-addr">${s.a||''}</div>`;
-      div.innerHTML=`<div class="card-top"><span class="badge badge-food">Budget Certified &#x2705;</span><span style="font-size:11px;color:#888">${s.te||''}</span></div>
+      div.innerHTML=`<div class="card-top"><span class="badge badge-food">Budget Certified &#x2705;</span></div>
         ${nameHtml}
         ${m.length?'<div class="card-price">'+m.join(' / ')+'</div>':''}
         ${addrHtml}
@@ -2478,16 +2542,57 @@ function applyUserLevel(s){
   const head = document.getElementById('chatMastLevel');
   if (head) head.textContent = `Lv ${s.level} · ${s.levelLabel}`;
 }
+// Photo card image map by friendship level
+const PHOTO_CARDS = {
+  1: { img: 'card-lv1.jpg', captionEn: 'First meeting at the palace', captionKo: '첫 만남, 경복궁에서' },
+  2: { img: 'card-lv2.jpg', captionEn: 'Afternoon tea, slow autumn', captionKo: '한옥의 오후, 차 한 잔' },
+  3: { img: 'card-lv3.jpg', captionEn: 'Lantern through hidden alleys', captionKo: '등불 들고 골목으로' },
+  4: { img: 'card-lv4.jpg', captionEn: 'Spring night under cherry blossoms', captionKo: '벚꽃 밤, 한강에서' },
+  5: { img: 'card-lv4.jpg', captionEn: 'A friendship of a lifetime', captionKo: '평생의 친구' }
+};
 function showLevelUp(info){
   if (!info) return;
-  // Toast + small celebratory animation in chat thread
-  const t = _chatThread();
-  if (!t) return;
+  const tt = _chatThread();
+  if (!tt) return;
   const card = document.createElement('div');
   card.style.cssText = 'align-self:center;background:#FBF4E1;border:1px solid #1B3A5C;border-radius:10px;padding:10px 14px;margin:6px 0;font-family:var(--serif);font-style:italic;font-size:12.5px;color:#1B3A5C;text-align:center;box-shadow:0 2px 6px rgba(28,58,92,0.12)';
   card.innerHTML = `★ Friendship deepened — <b>${info.label}</b><br><span style="font-size:10.5px;font-style:normal;color:#57534E">Doryung now sees you as ${info.label}.</span>`;
-  t.appendChild(card);
-  t.scrollTop = t.scrollHeight;
+  tt.appendChild(card);
+  tt.scrollTop = tt.scrollHeight;
+  // Show photo card unlock overlay (large)
+  if (info.level && PHOTO_CARDS[info.level]) {
+    showPhotoCardUnlock(info.level, info.label);
+  }
+}
+
+function showPhotoCardUnlock(level, label){
+  const card = PHOTO_CARDS[level];
+  if (!card) return;
+  const existing = document.getElementById('photoCardOverlay');
+  if (existing) existing.remove();
+  const ov = document.createElement('div');
+  ov.id = 'photoCardOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:1000;background:rgba(11,13,15,0.85);display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeInOv 0.3s ease;backdrop-filter:blur(4px)';
+  const polaroid = document.createElement('div');
+  polaroid.style.cssText = 'background:#FAFAF7;padding:18px 18px 14px;box-shadow:0 16px 48px rgba(0,0,0,0.5);max-width:420px;width:100%;border:1px solid rgba(0,0,0,0.08);transform:rotate(-1deg)';
+  const cap = (CURRENT_LANG === 'ko') ? card.captionKo : card.captionEn;
+  polaroid.innerHTML = `
+    <div style="font-family:var(--mono,'IBM Plex Mono',monospace);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#E65100;font-weight:800;text-align:center;margin-bottom:10px">★ Lv ${level} unlocked · ${label||''} ★</div>
+    <img src="${card.img}" alt="${cap}" style="width:100%;display:block;background:#000" />
+    <div style="font-family:var(--serif);font-style:italic;font-size:14px;color:#0E1116;text-align:center;margin-top:14px;line-height:1.4">${cap}</div>
+    <button id="photoCardClose" style="display:block;margin:14px auto 0;background:#0E1116;color:#FFD60A;border:none;padding:8px 18px;font-family:var(--mono,'IBM Plex Mono',monospace);font-size:11px;letter-spacing:0.14em;font-weight:700;cursor:pointer;border-radius:0">KEEP THIS CARD</button>
+  `;
+  ov.appendChild(polaroid);
+  document.body.appendChild(ov);
+  ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+  document.getElementById('photoCardClose').addEventListener('click', () => ov.remove());
+}
+
+if (!document.getElementById('photoCardKf')) {
+  const sty = document.createElement('style');
+  sty.id = 'photoCardKf';
+  sty.textContent = '@keyframes fadeInOv{from{opacity:0}to{opacity:1}}';
+  document.head.appendChild(sty);
 }
 async function fetchUserState(){
   try {
@@ -3514,14 +3619,30 @@ function fmtTourPrice(won){
   return prefix+' '+wonStr;
 }
 const SHOP_PRODUCTS=[
-  {id:'joseon-serum',name:'Beauty of Joseon Glow Deep Serum',cat:'skincare',catLabel:'Skincare',price:24800,desc:'Rice + Alpha-Arbutin. Gentle radiance.',img:'https://images.unsplash.com/photo-1741896135490-4062a3b21abf?auto=format&fit=crop&w=400&q=80'},
-  {id:'peripera-velvet',name:'Peripera Ink the Velvet Lip Tint',cat:'makeup',catLabel:'Makeup',price:12500,desc:'The cult tint. Soft matte stay.',img:'https://images.unsplash.com/photo-1687775436481-59f014086181?auto=format&fit=crop&w=400&q=80'},
-  {id:'doryung-essentials',name:"K-Doryung Curated Traveler's Essentials Box",cat:'sets',catLabel:'Sets',price:89000,priceWas:112000,desc:"Doryung's pick. Mini sizes for the week.",img:'https://images.unsplash.com/photo-1688413467024-c539918fdd7c?auto=format&fit=crop&w=400&q=80'},
-  {id:'anua-toner',name:'Anua Heartleaf 77% Soothing Toner',cat:'skincare',catLabel:'Skincare',price:18900,desc:'For tired post-flight skin.',img:'https://images.unsplash.com/photo-1741896136071-3f8c1d472aa8?auto=format&fit=crop&w=400&q=80'},
-  {id:'roundlab-toner',name:'Round Lab 1025 Dokdo Toner',cat:'skincare',catLabel:'Skincare',price:9900,desc:'Travel size. Daily-use favourite.',img:'https://images.unsplash.com/photo-1688380338608-a1cb35a6db3a?auto=format&fit=crop&w=400&q=80'},
-  {id:'innisfree-bw',name:'Innisfree Green Tea Body Wash',cat:'body',catLabel:'Body',price:14500,desc:'Travel size. Soft green-tea finish.',img:'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80'},
-  {id:'numbuzin-no3',name:'Numbuzin No.3 Skin Softening Serum',cat:'skincare',catLabel:'Skincare',price:32000,desc:'New-in. Niacinamide soothe.',img:'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80'},
-  {id:'misencene',name:'Mise En Scène Perfect Serum Repair',cat:'hair',catLabel:'Hair',price:16500,desc:'Hair-end repair, traveller staple.',img:'https://images.unsplash.com/photo-1631730486572-226d1f595b68?auto=format&fit=crop&w=400&q=80'}
+  {id:'joseon-serum',name:'Beauty of Joseon Glow Deep Serum',cat:'skincare',price:24800,
+    desc:{en:'Rice + Alpha-Arbutin. Gentle radiance.',ko:'쌀 + 알파-아르부틴. 잔잔한 광채.',zh:'大米 + α-熊果苷。温和提亮。',ja:'米+αアルブチン。やさしい輝き。',vi:'Gạo + Alpha-Arbutin. Tỏa sáng dịu nhẹ.',es:'Arroz + Alfa-Arbutina. Luminosidad sutil.',de:'Reis + Alpha-Arbutin. Sanfte Leuchtkraft.'},
+    img:'https://images.unsplash.com/photo-1741896135490-4062a3b21abf?auto=format&fit=crop&w=400&q=80'},
+  {id:'peripera-velvet',name:'Peripera Ink the Velvet Lip Tint',cat:'makeup',price:12500,
+    desc:{en:'The cult tint. Soft matte stay.',ko:'컬트 인기 틴트. 부드러운 매트 지속.',zh:'人气唇釉。柔雾长效。',ja:'人気ティント。やわらかマット持続。',vi:'Son tint nổi tiếng. Lì mềm bền màu.',es:'Tinte de culto. Mate suave duradero.',de:'Kult-Tint. Weich-mattes Halten.'},
+    img:'https://images.unsplash.com/photo-1687775436481-59f014086181?auto=format&fit=crop&w=400&q=80'},
+  {id:'doryung-essentials',name:{en:"K-Doryung Curated Traveler's Essentials Box",ko:"K-도령 큐레이션 여행자 필수 박스",zh:"K-道令旅行必备精选礼盒",ja:"K-道令厳選 旅行必携ボックス",vi:"Hộp du lịch K-Doryung tuyển chọn",es:"Caja Esencial del Viajero · K-Doryung",de:"K-Doryung Reise-Essentials Box"},cat:'sets',price:89000,priceWas:112000,
+    desc:{en:"Doryung's pick. Mini sizes for the week.",ko:'도령의 선택. 일주일치 미니 사이즈.',zh:'道令甄选。一周量迷你装。',ja:'道令の一押し。1週間分のミニサイズ。',vi:'Doryung tuyển. Cỡ mini cho 1 tuần.',es:'La elección de Doryung. Tamaños mini para la semana.',de:'Doryungs Pick. Mini-Größen für die Woche.'},
+    img:'https://images.unsplash.com/photo-1688413467024-c539918fdd7c?auto=format&fit=crop&w=400&q=80'},
+  {id:'anua-toner',name:'Anua Heartleaf 77% Soothing Toner',cat:'skincare',price:18900,
+    desc:{en:'For tired post-flight skin.',ko:'장거리 비행 후 피곤한 피부에.',zh:'适合长途飞行后疲劳肌肤。',ja:'長距離フライト後の疲れ肌に。',vi:'Cho da mệt sau chuyến bay dài.',es:'Para piel cansada tras el vuelo.',de:'Für müde Haut nach dem Flug.'},
+    img:'https://images.unsplash.com/photo-1741896136071-3f8c1d472aa8?auto=format&fit=crop&w=400&q=80'},
+  {id:'roundlab-toner',name:'Round Lab 1025 Dokdo Toner',cat:'skincare',price:9900,
+    desc:{en:'Travel size. Daily-use favourite.',ko:'여행용 사이즈. 매일 쓰는 베스트.',zh:'旅行装。日常爱用款。',ja:'旅行サイズ。毎日使う定番。',vi:'Cỡ du lịch. Yêu thích hàng ngày.',es:'Tamaño viaje. Favorito de uso diario.',de:'Reisegröße. Täglicher Liebling.'},
+    img:'https://images.unsplash.com/photo-1688380338608-a1cb35a6db3a?auto=format&fit=crop&w=400&q=80'},
+  {id:'innisfree-bw',name:'Innisfree Green Tea Body Wash',cat:'body',price:14500,
+    desc:{en:'Travel size. Soft green-tea finish.',ko:'여행용 사이즈. 은은한 녹차 마무리.',zh:'旅行装。淡淡绿茶香。',ja:'旅行サイズ。やわらか緑茶の余韻。',vi:'Cỡ du lịch. Hương trà xanh dịu nhẹ.',es:'Tamaño viaje. Toque suave de té verde.',de:'Reisegröße. Sanfter Grüntee-Abschluss.'},
+    img:'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80'},
+  {id:'numbuzin-no3',name:'Numbuzin No.3 Skin Softening Serum',cat:'skincare',price:32000,
+    desc:{en:'New-in. Niacinamide soothe.',ko:'신상. 나이아신아마이드 진정.',zh:'新品。烟酰胺舒缓。',ja:'新作。ナイアシンアミド鎮静。',vi:'Mới ra. Niacinamide làm dịu.',es:'Novedad. Niacinamida calmante.',de:'Neu. Niacinamid beruhigt.'},
+    img:'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80'},
+  {id:'misencene',name:'Mise En Scène Perfect Serum Repair',cat:'hair',price:16500,
+    desc:{en:'Hair-end repair, traveller staple.',ko:'모발 끝 케어, 여행자 필수템.',zh:'发尾修护，旅行必备。',ja:'毛先ケア、旅人の定番。',vi:'Phục hồi đuôi tóc, du khách yêu thích.',es:'Reparación de puntas, esencial viajero.',de:'Spitzenpflege, Reise-Klassiker.'},
+    img:'https://images.unsplash.com/photo-1631730486572-226d1f595b68?auto=format&fit=crop&w=400&q=80'}
 ];
 let SHOP_FILTER='all';
 function openShop(){
@@ -3562,17 +3683,21 @@ function renderShop(){
   const grid=document.getElementById('shopGrid');
   if(!grid)return;
   const list=SHOP_FILTER==='all'?SHOP_PRODUCTS:SHOP_PRODUCTS.filter(p=>p.cat===SHOP_FILTER);
+  const buyLabel=t('shop.buy')||'Buy';
   grid.innerHTML=list.map(p=>{
     const wasHtml=p.priceWas?`<span style="font-size:11px;color:var(--ink-muted);text-decoration:line-through;margin-right:5px">&#8361;${p.priceWas.toLocaleString()}</span>`:'';
+    const catLabel=t('shop.cat.'+p.cat)||p.cat;
+    const productName=typeof p.name==='object'?(pickLang(p.name)||p.name.en):p.name;
+    const productDesc=typeof p.desc==='object'?(pickLang(p.desc)||p.desc.en):p.desc;
     return `<div class="shop-card" data-id="${p.id}">
       <div class="shop-card-img" style="background-image:url('${p.img}')"></div>
       <div class="shop-card-body">
-        <div class="shop-card-cat">${p.catLabel}</div>
-        <div class="shop-card-name">${p.name}</div>
-        <div class="shop-card-desc">${p.desc}</div>
+        <div class="shop-card-cat">${catLabel}</div>
+        <div class="shop-card-name">${productName}</div>
+        <div class="shop-card-desc">${productDesc}</div>
         <div class="shop-card-row">
           <div class="shop-card-price">${wasHtml}&#8361;${p.price.toLocaleString()}</div>
-          <button class="shop-card-buy" data-buy="${p.id}">Buy</button>
+          <button class="shop-card-buy" data-buy="${p.id}">${buyLabel}</button>
         </div>
       </div>
     </div>`;

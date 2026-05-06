@@ -1,11 +1,17 @@
-const CACHE_NAME = 'kdoryung-v6';
+const CACHE_NAME = 'kdoryung-v7';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './icon-192.png',
   './icon-512.png',
+  './face-doryung.png',
   './marker-doryung.png',
   './marker-baekgu.png',
+  './hanatour-logo.jpg',
+  './card-lv1.jpg',
+  './card-lv2.jpg',
+  './card-lv3.jpg',
+  './card-lv4.jpg',
   './manifest.json',
   './cheap-data.json',
 ];
