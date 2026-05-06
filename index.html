@@ -182,14 +182,14 @@
   .onboarding-option.selected{background:var(--ink-deep,#1B3A5C);color:#FBF4E1;border-color:var(--ink-deep,#1B3A5C)}
   .onboarding-option.selected span{color:rgba(251,244,225,0.78) !important}
   /* Entry cards grid — Home navigation replacement */
-  .entry-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-  .entry-card{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;padding:14px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform 0.12s,box-shadow 0.12s;cursor:pointer;font-family:inherit;text-align:left;width:100%}
+  .entry-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .entry-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--surface);border:1px solid var(--line-soft);border-radius:12px;padding:12px 6px 10px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform 0.12s,box-shadow 0.12s;cursor:pointer;font-family:inherit;text-align:center;width:100%;min-height:72px}
   .entry-card:active{transform:scale(0.98)}
   .entry-card:hover{box-shadow:0 6px 24px rgba(28,25,23,0.08)}
-  .entry-card-icon{font-size:22px;color:var(--accent);margin-bottom:8px;line-height:1}
-  .entry-card-title{font-family:var(--serif);font-size:15px;font-weight:700;font-style:italic;color:var(--ink);letter-spacing:-0.01em;margin-bottom:3px;line-height:1.25}
-  .entry-card-sub{font-size:11px;color:var(--ink-soft);line-height:1.45;margin-bottom:8px}
-  .entry-card-cta{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+  .entry-card-icon{font-size:22px;color:var(--accent);line-height:1;margin:0}
+  .entry-card-title{font-family:var(--serif);font-size:11.5px;font-weight:700;font-style:italic;color:var(--ink);letter-spacing:-0.005em;line-height:1.2;margin:0}
+  .entry-card-sub{display:none}
+  .entry-card-cta{display:none}
   .tab:not(.active):hover{border-color:var(--ink-soft)}
 
   /* Content */
