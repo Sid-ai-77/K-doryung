@@ -3278,13 +3278,22 @@ function _restoreHomeNav(){
   const homeNav = document.querySelector('.nav-item[data-nav="home"]');
   if (homeNav) homeNav.classList.add('active');
 }
+const _poppingForOverlay = new Set();
 function _popOverlayHashIfPushed(expectedName){
+  // Double-pop guard: if a pop for this overlay is already in flight (race between
+  // MutationObserver trigger and X-button click), drop the second call entirely.
+  // Otherwise both call history.back() and the second one blasts past our pushed
+  // state into the browser's pre-app history → app exits unexpectedly.
+  if (expectedName && _poppingForOverlay.has(expectedName)) return;
   if (!history.state || !history.state.kdoryungOverlay) return;
-  // Scope cleanup to the overlay that actually closed — avoids popping a sibling overlay's hash
   if (expectedName && history.state.kdoryungOverlay !== expectedName) return;
+  if (expectedName) _poppingForOverlay.add(expectedName);
   _suppressPopstate = true;
   try { history.back(); } catch(_){}
-  setTimeout(() => { _suppressPopstate = false; }, 80);
+  setTimeout(() => {
+    _suppressPopstate = false;
+    if (expectedName) _poppingForOverlay.delete(expectedName);
+  }, 120);
 }
 window.addEventListener('popstate', () => {
   if (_suppressPopstate) return;
